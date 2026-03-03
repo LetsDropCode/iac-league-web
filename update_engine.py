@@ -93,8 +93,28 @@ def process_league():
         .rank(method="dense", ascending=False)
         .astype(int)
     )
-
     race_table = race_table.sort_values(["Gender", "Rank"])
 
     return race_table	
+
+# ---------------------------
+# Reorder Columns for Public View
+# ---------------------------
+
+race_cols = [
+    col for col in race_table.columns
+    if col not in [
+        "AthleteID",
+        "PointsCategory",
+        "Name",
+        "Gender",
+        "Rank",
+        "LeagueRaces",
+        "TotalPoints"
+    ]
+]
+
+race_table = race_table[
+    ["Name", "Gender", "Rank", "LeagueRaces", "TotalPoints"] + race_cols
+]
 
