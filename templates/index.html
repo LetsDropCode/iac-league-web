@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Irene AC League Standings</title>
-    <p><strong>Last updated:</strong> {{ last_updated }}</p>
+
     <link rel="stylesheet" 
     href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 
@@ -12,17 +12,48 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 30px;
         }
 
         h1 {
             color: #0047AB;
+            margin-bottom: 5px;
+        }
+
+        .updated {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        table.dataTable thead th {
+            background-color: #0047AB;
+            color: white;
+        }
+
+        table.dataTable tbody tr:hover {
+            background-color: #f2f6ff;
+        }
+
+        /* Freeze first column */
+        table.dataTable td:first-child,
+        table.dataTable th:first-child {
+            position: sticky;
+            left: 0;
+            background: white;
+            z-index: 2;
+        }
+
+        table.dataTable thead th:first-child {
+            background-color: #0047AB;
+            z-index: 3;
         }
     </style>
 </head>
 <body>
 
 <h1>Irene AC League Standings</h1>
+<p class="updated"><strong>Last updated:</strong> {{ last_updated }}</p>
 
 {{ table|safe }}
 
@@ -30,7 +61,8 @@
 $(document).ready(function() {
     $('table').DataTable({
         scrollX: true,
-        order: [[ $('th:contains("Rank")').index(), 'asc' ]]
+        pageLength: 25,
+        order: [[2, 'asc']]  // Default sort by Rank column
     });
 });
 </script>

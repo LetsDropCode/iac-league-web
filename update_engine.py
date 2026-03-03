@@ -118,3 +118,43 @@ race_table = race_table[
     ["Name", "Gender", "Rank", "LeagueRaces", "TotalPoints"] + race_cols
 ]
 
+# ---------------------------
+# Clean & Format Public Table
+# ---------------------------
+
+# Remove internal columns
+race_table = race_table.drop(
+    columns=["AthleteID", "PointsCategory"],
+    errors="ignore"
+)
+
+# Rename columns for display
+race_table = race_table.rename(columns={
+    "TotalPoints": "Total Points",
+    "LeagueRaces": "Races Completed"
+})
+
+# Add medals for Top 3 per gender
+def medal(rank):
+    if rank == 1:
+        return "🥇"
+    elif rank == 2:
+        return "🥈"
+    elif rank == 3:
+        return "🥉"
+    return ""
+
+race_table["Rank"] = race_table["Rank"].apply(
+    lambda r: f"{medal(r)} {r}" if r <= 3 else r
+)
+
+# Reorder columns cleanly
+base_cols = ["Name", "Gender", "Rank", "Races Completed", "Total Points"]
+
+race_cols = [
+    col for col in race_table.columns
+    if col not in base_cols
+]
+
+race_table = race_table[base_cols + race_cols]
+
