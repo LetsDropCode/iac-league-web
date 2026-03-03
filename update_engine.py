@@ -2,6 +2,7 @@ import pandas as pd
 import os
 
 def process_league():
+    os.makedirs("results", exist_ok=True)
     # === LOAD RULES ===
     category_map = pd.read_csv("category_map.csv")
     rules = pd.read_csv("points_rules.csv")
@@ -18,6 +19,9 @@ def process_league():
             df = pd.read_csv(os.path.join(results_folder, file), sep=";")
             df["Race"] = file.replace(".csv", "")
             all_results.append(df)
+
+    if not all_results:
+        return pd.DataFrame(columns=["Name", "Gender", "PointsCategory", "TotalPoints", "LeagueRaces", "Rank"])
 
     results = pd.concat(all_results, ignore_index=True)
 
