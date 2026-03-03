@@ -156,16 +156,19 @@ def process_league():
         lambda r: f"{medal(r)} {r}" if r <= 3 else r
     )
 
-    # =========================
-    # FINAL COLUMN ORDER
-    # =========================
-    base_cols = ["Name", "Gender", "Rank", "Races Completed", "Total Points"]
+# =========================
+# FINAL COLUMN ORDER (STRICT)
+# =========================
 
-    race_cols = [
-        col for col in race_table.columns
-        if col not in base_cols
-    ]
+base_cols = ["Name", "Gender", "Rank", "Races Completed", "Total Points"]
 
-    race_table = race_table[base_cols + race_cols]
+# Only include true race columns (exclude internal junk)
+race_cols = [
+    col for col in race_table.columns
+    if col not in base_cols
+]
 
-    return race_table
+# Explicitly remove anything weird like RaceLabel
+race_cols = [col for col in race_cols if col != "RaceLabel"]
+
+race_table = race_table[base_cols + race_cols]
