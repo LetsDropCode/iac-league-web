@@ -79,7 +79,7 @@ def process_league():
         )
         .reset_index()
     )
-
+    race_table = race_table.drop(columns=["AthleteID", "PointsCategory"], errors="ignore")
     race_cols = [
         col for col in race_table.columns
         if col not in ["AthleteID", "Name", "Gender", "PointsCategory"]
