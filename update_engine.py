@@ -130,18 +130,18 @@ def process_league():
     race_table["Races Completed"] = (race_table[race_cols] > 0).sum(axis=1)
 
     # =========================
-    # RANK PER GENDER
+    # RANK PER GENDER (NUMERIC)
     # =========================
-    race_table["Rank"] = (
+    race_table["RankNumber"] = (
         race_table.groupby("Gender")["Total Points"]
         .rank(method="dense", ascending=False)
         .astype(int)
     )
 
-    race_table = race_table.sort_values(["Gender", "Rank"])
+    race_table = race_table.sort_values(["Gender", "RankNumber"])
 
     # =========================
-    # ADD MEDALS
+    # ADD MEDALS (DISPLAY ONLY)
     # =========================
     def medal(rank):
         if rank == 1:
@@ -152,12 +152,12 @@ def process_league():
             return "🥉"
         return ""
 
-    race_table["Rank"] = race_table["Rank"].apply(
+    race_table["Rank"] = race_table["RankNumber"].apply(
         lambda r: f"{medal(r)} {r}" if r <= 3 else r
     )
-    race_table["Rank"] = race_table["Rank"].apply(
-        lambda r: f"{medal(r)} {r}" if r <= 3 else r
-    )
+
+    # Drop internal numeric rank
+    race_table = race_table.drop(columns=["RankNumber"])
 
     # =========================
     # FINAL COLUMN ORDER (STRICT)
