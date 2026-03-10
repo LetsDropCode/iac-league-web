@@ -4,6 +4,8 @@ from update_engine import process_league
 from datetime import datetime
 import bleach
 import logging
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # Security libraries
 from flask_limiter import Limiter
@@ -131,7 +133,7 @@ def sanitize(value):
 def home():
     race_table = process_league()
 
-    last_updated = datetime.utcnow().strftime("%d %B %Y %H:%M UTC")
+    last_updated = datetime.now(ZoneInfo("Africa/Johannesburg")).strftime("%Y-%m-%d %H:%M SAST")
 
     return render_template(
         "index.html",
