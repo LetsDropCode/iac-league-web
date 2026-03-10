@@ -14,6 +14,12 @@ from flask_talisman import Talisman
 
 app = Flask(__name__)
 
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Strict",
+)
+
 # -----------------------------------
 # SECRET KEY
 # -----------------------------------
@@ -38,9 +44,13 @@ app.config.update(
 
 csp = {
     "default-src": ["'self'"],
-    "img-src": ["'self'", "data:", "https:"],
-    "script-src": ["'self'", "'unsafe-inline'", "https:"],
-    "style-src": ["'self'", "'unsafe-inline'", "https:"],
+    "script-src": ["'self'", "'unsafe-inline'"],
+    "style-src": ["'self'", "'unsafe-inline'"],
+    "img-src": ["'self'", "data:"],
+    "font-src": ["'self'"],
+    "connect-src": ["'self'"],
+    "frame-ancestors": ["'none'"],
+    "base-uri": ["'self'"],
 }
 
 Talisman(app, content_security_policy=csp)
@@ -170,6 +180,17 @@ def forbidden(e):
 @app.errorhandler(404)
 def not_found(e):
     return "Page not found", 404
+
+
+@app.after_request
+def apply_security_headers(response):
+
+    response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+    response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
+    response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+
+    return response
+
 
 
 # -----------------------------------
