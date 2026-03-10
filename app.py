@@ -47,27 +47,18 @@ csp = {
     "script-src": [
         "'self'",
         "'unsafe-inline'",
-        "https://cdn.jsdelivr.net",
-        "https://code.jquery.com"
+        "https://code.jquery.com",
+        "https://cdn.datatables.net"
     ],
     "style-src": [
         "'self'",
         "'unsafe-inline'",
-        "https://cdn.jsdelivr.net",
-        "https://fonts.googleapis.com"
-    ],
-    "font-src": [
-        "'self'",
-        "https://fonts.gstatic.com",
-        "data:"
+        "https://cdn.datatables.net"
     ],
     "img-src": [
         "'self'",
         "data:",
         "https:"
-    ],
-    "connect-src": [
-        "'self'"
     ]
 }
 
