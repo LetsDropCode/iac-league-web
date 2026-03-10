@@ -47,32 +47,26 @@ csp = {
     "script-src": [
         "'self'",
         "'unsafe-inline'",
-        "https://cdn.jsdelivr.net",
-        "https://code.jquery.com"
+        "https://code.jquery.com",
+        "https://cdn.datatables.net"
     ],
     "style-src": [
         "'self'",
         "'unsafe-inline'",
-        "https://cdn.jsdelivr.net",
-        "https://fonts.googleapis.com"
-    ],
-    "font-src": [
-        "'self'",
-        "https://fonts.gstatic.com",
-        "data:"
+        "https://cdn.datatables.net"
     ],
     "img-src": [
         "'self'",
         "data:",
         "https:"
     ],
-    "connect-src": [
-        "'self'"
+    "font-src": [
+        "'self'",
+        "data:"
     ]
 }
 
 Talisman(app, content_security_policy=csp)
-
 # -----------------------------------
 # RATE LIMITING
 # -----------------------------------
@@ -141,7 +135,7 @@ def home():
 
     return render_template(
         "index.html",
-        table=race_table.to_html(index=False, classes="display"),
+        table=race_table.to_html(index=False, classes="display nowrap",border=0),
         last_updated=last_updated
     )
 
