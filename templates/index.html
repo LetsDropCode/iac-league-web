@@ -1,70 +1,158 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-    <title>Irene AC League Standings</title>
+<title>Irene AC League Standings</title>
 
-    <link rel="stylesheet" 
-    href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet"
+href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-        }
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-        h1 {
-            color: #0047AB;
-            margin-bottom: 5px;
-        }
+<style>
 
-        .updated {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-        }
+body{
+    font-family: Arial, sans-serif;
+    margin:30px;
+    background:#f5f7fb;
+}
 
-        table.dataTable thead th {
-            background-color: #0047AB;
-            color: white;
-        }
+h1{
+    color:#0047AB;
+    margin-bottom:5px;
+}
 
-        table.dataTable tbody tr:hover {
-            background-color: #f2f6ff;
-        }
+.updated{
+    font-size:14px;
+    color:#666;
+    margin-bottom:20px;
+}
 
-        /* Freeze first column */
-        table.dataTable td:first-child,
-        table.dataTable th:first-child {
-            position: sticky;
-            left: 0;
-            background: white;
-            z-index: 2;
-        }
+.table-container{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
 
-        table.dataTable thead th:first-child {
-            background-color: #0047AB;
-            z-index: 3;
-        }
-    </style>
+/* Header styling */
+
+table.dataTable thead th{
+    background:#0047AB;
+    color:white;
+}
+
+/* Row hover */
+
+table.dataTable tbody tr:hover{
+    background:#eef3ff;
+}
+
+/* Medal highlighting */
+
+.rank-1{
+    background:#fff7cc;
+}
+
+.rank-2{
+    background:#f2f2f2;
+}
+
+.rank-3{
+    background:#ffe5cc;
+}
+
+/* DataTables layout */
+
+.dataTables_wrapper{
+    overflow-x:auto;
+}
+
+.filter-container{
+    margin-bottom:15px;
+}
+
+</style>
+
 </head>
+
 <body>
 
 <h1>Irene AC League Standings</h1>
-<p class="updated"><strong>Last updated:</strong> {{ last_updated }}</p>
+
+<p class="updated">
+<strong>Last updated:</strong> {{ last_updated }}
+</p>
+
+<div class="filter-container">
+
+<label for="genderFilter"><strong>Filter Gender:</strong></label>
+
+<select id="genderFilter">
+<option value="">All</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+</select>
+
+</div>
+
+<div class="table-container">
 
 {{ table|safe }}
 
+</div>
+
 <script>
-$(document).ready(function() {
-    $('table').DataTable({
-        scrollX: true,
-        pageLength: 25,
-        order: [[2, 'asc']]  // Default sort by Rank column
+
+$(document).ready(function(){
+
+    var table = $('table').DataTable({
+
+        scrollX:true,
+        pageLength:25,
+        order:[[3,"asc"]],
+
+        language:{
+            search:"Search runner:",
+            lengthMenu:"Show _MENU_ runners",
+            info:"Showing _START_ to _END_ of _TOTAL_ runners"
+        }
+
     });
+
+    /* Gender filter */
+
+    $('#genderFilter').on('change', function(){
+
+        table.column(2).search(this.value).draw();
+
+    });
+
+    /* Highlight podium */
+
+    table.rows().every(function(){
+
+        var data = this.data();
+        var rank = data[3];
+
+        if(rank == 1){
+            $(this.node()).addClass('rank-1');
+        }
+
+        if(rank == 2){
+            $(this.node()).addClass('rank-2');
+        }
+
+        if(rank == 3){
+            $(this.node()).addClass('rank-3');
+        }
+
+    });
+
 });
+
 </script>
 
 </body>
