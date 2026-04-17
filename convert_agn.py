@@ -2,31 +2,48 @@ import pandas as pd
 import os
 
 # -------------------------------
-# Auto-detect Excel file
+# FIND EXCEL FILE
 # -------------------------------
 excel_files = [f for f in os.listdir() if f.endswith(".xlsx")]
 
 if not excel_files:
-    raise FileNotFoundError("❌ No Excel (.xlsx) file found in project folder.")
+    print("❌ No Excel file found.")
+    exit()
 
 file_path = excel_files[0]
-
-print(f"📂 Loading AGN file: {file_path}")
+print(f"📂 Loading: {file_path}")
 
 # -------------------------------
-# Load using correct header row
+# LOAD FILE SAFELY
 # -------------------------------
-rules = pd.read_excel(file_path, header=1)
+try:
+    rules = pd.read_excel(file_path, header=1)
+except Exception as e:
+    print("❌ Failed to read Excel:", e)
+    exit()
 
-# Clean headers
-rules.columns = rules.columns.str.strip()
+# -------------------------------
+# CLEAN HEADERS
+# -------------------------------
+rules.columns = rules.columns.astype(str).str.strip()
 
-# Fix spelling
+# Fix common typo
 if "Catergory" in rules.columns:
     rules = rules.rename(columns={"Catergory": "Category"})
 
 # -------------------------------
-# Clean Distance
+# REQUIRED COLUMNS CHECK
+# -------------------------------
+required = ["Distance", "Gender", "Category", "TimeFrom", "TimeTo", "Points"]
+
+missing = [col for col in required if col not in rules.columns]
+
+if missing:
+    print(f"❌ Missing columns: {missing}")
+    exit()
+
+# -------------------------------
+# CLEAN DISTANCE
 # -------------------------------
 rules["Distance"] = (
     rules["Distance"]
@@ -37,32 +54,49 @@ rules["Distance"] = (
 rules["Distance"] = pd.to_numeric(rules["Distance"], errors="coerce")
 
 # -------------------------------
-# Clean text columns
+# CLEAN TEXT
 # -------------------------------
 rules["Gender"] = rules["Gender"].astype(str).str.strip()
 rules["Category"] = rules["Category"].astype(str).str.strip()
 
 # -------------------------------
-# Fix Excel 1900 date issue
+# SAFE TIME EXTRACTION
 # -------------------------------
-def extract_time_only(value):
-    if pd.isna(value):
+def extract_time(value):
+    try:
+        if pd.isna(value):
+            return None
+
+        if hasattr(value, "time"):
+            return pd.to_timedelta(value.time().strftime("%H:%M:%S"))
+
+        return pd.to_timedelta(str(value))
+
+    except:
         return None
-    return pd.to_timedelta(value.time().strftime("%H:%M:%S"))
 
-rules["TimeFrom"] = rules["TimeFrom"].apply(extract_time_only)
-rules["TimeTo"] = rules["TimeTo"].apply(extract_time_only)
+rules["TimeFrom"] = rules["TimeFrom"].apply(extract_time)
+rules["TimeTo"] = rules["TimeTo"].apply(extract_time)
 
+# -------------------------------
+# CLEAN POINTS
+# -------------------------------
 rules["Points"] = pd.to_numeric(rules["Points"], errors="coerce")
 
 # -------------------------------
-# Drop incomplete rows
+# DROP BAD ROWS
 # -------------------------------
+before = len(rules)
+
 rules = rules.dropna(subset=["Distance", "Gender", "Category", "TimeFrom", "TimeTo", "Points"])
 
+after = len(rules)
+
+print(f"🧹 Cleaned {before - after} invalid rows")
+
 # -------------------------------
-# Save cleaned rules
+# SAVE
 # -------------------------------
 rules.to_csv("points_rules.csv", index=False)
 
-print("✅ AGN rules cleaned and saved successfully!")
+print("✅ Rules successfully converted!")

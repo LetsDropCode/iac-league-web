@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-
 <html>
 <head>
 <title>Irene AC League Standings</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet"
 href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <style>
 
 body{
     font-family: Arial, sans-serif;
-    margin:30px;
+    margin:20px;
     background:#f5f7fb;
 }
 
 h1{
     color:#0047AB;
     margin-bottom:5px;
+}
+
+.nav{
+    margin-bottom:15px;
+}
+
+.nav a{
+    margin-right:15px;
+    text-decoration:none;
+    font-weight:bold;
+    color:#0047AB;
 }
 
 .updated{
@@ -32,40 +43,28 @@ h1{
 
 .table-container{
     background:white;
-    padding:20px;
+    padding:15px;
     border-radius:10px;
     box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 /* Header styling */
-
 table.dataTable thead th{
     background:#0047AB;
     color:white;
 }
 
 /* Row hover */
-
 table.dataTable tbody tr:hover{
     background:#eef3ff;
 }
 
 /* Medal highlighting */
+.rank-1{ background:#fff7cc; }
+.rank-2{ background:#f2f2f2; }
+.rank-3{ background:#ffe5cc; }
 
-.rank-1{
-    background:#fff7cc;
-}
-
-.rank-2{
-    background:#f2f2f2;
-}
-
-.rank-3{
-    background:#ffe5cc;
-}
-
-/* DataTables layout */
-
+/* Responsive */
 .dataTables_wrapper{
     overflow-x:auto;
 }
@@ -75,10 +74,14 @@ table.dataTable tbody tr:hover{
 }
 
 </style>
-
 </head>
 
 <body>
+
+<div class="nav">
+    <a href="/">🏃 Run League</a>
+    <a href="/walk">🚶 Walk League</a>
+</div>
 
 <h1>Irene AC League Standings</h1>
 
@@ -99,60 +102,73 @@ table.dataTable tbody tr:hover{
 </div>
 
 <div class="table-container">
-
 {{ table|safe }}
-
 </div>
 
 <script>
 
 $(document).ready(function(){
 
-    var table = $('.display').DataTable({
+    try {
 
-        scrollX:true,
-        pageLength:25,
-        columnDefs:[
-            { targets:3, type:"num" }
-        ],
-        order:[[3,"asc"]],
+        var table = $('.display').DataTable({
+            scrollX:true,
+            pageLength:25,
+            order:[[2,"asc"]], // safer default
 
-        language:{
-            search:"Search runner:",
-            lengthMenu:"Show _MENU_ runners",
-            info:"Showing _START_ to _END_ of _TOTAL_ runners"
+            language:{
+                search:"Search runner:",
+                lengthMenu:"Show _MENU_ runners",
+                info:"Showing _START_ to _END_ of _TOTAL_ runners"
+            }
+        });
+
+        // 🔍 Find correct column indexes dynamically
+        var genderCol = findColumnIndex("Gender");
+        var rankCol = findColumnIndex("Rank");
+
+        function findColumnIndex(name){
+            var headers = $('.display thead th');
+            for (var i = 0; i < headers.length; i++){
+                if ($(headers[i]).text().trim() === name){
+                    return i;
+                }
+            }
+            return -1;
         }
 
-    });
+        // Gender filter (safe)
+        $('#genderFilter').on('change', function(){
+            if(genderCol !== -1){
+                table.column(genderCol).search(this.value).draw();
+            }
+        });
 
-    /* Gender filter */
+        // Podium highlighting (safe rank parsing)
+        table.rows().every(function(){
 
-    $('#genderFilter').on('change', function(){
+            var data = this.data();
 
-        table.column(2).search(this.value).draw();
+            if(rankCol === -1) return;
 
-    });
+            var rankValue = data[rankCol];
 
-    /* Highlight podium */
+            // Extract number from "🥇 1"
+            var rank = parseInt(String(rankValue).replace(/\D/g, ""));
 
-    table.rows().every(function(){
+            if(rank === 1){
+                $(this.node()).addClass('rank-1');
+            } else if(rank === 2){
+                $(this.node()).addClass('rank-2');
+            } else if(rank === 3){
+                $(this.node()).addClass('rank-3');
+            }
 
-        var data = this.data();
-        var rank = data[3];
+        });
 
-        if(rank == 1){
-            $(this.node()).addClass('rank-1');
-        }
-
-        if(rank == 2){
-            $(this.node()).addClass('rank-2');
-        }
-
-        if(rank == 3){
-            $(this.node()).addClass('rank-3');
-        }
-
-    });
+    } catch (e){
+        console.error("Table failed to initialise:", e);
+    }
 
 });
 

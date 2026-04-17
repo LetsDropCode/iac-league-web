@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, session, abort
 import os
-from update_engine import process_league
-from datetime import datetime
-import bleach
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
+
+import bleach
+from werkzeug.utils import secure_filename
 
 # Security libraries
 from flask_limiter import Limiter
@@ -13,32 +13,28 @@ from flask_limiter.util import get_remote_address
 from flask_seasurf import SeaSurf
 from flask_talisman import Talisman
 
+# Your engine
+from update_engine import process_league
+
+from functools import lru_cache
+
 
 app = Flask(__name__)
 
-app.config.update(
-    SESSION_COOKIE_SECURE=True,
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="Strict",
-)
-
 # -----------------------------------
-# SECRET KEY
+# CONFIG
 # -----------------------------------
 
 app.secret_key = os.environ.get("SECRET_KEY", os.urandom(24))
-
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
-
-# -----------------------------------
-# SECURE COOKIE SETTINGS
-# -----------------------------------
 
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="Lax"
+    SESSION_COOKIE_SAMESITE="Lax",
 )
+
+app.permanent_session_lifetime = timedelta(hours=2)
 
 # -----------------------------------
 # CONTENT SECURITY POLICY
@@ -69,6 +65,7 @@ csp = {
 }
 
 Talisman(app, content_security_policy=csp)
+
 # -----------------------------------
 # RATE LIMITING
 # -----------------------------------
@@ -96,7 +93,7 @@ def log_requests():
     logging.info(f"{request.remote_addr} accessed {request.path}")
 
 # -----------------------------------
-# BOT BLOCKER
+# BOT BLOCKER (SAFE VERSION)
 # -----------------------------------
 
 @app.before_request
@@ -106,11 +103,9 @@ def block_bots():
     blocked = [
         "curl",
         "wget",
-        "python",
+        "python-requests",
         "scrapy",
-        "httpclient",
-        "bot",
-        "crawler"
+        "httpclient"
     ]
 
     if any(bot in ua for bot in blocked):
@@ -126,18 +121,52 @@ def sanitize(value):
     return value
 
 # -----------------------------------
+# FILE VALIDATION
+# -----------------------------------
+
+ALLOWED_EXTENSIONS = {"csv"}
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# -----------------------------------
+# CACHE (BIG PERFORMANCE BOOST)
+# -----------------------------------
+
+@lru_cache(maxsize=1)
+def get_tables():
+    return process_league()
+
+def clear_cache():
+    get_tables.cache_clear()
+
+# -----------------------------------
 # ROUTES
 # -----------------------------------
 
 @app.route("/")
 def home():
-    race_table = process_league()
+    run_table, _ = get_tables()
 
     last_updated = datetime.now(ZoneInfo("Africa/Johannesburg")).strftime("%Y-%m-%d %H:%M SAST")
 
     return render_template(
         "index.html",
-        table=race_table.to_html(index=False, classes="display nowrap",border=0),
+        table=run_table.to_html(index=False, classes="display nowrap", border=0),
+        last_updated=last_updated
+    )
+
+# -----------------------------------
+
+@app.route("/walk")
+def walk():
+    _, walk_table = get_tables()
+
+    last_updated = datetime.now(ZoneInfo("Africa/Johannesburg")).strftime("%Y-%m-%d %H:%M SAST")
+
+    return render_template(
+        "walk.html",
+        table=walk_table.to_html(index=False, classes="display nowrap", border=0),
         last_updated=last_updated
     )
 
@@ -152,8 +181,11 @@ def admin():
         password = sanitize(request.form.get("password"))
 
         if password == ADMIN_PASSWORD:
+            session.permanent = True
             session["admin"] = True
             return redirect("/upload")
+
+        return render_template("login.html", error="Invalid password")
 
     return render_template("login.html")
 
@@ -170,17 +202,26 @@ def upload():
 
         file = request.files.get("file")
 
-        if file and file.filename.endswith(".csv"):
+        if file and allowed_file(file.filename):
 
-            filename = sanitize(file.filename)
-
+            filename = secure_filename(file.filename)
             filepath = os.path.join("results", filename)
 
             file.save(filepath)
 
+            # 🔥 Recalculate on upload
+            clear_cache()
+
         return redirect("/")
 
     return render_template("admin.html")
+
+# -----------------------------------
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
 
 # -----------------------------------
 # ERROR HANDLING
@@ -195,17 +236,16 @@ def forbidden(e):
 def not_found(e):
     return "Page not found", 404
 
+# -----------------------------------
+# EXTRA SECURITY HEADERS
+# -----------------------------------
 
 @app.after_request
 def apply_security_headers(response):
-
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
     response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
     response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
-
     return response
-
-
 
 # -----------------------------------
 # START SERVER
