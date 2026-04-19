@@ -14,6 +14,9 @@ category_map = pd.read_csv("category_map.csv")
 # ---------------------------
 rules = pd.read_csv("points_rules.csv")
 
+# 🔧 FIX DISTANCE FORMAT
+rules["Distance"] = pd.to_numeric(rules["Distance"], errors="coerce")
+rules["Distance"] = rules["Distance"].round().astype("Int64")
 rules["TimeFrom"] = pd.to_timedelta(rules["TimeFrom"])
 rules["TimeTo"] = pd.to_timedelta(rules["TimeTo"])
 rules["Distance"] = pd.to_numeric(rules["Distance"], errors="coerce")
