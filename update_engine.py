@@ -25,6 +25,12 @@ def process_league():
     except:
         rules_walk = pd.DataFrame()
 
+    # 🔧 FIX DISTANCE FORMAT (VERY IMPORTANT)
+    for rules in [rules_run, rules_walk]:
+        if not rules.empty:
+            rules["Distance"] = pd.to_numeric(rules["Distance"], errors="coerce")
+            rules["Distance"] = rules["Distance"].round().astype("Int64")
+
     # Convert rule times safely
     for rules in [rules_run, rules_walk]:
         if not rules.empty:
@@ -138,20 +144,19 @@ def build_league(results, rules):
                 (rules["Gender"] == row["Gender"]) &
                 (rules["Category"] == row["PointsCategory"]) &
                 (row["Time"] >= rules["TimeFrom"]) &
-                (row["Time"] <= rules["TimeTo"])
+                (
+                    (row["Time"] <= rules["TimeTo"]) |
+                    (rules["TimeTo"].isna())   # 🔥 handles Finisher
+                )
             ]
 
             if not applicable.empty:
-                return applicable.iloc[0]["Points"]
+                return int(applicable.iloc[0]["Points"])
 
-        except:
-            pass
+        except Exception as e:
+            print("⚠️ Error:", e)
 
-        # 1 point for any finisher
-        if pd.notnull(row.get("Time")):
-            return 1
-
-        return 0
+    return 1  # fallback
 
     results["Points"] = results.apply(assign_points, axis=1)
 

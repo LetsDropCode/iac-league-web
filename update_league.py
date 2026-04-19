@@ -16,6 +16,8 @@ rules = pd.read_csv("points_rules.csv")
 
 rules["TimeFrom"] = pd.to_timedelta(rules["TimeFrom"])
 rules["TimeTo"] = pd.to_timedelta(rules["TimeTo"])
+rules["Distance"] = pd.to_numeric(rules["Distance"], errors="coerce")
+rules["Distance"] = rules["Distance"].round().astype("Int64")
 
 # ---------------------------
 # Load all race files
@@ -68,18 +70,35 @@ results = results.merge(
 # Assign points
 # ---------------------------
 def assign_points(row):
-    applicable = rules[
-        (rules["Distance"] == row["Distance"]) &
-        (rules["Gender"] == row["Gender"]) &
-        (rules["Category"] == row["PointsCategory"]) &
-        (row["Time"] >= rules["TimeFrom"]) &
-        (row["Time"] <= rules["TimeTo"])
-    ]
 
-    if not applicable.empty:
-        return applicable.iloc[0]["Points"]
+    try:
+        applicable = rules[
+            (rules["Distance"] == row["Distance"]) &
+            (rules["Gender"] == row["Gender"]) &
+            (rules["Category"] == row["PointsCategory"]) &
+            (row["Time"] >= rules["TimeFrom"]) &
+            (
+                (row["Time"] <= rules["TimeTo"]) |
+                (rules["TimeTo"].isna())   # 🔥 handles Finisher
+            )
+        ]
 
-    return 0
+        if not applicable.empty:
+            return int(applicable.iloc[0]["Points"])
+
+    except Exception as e:
+        print("⚠️ Error:", e)
+
+    # 🔍 DEBUG (temporary but VERY useful)
+    print(
+        "❌ No match:",
+        row.get("Distance"),
+        row.get("Gender"),
+        row.get("PointsCategory"),
+        row.get("Time")
+    )
+
+    return 1  # fallback
 
 results["Points"] = results.apply(assign_points, axis=1)
 
