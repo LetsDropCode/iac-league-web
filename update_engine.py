@@ -144,19 +144,20 @@ def build_league(results, rules):
                 (rules["Gender"] == row["Gender"]) &
                 (rules["Category"] == row["PointsCategory"]) &
                 (row["Time"] >= rules["TimeFrom"]) &
-                (
-                    (row["Time"] <= rules["TimeTo"]) |
-                    (rules["TimeTo"].isna())   # 🔥 handles Finisher
-                )
+                (row["Time"] <= rules["TimeTo"])
             ]
 
-            if not applicable.empty:
-                return int(applicable.iloc[0]["Points"])
+            if len(applicable) > 0:
+                return applicable.iloc[0]["Points"]
 
         except Exception as e:
-            print("⚠️ Error:", e)
+            print("⚠️ Scoring error:", e)
 
-    return 1  # fallback
+        # fallback
+        if pd.notnull(row.get("Time")):
+            return 1
+
+        return 0
 
     results["Points"] = results.apply(assign_points, axis=1)
 

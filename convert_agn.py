@@ -67,13 +67,11 @@ def extract_time(value):
         if pd.isna(value):
             return None
 
-        value = str(value).strip()
+        value_str = str(value).strip().lower()
 
-        # 🔥 KEY FIX: Finisher = no upper bound
-        if value.lower() == "finisher":
-            return pd.NaT
+        if value_str == "finisher":
+            return pd.Timedelta.max   # ✅ KEY FIX
 
-        # Handle Excel time objects
         if hasattr(value, "time"):
             return pd.to_timedelta(value.time().strftime("%H:%M:%S"))
 
@@ -81,7 +79,7 @@ def extract_time(value):
 
     except:
         return None
-    
+        
 rules["TimeFrom"] = rules["TimeFrom"].apply(extract_time)
 rules["TimeTo"] = rules["TimeTo"].apply(extract_time)
 
@@ -95,7 +93,7 @@ rules["Points"] = pd.to_numeric(rules["Points"], errors="coerce")
 # -------------------------------
 before = len(rules)
 
-rrules = rules.dropna(subset=["Distance", "Gender", "Category", "TimeFrom", "Points"])
+rules = rules.dropna(subset=["Distance", "Gender", "Category", "TimeFrom", "Points"])
 
 after = len(rules)
 
