@@ -3,3 +3,8 @@
 __pycache__/
 *.pyc
 league_site/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+league_tables.xlsx
