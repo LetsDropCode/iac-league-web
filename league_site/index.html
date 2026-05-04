@@ -1,137 +1,165 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Irene AC League Standings</title>
+<title>Irene AC League</title>
 
-<!-- DataTables -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
-<link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css"/>
+<link rel="stylesheet"
+href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background: #f9f9f9;
-}
-
-/* Title */
-h1 {
-    color: #0047AB;
-    margin-bottom: 20px;
-}
-
-/* Tabs */
-#tabs {
-    margin-bottom: 15px;
-}
-
-.tab {
-    margin-right: 10px;
-    padding: 8px 14px;
-    cursor: pointer;
-    font-weight: bold;
-    display: inline-block;
-    border-radius: 6px;
-    background: #e0e0e0;
-    transition: 0.2s;
-}
-
-.tab:hover {
-    background: #cfcfcf;
-}
-
-.tab.active-tab {
-    background: #0047AB;
-    color: white;
-}
-
-/* Table container */
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-/* DataTables tweaks */
-.dataTables_wrapper {
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-}
-
-/* Highlight top 3 */
-tr:nth-child(1) td { font-weight: bold; background: #fff8e1; }
-tr:nth-child(2) td { background: #f1f8ff; }
-tr:nth-child(3) td { background: #f9f9f9; }
-
-/* Mobile */
-@media (max-width: 768px) {
-    body { margin: 10px; }
-}
+body { font-family: Arial; margin:20px; }
+h1 { color:#0047AB; }
+.tab { margin-right:15px; cursor:pointer; font-weight:bold; display:inline-block; }
+.tab-content { display:none; }
+.active { display:block; }
 </style>
 </head>
-
 <body>
 
 <h1>Irene AC League Standings</h1>
-
 <div id="tabs">
-    <span class="tab" onclick="showTab('Overall', this)">Overall</span>
-    <span class="tab" onclick="showTab('Male', this)">Male</span>
-    <span class="tab" onclick="showTab('Female', this)">Female</span>
-</div>
-
-<!-- ================= TABLES ================= -->
-
-<div id="Overall" class="tab-content">
-    <!-- KEEP YOUR EXISTING TABLE HERE -->
-</div>
-
-<div id="Male" class="tab-content">
-    <!-- KEEP YOUR EXISTING TABLE HERE -->
-</div>
-
-<div id="Female" class="tab-content">
-    <!-- KEEP YOUR EXISTING TABLE HERE -->
-</div>
-
-<!-- ================= SCRIPT ================= -->
-
+<span class='tab' onclick="showTab('Runners')">Runners</span><span class='tab' onclick="showTab('Walkers')">Walkers</span></div><div id='Runners' class='tab-content'><table class="dataframe display nowrap" id="table_Runners">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Rank</th>
+      <th>Races Completed</th>
+      <th>Total Points</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table></div><div id='Walkers' class='tab-content'><table class="dataframe display nowrap" id="table_Walkers">
+  <thead>
+    <tr style="text-align: right;">
+      <th>RaceLabel</th>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Rank</th>
+      <th>Races Completed</th>
+      <th>Total Points</th>
+      <th>Bobbies 3-in-1 walk 10km</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th></th>
+      <td>Retha KNOETZE</td>
+      <td>Female</td>
+      <td>🥇 1</td>
+      <td>1</td>
+      <td>10</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Fia COETZEE</td>
+      <td>Female</td>
+      <td>🥈 2</td>
+      <td>1</td>
+      <td>9</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Lucia WILLEMSE</td>
+      <td>Female</td>
+      <td>🥉 3</td>
+      <td>1</td>
+      <td>8</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Tania THOMPSON</td>
+      <td>Female</td>
+      <td>🥉 3</td>
+      <td>1</td>
+      <td>8</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Karin-Marié VAN NIEKERK</td>
+      <td>Female</td>
+      <td>4</td>
+      <td>1</td>
+      <td>7</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Letha KOTZE</td>
+      <td>Female</td>
+      <td>5</td>
+      <td>1</td>
+      <td>5</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Jaap WILLEMSE</td>
+      <td>Male</td>
+      <td>🥇 1</td>
+      <td>1</td>
+      <td>10</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Johann COETZEE</td>
+      <td>Male</td>
+      <td>🥇 1</td>
+      <td>1</td>
+      <td>10</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Mark RICHARDSON</td>
+      <td>Male</td>
+      <td>🥈 2</td>
+      <td>1</td>
+      <td>7</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Sheren NAIDOO</td>
+      <td>Male</td>
+      <td>🥉 3</td>
+      <td>1</td>
+      <td>6</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>Fanie VAN WYNGAARD</td>
+      <td>Male</td>
+      <td>4</td>
+      <td>1</td>
+      <td>4</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table></div>
 <script>
-function showTab(name, el) {
+function showTab(name){
     $('.tab-content').removeClass('active');
     $('#' + name).addClass('active');
-
-    $('.tab').removeClass('active-tab');
-    $(el).addClass('active-tab');
 }
 
-$(document).ready(function() {
+$(document).ready(function(){
+$('#table_Runners').DataTable({scrollX:true});
+$('#table_Walkers').DataTable({scrollX:true});
 
-    function initTable(id) {
-        return $(id).DataTable({
-            scrollX: true,
-            pageLength: 25,
-            order: [[6, "desc"]], // TotalPoints column
-            fixedHeader: true,
-            deferRender: true
-        });
-    }
-
-    initTable('#table_Overall');
-    initTable('#table_Male');
-    initTable('#table_Female');
-
-    // Default tab
-    showTab('Overall', $('.tab').first());
+    showTab('Runners');
 });
 </script>
 

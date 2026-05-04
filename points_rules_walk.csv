@@ -1,4 +1,4 @@
-Distance,Gender,Catergory,TimeFrom,TimeTo,Points
+Distance,Gender,Category,TimeFrom,TimeTo,Points
 5,Male,Junior,00:00:00,00:26:00,10
 5,Male,Junior,00:26:01,00:29:00,9
 5,Male,Junior,00:29:01,00:32:00,8

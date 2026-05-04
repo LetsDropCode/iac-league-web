@@ -25,52 +25,69 @@ def process_league():
     except:
         rules_walk = pd.DataFrame()
 
-    # 🔧 FIX DISTANCE FORMAT (VERY IMPORTANT)
-    for rules in [rules_run, rules_walk]:
-        if not rules.empty:
-            rules["Distance"] = pd.to_numeric(rules["Distance"], errors="coerce")
-            rules["Distance"] = rules["Distance"].round().astype("Int64")
-
-    # Convert rule times safely
-    for rules in [rules_run, rules_walk]:
-        if not rules.empty:
-            rules["TimeFrom"] = pd.to_timedelta(rules.get("TimeFrom"), errors="coerce")
-            rules["TimeTo"] = pd.to_timedelta(rules.get("TimeTo"), errors="coerce")
+    # -----------------------------------
+    # FALLBACK: WALK RULES
+    # -----------------------------------
+    if rules_walk.empty:
+        print("⚠️ Walk rules missing — using run rules")
+        rules_walk = rules_run.copy()
 
     # -----------------------------------
-    # LOAD FILES
+    # CLEAN RULES
     # -----------------------------------
+    for rules in [rules_run, rules_walk]:
+        if not rules.empty:
+            rules["Distance"] = pd.to_numeric(rules["Distance"], errors="coerce").round().astype("Int64")
+            rules["TimeFrom"] = pd.to_timedelta(rules["TimeFrom"], errors="coerce")
+            rules["TimeTo"] = pd.to_timedelta(rules["TimeTo"], errors="coerce")
 
-    results_folder = "results"
+    # -----------------------------------
+    # BUILD MAX TIMES (FINISHER RULE)
+    # -----------------------------------
+    def build_max_times(rules):
+        if rules.empty:
+            return {}
+
+        grouped = (
+            rules
+            .dropna(subset=["TimeTo"])
+            .groupby(["Distance", "Gender", "Category"])["TimeTo"]
+            .max()
+        )
+
+        return grouped.to_dict()
+
+    max_times_run = build_max_times(rules_run)
+    max_times_walk = build_max_times(rules_walk)
+
+    # -----------------------------------
+    # LOAD RESULTS
+    # -----------------------------------
     all_results = []
 
-    for file in os.listdir(results_folder):
+    for file in os.listdir("results"):
         if file.endswith(".csv"):
-
             try:
-                df = pd.read_csv(os.path.join(results_folder, file), sep=";")
-            except:
-                continue  # skip broken files
+                df = pd.read_csv(os.path.join("results", file), sep=";")
+            except Exception as e:
+                print(f"❌ Skipping {file}: {e}")
+                continue
 
             df["Race"] = file.replace(".csv", "")
-
-            # Detect discipline
             df["Discipline"] = "Walk" if "walk" in file.lower() else "Run"
 
             all_results.append(df)
 
     if not all_results:
-        empty = empty_table()
-        return empty, empty
+        return empty_table(), empty_table()
 
     results = pd.concat(all_results, ignore_index=True)
 
     # -----------------------------------
     # CLEAN TIME
     # -----------------------------------
-
     time_col = next(
-        (col for col in results.columns if "time" in col.lower() or "finish" in col.lower()),
+        (c for c in results.columns if "time" in c.lower() or "finish" in c.lower()),
         None
     )
 
@@ -82,22 +99,34 @@ def process_league():
     # -----------------------------------
     # CLEAN DISTANCE
     # -----------------------------------
+    def clean_distance(val):
+        try:
+            val = str(val).lower().strip()
+
+            if val in ["", "nan"]:
+                return None
+
+            if "km" in val:
+                return float(val.replace("km", "").strip())
+
+            if "m" in val:  # miles → km
+                miles = float(val.replace("m", "").strip())
+                return round(miles * 1.609, 0)
+
+            return float(val)
+
+        except:
+            return None
 
     if "Distance" in results.columns:
-        results["Distance"] = (
-            results["Distance"]
-            .astype(str)
-            .str.replace("km", "", regex=False)
-        )
-        results["Distance"] = pd.to_numeric(results["Distance"], errors="coerce")
-        results["Distance"] = results["Distance"].round().astype("Int64")
+        results["Distance"] = results["Distance"].apply(clean_distance)
+        results["Distance"] = pd.to_numeric(results["Distance"], errors="coerce").round().astype("Int64")
     else:
         results["Distance"] = pd.NA
 
     # -----------------------------------
-    # CATEGORY MAP (SAFE)
+    # CATEGORY MAP
     # -----------------------------------
-
     if "Category" in results.columns and not category_map.empty:
         results = results.merge(
             category_map,
@@ -113,12 +142,14 @@ def process_league():
     # -----------------------------------
     # SPLIT
     # -----------------------------------
+    run_results = results[results["Discipline"] == "Run"].copy()
+    walk_results = results[results["Discipline"] == "Walk"].copy()
 
-    run_results = results[results["Discipline"] == "Run"]
-    walk_results = results[results["Discipline"] == "Walk"]
+    print(f"🏃 Run rows: {len(run_results)}")
+    print(f"🚶 Walk rows: {len(walk_results)}")
 
-    run_table = build_league(run_results, rules_run)
-    walk_table = build_league(walk_results, rules_walk)
+    run_table = build_league(run_results, rules_run, max_times_run)
+    walk_table = build_league(walk_results, rules_walk, max_times_walk)
 
     return run_table, walk_table
 
@@ -127,15 +158,22 @@ def process_league():
 # CORE ENGINE
 # -----------------------------------
 
-def build_league(results, rules):
+def build_league(results, rules, max_times):
 
-    if results.empty:
+    results = results.copy()
+
+    if results.empty or rules.empty:
         return empty_table()
 
     # -----------------------------------
-    # ASSIGN POINTS (SAFE)
+    # CLEAN TEXT
     # -----------------------------------
+    results["Name"] = results.get("Name", "").astype(str).str.strip()
+    results["Gender"] = results.get("Gender", "").astype(str).str.strip()
 
+    # -----------------------------------
+    # ASSIGN POINTS (CRITICAL FIX)
+    # -----------------------------------
     def assign_points(row):
 
         try:
@@ -147,45 +185,46 @@ def build_league(results, rules):
                 (row["Time"] <= rules["TimeTo"])
             ]
 
-            if len(applicable) > 0:
-                return applicable.iloc[0]["Points"]
+            if not applicable.empty:
+                return int(applicable.iloc[0]["Points"])
+
+            # FINISHER RULE
+            key = (row["Distance"], row["Gender"], row["PointsCategory"])
+            max_time = max_times.get(key)
+
+            if max_time is not None and pd.notnull(row["Time"]) and row["Time"] > max_time:
+                return 1
 
         except Exception as e:
             print("⚠️ Scoring error:", e)
 
-        # fallback
-        if pd.notnull(row.get("Time")):
-            return 1
-
         return 0
 
-    results["Points"] = results.apply(assign_points, axis=1)
+    # 🔥 GUARANTEED COLUMN CREATION
+    results.loc[:, "Points"] = results.apply(assign_points, axis=1)
 
     # -----------------------------------
-    # CLEAN TEXT FIELDS
+    # RACE LABEL
     # -----------------------------------
-
-    results["Name"] = results.get("Name", "").astype(str).str.strip()
-    results["Gender"] = results.get("Gender", "").astype(str).str.strip()
-
-    # -----------------------------------
-    # CLEAN RACE NAME
-    # -----------------------------------
-
     results["RaceName"] = (
         results["Race"]
         .str.replace("10K_", "", regex=False)
         .str.replace("21K_", "", regex=False)
+        .str.replace("26K_", "", regex=False)
         .str.replace("32K_", "", regex=False)
         .str.replace("_", " ", regex=False)
     )
 
-    results["RaceLabel"] = results["RaceName"] + " " + results["Distance"].astype(str) + "km"
+    results["RaceLabel"] = results.apply(
+        lambda r: f"{r['RaceName']} {int(r['Distance'])}km"
+        if pd.notnull(r["Distance"])
+        else f"{r['RaceName']} Unknown",
+        axis=1
+    )
 
     # -----------------------------------
-    # PIVOT (SAFE)
+    # PIVOT
     # -----------------------------------
-
     try:
         race_table = (
             results.pivot_table(
@@ -197,41 +236,32 @@ def build_league(results, rules):
             )
             .reset_index()
         )
-    except:
+    except Exception as e:
+        print("❌ Pivot failed:", e)
         return empty_table()
-
-    # -----------------------------------
-    # RACE COLUMNS
-    # -----------------------------------
 
     race_cols = [c for c in race_table.columns if "km" in str(c)]
 
     # -----------------------------------
     # TOTALS
     # -----------------------------------
-
     race_table["Total Points"] = race_table[race_cols].sum(axis=1)
     race_table["Races Completed"] = (race_table[race_cols] > 0).sum(axis=1)
 
     # -----------------------------------
     # RANK
     # -----------------------------------
-
-    try:
-        race_table["Rank"] = (
-            race_table.groupby("Gender")["Total Points"]
-            .rank(method="dense", ascending=False)
-            .astype(int)
-        )
-    except:
-        race_table["Rank"] = 0
+    race_table["Rank"] = (
+        race_table.groupby("Gender")["Total Points"]
+        .rank(method="dense", ascending=False)
+        .astype(int)
+    )
 
     race_table = race_table.sort_values(["Gender", "Rank"])
 
     # -----------------------------------
-    # MEDALS (SAFE)
+    # MEDALS
     # -----------------------------------
-
     def medal(rank):
         return "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else ""
 
@@ -240,31 +270,11 @@ def build_league(results, rules):
     )
 
     # -----------------------------------
-    # SORT RACES (SAFE)
-    # -----------------------------------
-
-    race_priority = ["Intercare", "Ace", "Bobbies 3-in-1"]
-
-    def race_sort(col):
-        try:
-            race, dist = col.rsplit(" ", 1)
-            dist = int(dist.replace("km", ""))
-            race_index = race_priority.index(race) if race in race_priority else 999
-            return (race_index, dist)
-        except:
-            return (999, 999)
-
-    race_cols = sorted(race_cols, key=race_sort)
-
-    # -----------------------------------
     # FINAL STRUCTURE
     # -----------------------------------
-
     base_cols = ["Name", "Gender", "Rank", "Races Completed", "Total Points"]
 
-    race_table = race_table[base_cols + race_cols]
-
-    return race_table
+    return race_table[base_cols + race_cols]
 
 
 # -----------------------------------
