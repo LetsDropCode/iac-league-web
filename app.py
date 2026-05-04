@@ -148,28 +148,42 @@ def clear_cache():
 def home():
     run_table, _ = get_tables()
 
-    last_updated = datetime.now(ZoneInfo("Africa/Johannesburg")).strftime("%Y-%m-%d %H:%M SAST")
+    last_updated = datetime.now(
+        ZoneInfo("Africa/Johannesburg")
+    ).strftime("%Y-%m-%d %H:%M SAST")
 
     return render_template(
         "index.html",
-        table=run_table.to_html(index=False, classes="display nowrap", border=0),
-        last_updated=last_updated
+        table=run_table.to_html(
+            index=False,
+            classes="display nowrap",
+            border=0,
+            table_id="leagueTable"
+        ),
+        last_updated=last_updated,
+        league="Run"
     )
 
-# -----------------------------------
 
 @app.route("/walk")
 def walk():
     _, walk_table = get_tables()
 
-    last_updated = datetime.now(ZoneInfo("Africa/Johannesburg")).strftime("%Y-%m-%d %H:%M SAST")
+    last_updated = datetime.now(
+        ZoneInfo("Africa/Johannesburg")
+    ).strftime("%Y-%m-%d %H:%M SAST")
 
     return render_template(
-        "walk.html",
-        table=walk_table.to_html(index=False, classes="display nowrap", border=0),
-        last_updated=last_updated
+        "index.html",
+        table=walk_table.to_html(
+            index=False,
+            classes="display nowrap",
+            border=0,
+            table_id="leagueTable"
+        ),
+        last_updated=last_updated,
+        league="Walk"
     )
-
 # -----------------------------------
 
 @app.route("/admin", methods=["GET", "POST"])

@@ -83,7 +83,7 @@ table.dataTable tbody tr:hover{
     <a href="/walk">🚶 Walk League</a>
 </div>
 
-<h1>Irene AC League Standings</h1>
+<h1>Irene AC {{ league }} League Standings</h1>
 
 <p class="updated">
 <strong>Last updated:</strong> {{ last_updated }}
@@ -111,10 +111,10 @@ $(document).ready(function(){
 
     try {
 
-        var table = $('.display').DataTable({
+        var table = $('#leagueTable').DataTable({
             scrollX:true,
             pageLength:25,
-            order:[[2,"asc"]], // safer default
+            order:[], // safer default
 
             language:{
                 search:"Search runner:",
