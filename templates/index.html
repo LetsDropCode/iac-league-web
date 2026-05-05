@@ -1,79 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Irene AC League Standings</title>
+    <title>Irene AC League Standings</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet"
-href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- jQuery + DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-<style>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:20px;
+            background:#f5f7fb;
+        }
 
-body{
-    font-family: Arial, sans-serif;
-    margin:20px;
-    background:#f5f7fb;
-}
+        h1{
+            color:#0047AB;
+            margin-bottom:5px;
+        }
 
-h1{
-    color:#0047AB;
-    margin-bottom:5px;
-}
+        .nav{
+            margin-bottom:15px;
+        }
 
-.nav{
-    margin-bottom:15px;
-}
+        .nav a{
+            margin-right:15px;
+            text-decoration:none;
+            font-weight:bold;
+            color:#0047AB;
+        }
 
-.nav a{
-    margin-right:15px;
-    text-decoration:none;
-    font-weight:bold;
-    color:#0047AB;
-}
+        .updated{
+            font-size:14px;
+            color:#666;
+            margin-bottom:20px;
+        }
 
-.updated{
-    font-size:14px;
-    color:#666;
-    margin-bottom:20px;
-}
+        .table-container{
+            background:white;
+            padding:15px;
+            border-radius:10px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.1);
+            overflow-x:auto; /* 🔥 ensures scroll */
+        }
 
-.table-container{
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
+        table.dataTable thead th{
+            background:#0047AB;
+            color:white;
+        }
 
-/* Header styling */
-table.dataTable thead th{
-    background:#0047AB;
-    color:white;
-}
+        table.dataTable tbody tr:hover{
+            background:#eef3ff;
+        }
 
-/* Row hover */
-table.dataTable tbody tr:hover{
-    background:#eef3ff;
-}
+        /* Medal highlighting */
+        .rank-1{ background:#fff7cc; }
+        .rank-2{ background:#f2f2f2; }
+        .rank-3{ background:#ffe5cc; }
 
-/* Medal highlighting */
-.rank-1{ background:#fff7cc; }
-.rank-2{ background:#f2f2f2; }
-.rank-3{ background:#ffe5cc; }
-
-/* Responsive */
-.dataTables_wrapper{
-    overflow-x:auto;
-}
-
-.filter-container{
-    margin-bottom:15px;
-}
-
-</style>
+        .filter-container{
+            margin-bottom:15px;
+        }
+    </style>
 </head>
 
 <body>
@@ -86,23 +80,21 @@ table.dataTable tbody tr:hover{
 <h1>Irene AC {{ league }} League Standings</h1>
 
 <p class="updated">
-<strong>Last updated:</strong> {{ last_updated }}
+    <strong>Last updated:</strong> {{ last_updated }}
 </p>
 
 <div class="filter-container">
+    <label for="genderFilter"><strong>Filter Gender:</strong></label>
 
-<label for="genderFilter"><strong>Filter Gender:</strong></label>
-
-<select id="genderFilter">
-<option value="">All</option>
-<option value="Male">Male</option>
-<option value="Female">Female</option>
-</select>
-
+    <select id="genderFilter">
+        <option value="">All</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select>
 </div>
 
 <div class="table-container">
-{{ table|safe }}
+    {{ table|safe }}
 </div>
 
 <script>
@@ -110,13 +102,26 @@ $(document).ready(function(){
 
     try {
 
+        // 🔥 FORCE correct table ID binding
         var table = $('#leagueTable').DataTable({
-            scrollX:true,
-            pageLength:25,
-            order: []
+            scrollX: true,
+            autoWidth: false,
+            pageLength: 25,
+            order: [[2, "asc"]],
+
+            language:{
+                search:"Search runner:",
+                lengthMenu:"Show _MENU_ runners",
+                info:"Showing _START_ to _END_ of _TOTAL_ runners"
+            }
         });
 
-        // Find column indexes dynamically
+        // 🔥 Fix column rendering (VERY IMPORTANT)
+        setTimeout(function(){
+            table.columns.adjust().draw();
+        }, 300);
+
+        // 🔍 Dynamic column detection
         function findColumnIndex(name){
             var headers = $('#leagueTable thead th');
             for (var i = 0; i < headers.length; i++){
@@ -130,20 +135,21 @@ $(document).ready(function(){
         var genderCol = findColumnIndex("Gender");
         var rankCol = findColumnIndex("Rank");
 
-        // Gender filter
+        // 🔥 Gender filter
         $('#genderFilter').on('change', function(){
             if(genderCol !== -1){
                 table.column(genderCol).search(this.value).draw();
             }
         });
 
-        // Podium highlighting
+        // 🏆 Rank highlighting
         table.rows().every(function(){
-            var data = this.data();
 
             if(rankCol === -1) return;
 
+            var data = this.data();
             var rankValue = data[rankCol];
+
             var rank = parseInt(String(rankValue).replace(/\D/g, ""));
 
             if(rank === 1){
@@ -153,13 +159,15 @@ $(document).ready(function(){
             } else if(rank === 3){
                 $(this.node()).addClass('rank-3');
             }
+
         });
 
     } catch (e){
-        console.error("Table failed:", e);
+        console.error("Table failed to initialise:", e);
     }
 
 });
 </script>
+
 </body>
 </html>
