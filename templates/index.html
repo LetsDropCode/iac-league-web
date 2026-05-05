@@ -158,17 +158,17 @@ $(document).ready(function(){
         var table = $('#leagueTable').DataTable({
             scrollX: true,
             autoWidth: false,
-            pageLength: 15, // 🔥 better for mobile
+            pageLength: 15,
             order: [[2, "asc"]],
-            dom: "lrtip", // 🔥 cleaner UI
 
-            language:{
-                search:"🔍",
-                lengthMenu:"_MENU_",
-                info:"_START_-_END_ of _TOTAL_"
-            }
-        });
+        dom: '<"top"f>rt<"bottom"lip>',  // 🔥 brings search back
 
+        language:{
+            search:"🔍 Search:",
+            lengthMenu:"Show _MENU_",
+            info:"_START_-_END_ of _TOTAL_"
+        }
+    });
         // 🔥 Force column fix
         setTimeout(function(){
             table.columns.adjust().draw();
