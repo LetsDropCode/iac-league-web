@@ -155,30 +155,32 @@ $(document).ready(function(){
 
     try {
 
+        // -----------------------------
+        // INIT TABLE
+        // -----------------------------
         var table = $('#leagueTable').DataTable({
             scrollX: true,
             autoWidth: false,
             pageLength: 15,
-            order: [[2, "asc"]],
+            order: [[4, "desc"]], // Total Points
 
-        dom: '<"top"f>rt<"bottom"lip>',  // 🔥 brings search back
+            dom: '<"top"f>rt<"bottom"lip>',
 
-        language:{
-            search:"🔍 Search:",
-            lengthMenu:"Show _MENU_",
-            info:"_START_-_END_ of _TOTAL_"
-        }
-    });
-        // 🔥 Force column fix
-        setTimeout(function(){
-            table.columns.adjust().draw();
-        }, 300);
+            language:{
+                search:"",
+                searchPlaceholder:"🔍 Search name...",
+                lengthMenu:"Show _MENU_",
+                info:"_START_-_END_ of _TOTAL_"
+            }
+        });
 
-        // Column finder
+        // -----------------------------
+        // FIND COLUMN INDEXES (SAFE)
+        // -----------------------------
         function findColumnIndex(name){
             var headers = $('#leagueTable thead th');
             for (var i = 0; i < headers.length; i++){
-                if ($(headers[i]).text().trim() === name){
+                if ($(headers[i]).text().trim().toLowerCase() === name.toLowerCase()){
                     return i;
                 }
             }
@@ -188,22 +190,33 @@ $(document).ready(function(){
         var genderCol = findColumnIndex("Gender");
         var rankCol = findColumnIndex("Rank");
 
-        // Filter
+        console.log("Gender column index:", genderCol);
+
+        // -----------------------------
+        // GENDER FILTER (FIXED)
+        // -----------------------------
         $('#genderFilter').on('change', function(){
+
+            var val = $(this).val();
+
             if(genderCol !== -1){
-                table.column(genderCol).search(this.value).draw();
+                table.column(genderCol)
+                     .search(val ? '^' + val + '$' : '', true, false)
+                     .draw();
             }
+
         });
 
-        // Highlight ranks
+        // -----------------------------
+        // PODIUM HIGHLIGHT
+        // -----------------------------
         table.rows().every(function(){
+
+            var data = this.data();
 
             if(rankCol === -1) return;
 
-            var data = this.data();
-            var rankValue = data[rankCol];
-
-            var rank = parseInt(String(rankValue).replace(/\D/g, ""));
+            var rank = parseInt(String(data[rankCol]).replace(/\D/g, ""));
 
             if(rank === 1){
                 $(this.node()).addClass('rank-1');
@@ -211,12 +224,24 @@ $(document).ready(function(){
                 $(this.node()).addClass('rank-2');
             } else if(rank === 3){
                 $(this.node()).addClass('rank-3');
+            } else if(rank <= 10){
+                $(this.node()).addClass('top-10');
             }
 
         });
 
+        // -----------------------------
+        // MOBILE LABEL FIX
+        // -----------------------------
+        $('#leagueTable tbody tr').each(function(){
+            $(this).find('td').each(function(i){
+                var header = $('#leagueTable thead th').eq(i).text();
+                $(this).attr('data-label', header);
+            });
+        });
+
     } catch (e){
-        console.error("Table failed:", e);
+        console.error("Table init failed:", e);
     }
 
 });
