@@ -136,14 +136,12 @@ def build_league(results, rules, max_times):
         except Exception as e:
             print("⚠️ Scoring error:", e)
 
-        # 🔥 HARD FAIL SAFE
+        # 🔥 CRITICAL FALLBACK
         if pd.notnull(row["Time"]):
             return 1
 
         return 0
-
-    results.loc[:, "Points"] = results.apply(assign_points, axis=1)
-
+    
     # -----------------------------------
     # VALIDATION (CRITICAL LOCK)
     # -----------------------------------
