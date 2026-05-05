@@ -148,6 +148,9 @@ def clear_cache():
 def home():
     run_table, _ = get_tables()
 
+    print("RUN TABLE SHAPE:",run_table.shape)
+    print(run_table.head())
+
     last_updated = datetime.now(
         ZoneInfo("Africa/Johannesburg")
     ).strftime("%Y-%m-%d %H:%M SAST")
