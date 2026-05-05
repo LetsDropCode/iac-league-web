@@ -5,87 +5,140 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- DataTables CSS -->
+    <!-- DataTables -->
     <link rel="stylesheet"
           href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 
-    <!-- jQuery + DataTables -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <style>
         body{
             font-family: Arial, sans-serif;
-            margin:20px;
+            margin:12px;
             background:#f5f7fb;
         }
 
         h1{
             color:#0047AB;
+            font-size:20px;
             margin-bottom:5px;
         }
 
         .nav{
-            margin-bottom:15px;
+            margin-bottom:10px;
         }
 
         .nav a{
-            margin-right:15px;
+            margin-right:10px;
             text-decoration:none;
             font-weight:bold;
             color:#0047AB;
+            font-size:14px;
         }
 
         .updated{
-            font-size:14px;
+            font-size:12px;
             color:#666;
-            margin-bottom:20px;
+            margin-bottom:10px;
+        }
+
+        .filter-container{
+            margin-bottom:10px;
+            font-size:14px;
+        }
+
+        select{
+            padding:5px;
+            border-radius:5px;
         }
 
         .table-container{
             background:white;
-            padding:15px;
+            padding:10px;
             border-radius:10px;
-            box-shadow:0 4px 10px rgba(0,0,0,0.1);
-            overflow-x:auto; /* 🔥 ensures scroll */
+            box-shadow:0 3px 8px rgba(0,0,0,0.08);
+            overflow-x:auto;
+        }
+
+        table.dataTable{
+            font-size:13px;
         }
 
         table.dataTable thead th{
             background:#0047AB;
             color:white;
+            white-space:nowrap;
         }
 
-        table.dataTable tbody tr:hover{
-            background:#eef3ff;
+        table.dataTable tbody td{
+            white-space:nowrap;
         }
 
-        /* Medal highlighting */
+        /* 🏆 Highlight podium */
         .rank-1{ background:#fff7cc; }
         .rank-2{ background:#f2f2f2; }
         .rank-3{ background:#ffe5cc; }
 
-        .filter-container{
-            margin-bottom:15px;
+        /* 📱 MOBILE OPTIMISATION */
+        @media (max-width: 768px){
+
+            body{
+                margin:8px;
+            }
+
+            h1{
+                font-size:18px;
+            }
+
+            table.dataTable{
+                font-size:12px;
+            }
+
+            /* 🔥 Sticky Name column */
+            #leagueTable th:first-child,
+            #leagueTable td:first-child{
+                position:sticky;
+                left:0;
+                background:white;
+                z-index:2;
+            }
+
+            /* 🔥 Sticky Rank column */
+            #leagueTable th:nth-child(3),
+            #leagueTable td:nth-child(3){
+                position:sticky;
+                left:120px;
+                background:white;
+                z-index:2;
+            }
+
+            /* Hide less important columns */
+            #leagueTable th:nth-child(4),
+            #leagueTable td:nth-child(4){
+                display:none;
+            }
+
         }
+
     </style>
 </head>
 
 <body>
 
 <div class="nav">
-    <a href="/">🏃 Run League</a>
-    <a href="/walk">🚶 Walk League</a>
+    <a href="/">🏃 Run</a>
+    <a href="/walk">🚶 Walk</a>
 </div>
 
-<h1>Irene AC {{ league }} League Standings</h1>
+<h1>Irene AC {{ league }} League</h1>
 
 <p class="updated">
-    <strong>Last updated:</strong> {{ last_updated }}
+    <strong>Updated:</strong> {{ last_updated }}
 </p>
 
 <div class="filter-container">
-    <label for="genderFilter"><strong>Filter Gender:</strong></label>
-
+    <label><strong>Gender:</strong></label>
     <select id="genderFilter">
         <option value="">All</option>
         <option value="Male">Male</option>
@@ -102,26 +155,26 @@ $(document).ready(function(){
 
     try {
 
-        // 🔥 FORCE correct table ID binding
         var table = $('#leagueTable').DataTable({
             scrollX: true,
             autoWidth: false,
-            pageLength: 25,
+            pageLength: 15, // 🔥 better for mobile
             order: [[2, "asc"]],
+            dom: "lrtip", // 🔥 cleaner UI
 
             language:{
-                search:"Search runner:",
-                lengthMenu:"Show _MENU_ runners",
-                info:"Showing _START_ to _END_ of _TOTAL_ runners"
+                search:"🔍",
+                lengthMenu:"_MENU_",
+                info:"_START_-_END_ of _TOTAL_"
             }
         });
 
-        // 🔥 Fix column rendering (VERY IMPORTANT)
+        // 🔥 Force column fix
         setTimeout(function(){
             table.columns.adjust().draw();
         }, 300);
 
-        // 🔍 Dynamic column detection
+        // Column finder
         function findColumnIndex(name){
             var headers = $('#leagueTable thead th');
             for (var i = 0; i < headers.length; i++){
@@ -135,14 +188,14 @@ $(document).ready(function(){
         var genderCol = findColumnIndex("Gender");
         var rankCol = findColumnIndex("Rank");
 
-        // 🔥 Gender filter
+        // Filter
         $('#genderFilter').on('change', function(){
             if(genderCol !== -1){
                 table.column(genderCol).search(this.value).draw();
             }
         });
 
-        // 🏆 Rank highlighting
+        // Highlight ranks
         table.rows().every(function(){
 
             if(rankCol === -1) return;
@@ -163,7 +216,7 @@ $(document).ready(function(){
         });
 
     } catch (e){
-        console.error("Table failed to initialise:", e);
+        console.error("Table failed:", e);
     }
 
 });
