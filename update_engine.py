@@ -183,6 +183,15 @@ def build_league(results, rules, max_times):
         else f"{r['RaceName']} Unknown",
         axis=1
     )
+    # -----------------------------------
+    # DEDUPLICATE RESULTS
+    # -----------------------------------
+    results = results.sort_values("Time")
+
+    results = results.drop_duplicates(
+        subset=["Name", "Race", "Distance"],
+        keep="first"
+    )
 
     # -----------------------------------
     # PIVOT
@@ -192,12 +201,11 @@ def build_league(results, rules, max_times):
             index=["Name", "Gender"],
             columns="RaceLabel",
             values="Points",
-            aggfunc="sum",
+            aggfunc="max",   # 🔥 FIXED
             fill_value=0
         )
         .reset_index()
-    )
-
+    )   
     race_cols = [c for c in race_table.columns if "km" in str(c)]
 
     # -----------------------------------
