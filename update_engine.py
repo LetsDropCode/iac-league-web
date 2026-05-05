@@ -109,9 +109,14 @@ def build_league(results, rules, max_times):
     results = results.copy()
 
     # -----------------------------------
-    # ASSIGN POINTS
+    # CLEAN TEXT
     # -----------------------------------
+    results["Name"] = results.get("Name", "").astype(str).str.strip()
+    results["Gender"] = results.get("Gender", "").astype(str).str.strip()
 
+    # -----------------------------------
+    # ASSIGN POINTS (CRITICAL FIX)
+    # -----------------------------------
     def assign_points(row):
 
         try:
@@ -136,24 +141,36 @@ def build_league(results, rules, max_times):
         except Exception as e:
             print("⚠️ Scoring error:", e)
 
-        # 🔥 CRITICAL FALLBACK
+        # fallback = valid finisher
         if pd.notnull(row["Time"]):
             return 1
 
         return 0
-    
-    # -----------------------------------
-    # VALIDATION (CRITICAL LOCK)
-    # -----------------------------------
 
-    if results["Points"].sum() == 0:
-        print("🚨 WARNING: All points = 0 → rules mismatch likely")
+    # ✅ THIS LINE WAS MISSING
+    results.loc[:, "Points"] = results.apply(assign_points, axis=1)
+
+    # -----------------------------------
+    # VALIDATION (AFTER SCORING)
+    # -----------------------------------
+    total_points = results["Points"].sum()
+    print("🏁 Total Points:", total_points)
+
+    if total_points == 0:
+        print("\n🚨 CRITICAL: ALL POINTS = 0")
+        print("Likely rules mismatch\n")
+
+        print("Sample results:")
         print(results[["Distance", "Gender", "PointsCategory"]].drop_duplicates())
+
+        print("\nRules:")
+        print(rules[["Distance", "Gender", "Category"]].drop_duplicates())
+
+        return empty_table()
 
     # -----------------------------------
     # RACE LABEL
     # -----------------------------------
-
     results["RaceName"] = (
         results["Race"]
         .str.replace(r"\d+K_", "", regex=True)
@@ -170,7 +187,6 @@ def build_league(results, rules, max_times):
     # -----------------------------------
     # PIVOT
     # -----------------------------------
-
     race_table = (
         results.pivot_table(
             index=["Name", "Gender"],
@@ -187,14 +203,12 @@ def build_league(results, rules, max_times):
     # -----------------------------------
     # TOTALS
     # -----------------------------------
-
     race_table["Total Points"] = race_table[race_cols].sum(axis=1)
     race_table["Races Completed"] = (race_table[race_cols] > 0).sum(axis=1)
 
     # -----------------------------------
     # RANK
     # -----------------------------------
-
     race_table["Rank"] = (
         race_table.groupby("Gender")["Total Points"]
         .rank(method="dense", ascending=False)
@@ -206,7 +220,6 @@ def build_league(results, rules, max_times):
     # -----------------------------------
     # MEDALS
     # -----------------------------------
-
     def medal(rank):
         return "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else ""
 
@@ -217,7 +230,6 @@ def build_league(results, rules, max_times):
     base_cols = ["Name", "Gender", "Rank", "Races Completed", "Total Points"]
 
     return race_table[base_cols + race_cols]
-
 
 # -----------------------------------
 # HELPERS

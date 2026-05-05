@@ -106,7 +106,6 @@ table.dataTable tbody tr:hover{
 </div>
 
 <script>
-
 $(document).ready(function(){
 
     try {
@@ -114,21 +113,12 @@ $(document).ready(function(){
         var table = $('#leagueTable').DataTable({
             scrollX:true,
             pageLength:25,
-            order:[], // safer default
-
-            language:{
-                search:"Search runner:",
-                lengthMenu:"Show _MENU_ runners",
-                info:"Showing _START_ to _END_ of _TOTAL_ runners"
-            }
+            order: []
         });
 
-        // 🔍 Find correct column indexes dynamically
-        var genderCol = findColumnIndex("Gender");
-        var rankCol = findColumnIndex("Rank");
-
+        // Find column indexes dynamically
         function findColumnIndex(name){
-            var headers = $('.display thead th');
+            var headers = $('#leagueTable thead th');
             for (var i = 0; i < headers.length; i++){
                 if ($(headers[i]).text().trim() === name){
                     return i;
@@ -137,23 +127,23 @@ $(document).ready(function(){
             return -1;
         }
 
-        // Gender filter (safe)
+        var genderCol = findColumnIndex("Gender");
+        var rankCol = findColumnIndex("Rank");
+
+        // Gender filter
         $('#genderFilter').on('change', function(){
             if(genderCol !== -1){
                 table.column(genderCol).search(this.value).draw();
             }
         });
 
-        // Podium highlighting (safe rank parsing)
+        // Podium highlighting
         table.rows().every(function(){
-
             var data = this.data();
 
             if(rankCol === -1) return;
 
             var rankValue = data[rankCol];
-
-            // Extract number from "🥇 1"
             var rank = parseInt(String(rankValue).replace(/\D/g, ""));
 
             if(rank === 1){
@@ -163,16 +153,13 @@ $(document).ready(function(){
             } else if(rank === 3){
                 $(this.node()).addClass('rank-3');
             }
-
         });
 
     } catch (e){
-        console.error("Table failed to initialise:", e);
+        console.error("Table failed:", e);
     }
 
 });
-
 </script>
-
 </body>
 </html>
