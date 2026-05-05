@@ -119,59 +119,59 @@ Distance,Gender,Category,TimeFrom,TimeTo,Points
 10,Male,Great Grand Master,01:33:01,01:36:15,3
 10,Male,Great Grand Master,01:36:16,01:40:00,2
 10,Male,Great Grand Master,01:40:01,Finisher,1
-8,Male,Junior,00:00:00,01:06:56,10
-8,Male,Junior,01:06:57,01:14:39,9
-8,Male,Junior,01:14:40,01:22:23,8
-8,Male,Junior,01:22:24,01:30:06,7
-8,Male,Junior,01:30:07,01:37:50,6
-8,Male,Junior,01:37:51,01:45:33,5
-8,Male,Junior,01:45:34,01:53:16,4
-8,Male,Junior,01:53:17,02:01:00,3
-8,Male,Junior,02:01:01,02:08:43,2
-8,Male,Junior,02:08:44,Finisher,1
-8,Male,Senior,00:00:00,01:06:56,10
-8,Male,Senior,01:06:57,01:14:39,9
-8,Male,Senior,01:14:40,01:22:23,8
-8,Male,Senior,01:22:24,01:30:06,7
-8,Male,Senior,01:30:07,01:37:50,6
-8,Male,Senior,01:37:51,01:45:33,5
-8,Male,Senior,01:45:34,01:53:16,4
-8,Male,Senior,01:53:17,02:01:00,3
-8,Male,Senior,02:01:01,02:08:43,2
-8,Male,Senior,02:08:44,Finisher,1
-8,Male,Veteran,00:00:00,01:14:39,10
-8,Male,Veteran,01:14:40,01:23:16,9
-8,Male,Veteran,01:23:17,01:31:53,8
-8,Male,Veteran,01:31:54,01:40:30,7
-8,Male,Veteran,01:40:31,01:49:07,6
-8,Male,Veteran,01:49:08,01:57:44,5
-8,Male,Veteran,01:57:45,02:06:21,4
-8,Male,Veteran,02:06:22,02:14:57,3
-8,Male,Veteran,02:14:58,02:23:34,2
-8,Male,Veteran,02:23:35,Finisher,1
-8,Male,Master,00:00:00,01:22:23,10
-8,Male,Master,01:22:24,01:31:53,9
-8,Male,Master,01:31:54,01:41:24,8
-8,Male,Master,01:41:25,01:50:54,7
-8,Male,Master,01:50:55,02:00:24,6
-8,Male,Master,02:00:25,02:09:54,5
-8,Male,Master,02:09:55,02:19:25,4
-8,Male,Master,02:19:26,02:28:55,3
-8,Male,Master,02:28:56,Finisher,1
-8,Male,Grand Master,00:00:00,01:28:49,10
-8,Male,Grand Master,01:28:50,01:39:04,9
-8,Male,Grand Master,01:39:05,01:49:19,8
-8,Male,Grand Master,01:49:20,01:59:34,7
-8,Male,Grand Master,01:59:35,02:09:49,6
-8,Male,Grand Master,02:09:50,02:20:03,5
-8,Male,Grand Master,02:20:04,02:30:18,4
-8,Male,Grand Master,02:30:19,Finisher,1
-8,Male,Great Grand Master,00:00:00,01:34:37,10
-8,Male,Great Grand Master,01:34:38,01:45:32,9
-8,Male,Great Grand Master,01:45:33,01:56:27,8
-8,Male,Great Grand Master,01:56:28,02:07:22,7
-8,Male,Great Grand Master,02:07:23,02:18:16,6
-8,Male,Great Grand Master,02:18:17,Finisher,1
+13,Male,Junior,00:00:00,01:06:56,10
+13,Male,Junior,01:06:57,01:14:39,9
+13,Male,Junior,01:14:40,01:22:23,8
+13,Male,Junior,01:22:24,01:30:06,7
+13,Male,Junior,01:30:07,01:37:50,6
+13,Male,Junior,01:37:51,01:45:33,5
+13,Male,Junior,01:45:34,01:53:16,4
+13,Male,Junior,01:53:17,02:01:00,3
+13,Male,Junior,02:01:01,02:08:43,2
+13,Male,Junior,02:08:44,Finisher,1
+13,Male,Senior,00:00:00,01:06:56,10
+13,Male,Senior,01:06:57,01:14:39,9
+13,Male,Senior,01:14:40,01:22:23,8
+13,Male,Senior,01:22:24,01:30:06,7
+13,Male,Senior,01:30:07,01:37:50,6
+13,Male,Senior,01:37:51,01:45:33,5
+13,Male,Senior,01:45:34,01:53:16,4
+13,Male,Senior,01:53:17,02:01:00,3
+13,Male,Senior,02:01:01,02:08:43,2
+13,Male,Senior,02:08:44,Finisher,1
+13,Male,Veteran,00:00:00,01:14:39,10
+13,Male,Veteran,01:14:40,01:23:16,9
+13,Male,Veteran,01:23:17,01:31:53,8
+13,Male,Veteran,01:31:54,01:40:30,7
+13,Male,Veteran,01:40:31,01:49:07,6
+13,Male,Veteran,01:49:08,01:57:44,5
+13,Male,Veteran,01:57:45,02:06:21,4
+13,Male,Veteran,02:06:22,02:14:57,3
+13,Male,Veteran,02:14:58,02:23:34,2
+13,Male,Veteran,02:23:35,Finisher,1
+13,Male,Master,00:00:00,01:22:23,10
+13,Male,Master,01:22:24,01:31:53,9
+13,Male,Master,01:31:54,01:41:24,8
+13,Male,Master,01:41:25,01:50:54,7
+13,Male,Master,01:50:55,02:00:24,6
+13,Male,Master,02:00:25,02:09:54,5
+13,Male,Master,02:09:55,02:19:25,4
+13,Male,Master,02:19:26,02:28:55,3
+13,Male,Master,02:28:56,Finisher,1
+13,Male,Grand Master,00:00:00,01:28:49,10
+13,Male,Grand Master,01:28:50,01:39:04,9
+13,Male,Grand Master,01:39:05,01:49:19,8
+13,Male,Grand Master,01:49:20,01:59:34,7
+13,Male,Grand Master,01:59:35,02:09:49,6
+13,Male,Grand Master,02:09:50,02:20:03,5
+13,Male,Grand Master,02:20:04,02:30:18,4
+13,Male,Grand Master,02:30:19,Finisher,1
+13,Male,Great Grand Master,00:00:00,01:34:37,10
+13,Male,Great Grand Master,01:34:38,01:45:32,9
+13,Male,Great Grand Master,01:45:33,01:56:27,8
+13,Male,Great Grand Master,01:56:28,02:07:22,7
+13,Male,Great Grand Master,02:07:23,02:18:16,6
+13,Male,Great Grand Master,02:18:17,Finisher,1
 15,Male,Junior,00:00:00,01:19:30,10
 15,Male,Junior,01:19:31,01:28:15,9
 15,Male,Junior,01:28:16,01:37:00,8
@@ -292,46 +292,46 @@ Distance,Gender,Category,TimeFrom,TimeTo,Points
 21,Male,Great Grand Master,03:18:01,03:24:00,3
 21,Male,Great Grand Master,03:24:01,03:30:00,2
 21,Male,Great Grand Master,03:30:01,Finisher,1
-16,Male,Junior,00:00:00,02:13:52,10
-16,Male,Junior,02:13:53,02:29:19,9
-16,Male,Junior,02:29:20,02:44:46,8
-16,Male,Junior,02:44:47,03:00:12,7
-16,Male,Junior,03:00:13,03:15:39,6
-16,Male,Junior,03:15:40,03:31:06,5
-16,Male,Junior,03:31:07,03:46:33,4
-16,Male,Junior,03:46:34,04:03:07,3
-16,Male,Junior,04:03:08,Finisher,1
-16,Male,Senior,00:00:00,02:13:52,10
-16,Male,Senior,02:13:53,02:29:19,9
-16,Male,Senior,02:29:20,02:44:46,8
-16,Male,Senior,02:44:47,03:00:12,7
-16,Male,Senior,03:00:13,03:15:39,6
-16,Male,Senior,03:15:40,03:31:06,5
-16,Male,Senior,03:31:07,03:46:33,4
-16,Male,Senior,03:46:34,04:03:07,3
-16,Male,Senior,04:03:08,Finisher,1
-16,Male,Veteran,00:00:00,02:29:19,10
-16,Male,Veteran,02:29:20,02:46:33,9
-16,Male,Veteran,02:46:34,03:03:46,8
-16,Male,Veteran,03:03:47,03:21:00,7
-16,Male,Veteran,03:21:01,03:38:14,6
-16,Male,Veteran,03:38:15,03:55:28,5
-16,Male,Veteran,03:55:29,Finisher,1
-16,Male,Master,00:00:00,02:44:46,10
-16,Male,Master,02:44:47,03:03:46,9
-16,Male,Master,03:03:47,03:22:47,8
-16,Male,Master,03:22:48,03:41:48,7
-16,Male,Master,03:41:49,04:00:48,6
-16,Male,Master,04:00:49,Finisher,1
-16,Male,Grand Master,00:00:00,02:57:38,10
-16,Male,Grand Master,02:57:39,03:18:08,9
-16,Male,Grand Master,03:18:09,03:38:38,8
-16,Male,Grand Master,03:38:39,03:59:07,7
-16,Male,Grand Master,03:59:08,Finisher,1
-16,Male,Great Grand Master,00:00:00,03:09:13,10
-16,Male,Great Grand Master,03:09:14,03:31:03,9
-16,Male,Great Grand Master,03:31:04,03:52:53,8
-16,Male,Great Grand Master,03:52:54,Finisher,1
+26,Male,Junior,00:00:00,02:13:52,10
+26,Male,Junior,02:13:53,02:29:19,9
+26,Male,Junior,02:29:20,02:44:46,8
+26,Male,Junior,02:44:47,03:00:12,7
+26,Male,Junior,03:00:13,03:15:39,6
+26,Male,Junior,03:15:40,03:31:06,5
+26,Male,Junior,03:31:07,03:46:33,4
+26,Male,Junior,03:46:34,04:03:07,3
+26,Male,Junior,04:03:08,Finisher,1
+26,Male,Senior,00:00:00,02:13:52,10
+26,Male,Senior,02:13:53,02:29:19,9
+26,Male,Senior,02:29:20,02:44:46,8
+26,Male,Senior,02:44:47,03:00:12,7
+26,Male,Senior,03:00:13,03:15:39,6
+26,Male,Senior,03:15:40,03:31:06,5
+26,Male,Senior,03:31:07,03:46:33,4
+26,Male,Senior,03:46:34,04:03:07,3
+26,Male,Senior,04:03:08,Finisher,1
+26,Male,Veteran,00:00:00,02:29:19,10
+26,Male,Veteran,02:29:20,02:46:33,9
+26,Male,Veteran,02:46:34,03:03:46,8
+26,Male,Veteran,03:03:47,03:21:00,7
+26,Male,Veteran,03:21:01,03:38:14,6
+26,Male,Veteran,03:38:15,03:55:28,5
+26,Male,Veteran,03:55:29,Finisher,1
+26,Male,Master,00:00:00,02:44:46,10
+26,Male,Master,02:44:47,03:03:46,9
+26,Male,Master,03:03:47,03:22:47,8
+26,Male,Master,03:22:48,03:41:48,7
+26,Male,Master,03:41:49,04:00:48,6
+26,Male,Master,04:00:49,Finisher,1
+26,Male,Grand Master,00:00:00,02:57:38,10
+26,Male,Grand Master,02:57:39,03:18:08,9
+26,Male,Grand Master,03:18:09,03:38:38,8
+26,Male,Grand Master,03:38:39,03:59:07,7
+26,Male,Grand Master,03:59:08,Finisher,1
+26,Male,Great Grand Master,00:00:00,03:09:13,10
+26,Male,Great Grand Master,03:09:14,03:31:03,9
+26,Male,Great Grand Master,03:31:04,03:52:53,8
+26,Male,Great Grand Master,03:52:54,Finisher,1
 32,Male,Junior,00:00:00,02:53:43,10
 32,Male,Junior,02:53:44,03:12:00,9
 32,Male,Junior,03:12:01,03:30:17,8
