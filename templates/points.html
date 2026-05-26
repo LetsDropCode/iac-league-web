@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Points System</title>
+
+<link rel="stylesheet"
+href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<style>
+body{
+    font-family: Arial;
+    margin:20px;
+    background:#f5f7fb;
+}
+h1{ color:#0047AB; }
+</style>
+</head>
+
+<body>
+
+<a href="/">← Back</a>
+
+<h1>Points System</h1>
+
+<p>
+Points are awarded based on <strong>Distance + Gender + Category + Time</strong>.
+</p>
+
+<div>
+{{ table|safe }}
+</div>
+
+<script>
+$(document).ready(function(){
+    $('.display').DataTable({
+        scrollX:true,
+        pageLength:25
+    });
+});
+</script>
+
+</body>
+</html>

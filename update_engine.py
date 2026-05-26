@@ -86,11 +86,10 @@ def process_league():
     print(f"🏃 Run rows: {len(run_results)}")
     print(f"🚶 Walk rows: {len(walk_results)}")
 
-    run_table = build_league(run_results, rules_run, max_times_run)
-    walk_table = build_league(walk_results, rules_walk, max_times_walk)
+    run_rivals = attach_rivals(run_table) if not run_table.empty else {}
+    walk_rivals = attach_rivals(walk_table) if not walk_table.empty else {}
 
-    return run_table, walk_table
-
+    return run_table, walk_table, run_rivals, walk_rivals
 
 # -----------------------------------
 # CORE ENGINE
@@ -194,11 +193,21 @@ def build_league(results, rules, max_times):
     )
 
     # -----------------------------------
+    # ATHLETE ID (FOR CLICKABLE UI)
+    # -----------------------------------
+    results["AthleteID"] = (
+        results["Name"]
+        .str.strip()
+        .str.lower()
+        .str.replace(r"\s+", "-", regex=True)
+    )
+
+    # -----------------------------------
     # PIVOT
     # -----------------------------------
     race_table = (
         results.pivot_table(
-            index=["Name", "Gender"],
+            index=["AthleteID", "Name", "Gender", "PointsCategory"],
             columns="RaceLabel",
             values="Points",
             aggfunc="max",   # 🔥 FIXED
@@ -235,9 +244,39 @@ def build_league(results, rules, max_times):
         lambda r: f"{medal(r)} {r}" if isinstance(r, int) and r <= 3 else r
     )
 
-    base_cols = ["Name", "Gender", "Rank", "Races Completed", "Total Points"]
+    base_cols = ["AthleteID", "Name", "Gender", "PointsCategory", "Rank", "Races Completed", "Total Points"]
 
     return race_table[base_cols + race_cols]
+
+# -----------------------------------
+# RIVALS (BY GENDER + CATEGORY)
+# -----------------------------------
+def attach_rivals(race_table):
+
+    race_table = race_table.copy()
+
+    # Extract numeric rank
+    race_table["RankNum"] = race_table["Rank"].astype(str).str.extract(r"(\d+)").astype(int)
+
+    rivals = {}
+
+    for (gender, category), group in race_table.groupby(["Gender", "PointsCategory"]):
+
+        group = group.sort_values("RankNum")
+
+        for i in range(len(group)):
+
+            athlete_id = group.iloc[i]["AthleteID"]
+            rival = None
+
+            if i > 0:
+                rival = group.iloc[i - 1]["Name"]
+            elif i < len(group) - 1:
+                rival = group.iloc[i + 1]["Name"]
+
+            rivals[athlete_id] = rival
+
+    return rivals
 
 # -----------------------------------
 # ATHLETE PROFILES

@@ -129,6 +129,7 @@
 <div class="nav">
     <a href="/">🏃 Run</a>
     <a href="/walk">🚶 Walk</a>
+    <a href="/points">📊 Points System</a>
 </div>
 
 <h1>Irene AC {{ league }} League</h1>
@@ -162,7 +163,11 @@ $(document).ready(function(){
             scrollX: true,
             autoWidth: false,
             pageLength: 15,
-            order: [[4, "desc"]], // Total Points
+            order: [[5, "desc"]], // shift because AthleteID added
+
+            columnDefs: [
+                { targets: 0, visible: false } // 🔥 hide AthleteID
+            ],
 
             dom: '<"top"f>rt<"bottom"lip>',
 
@@ -229,6 +234,21 @@ $(document).ready(function(){
             }
 
         });
+
+        // -----------------------------
+        // CLICKABLE ROWS (ATHLETE PROFILE)
+        // -----------------------------
+        $('#leagueTable tbody').on('click', 'tr', function () {
+
+            var data = table.row(this).data();
+
+            if (!data) return;
+
+            var athleteId = data[0]; // hidden column
+
+            window.location.href = "/athlete/" + athleteId;
+        });
+
 
         // -----------------------------
         // MOBILE LABEL FIX

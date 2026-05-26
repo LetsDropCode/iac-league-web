@@ -1,24 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{{ profile.name }}</title>
+<title>{{ athlete["Name"] }}</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body{
     font-family: Arial;
-    margin:20px;
+    margin:15px;
     background:#f5f7fb;
 }
 
 .card{
     background:white;
-    padding:20px;
+    padding:15px;
     border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    margin-bottom:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+    margin-bottom:15px;
 }
 
-h1{ color:#0047AB; }
+h1{ color:#0047AB; margin-bottom:5px; }
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+th, td{
+    padding:8px;
+    text-align:left;
+    border-bottom:1px solid #eee;
+}
+
+th{
+    background:#0047AB;
+    color:white;
+}
+
+@media (max-width: 768px){
+    table{
+        font-size:12px;
+    }
+}
 </style>
 </head>
 
@@ -27,19 +52,28 @@ h1{ color:#0047AB; }
 <a href="/">← Back to leaderboard</a>
 
 <div class="card">
-    <h1>{{ profile.name }}</h1>
-    <p><strong>Gender:</strong> {{ profile.gender }}</p>
-    <p><strong>Total Points:</strong> {{ profile.total_points }}</p>
-    <p><strong>Races Completed:</strong> {{ profile.races }}</p>
+    <h1>{{ athlete["Name"] }}</h1>
 
-    {% if profile.rival %}
-    <p><strong>🔥 Rival:</strong> {{ profile.rival }}</p>
+    <p><strong>Gender:</strong> {{ athlete["Gender"] }}</p>
+    <p><strong>Category:</strong> {{ athlete["PointsCategory"] }}</p>
+    <p><strong>Total Points:</strong> {{ athlete["Total Points"] }}</p>
+    <p><strong>Races Completed:</strong> {{ athlete["Races Completed"] }}</p>
+
+    <hr>
+
+    <h3>🔥 Rival</h3>
+
+    {% if rival %}
+        <p>{{ rival }}</p>
+    {% else %}
+        <p>No rival yet</p>
     {% endif %}
 </div>
 
 <div class="card">
     <h2>Race History</h2>
 
+    {% if history is not none and history.shape[0] > 0 %}
     <table>
         <tr>
             <th>Race</th>
@@ -48,7 +82,7 @@ h1{ color:#0047AB; }
             <th>Points</th>
         </tr>
 
-        {% for row in profile.history.values %}
+        {% for row in history.values %}
         <tr>
             <td>{{ row[0] }}</td>
             <td>{{ row[1] }} km</td>
@@ -57,6 +91,9 @@ h1{ color:#0047AB; }
         </tr>
         {% endfor %}
     </table>
+    {% else %}
+        <p>No race history available</p>
+    {% endif %}
 </div>
 
 </body>

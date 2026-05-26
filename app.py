@@ -248,22 +248,48 @@ def logout():
 @app.route("/athlete/<athlete_id>")
 def athlete(athlete_id):
 
-    run_table, _ = get_tables()
+    run_table, _, rivals_map = get_tables()
 
-    # Rebuild raw results
-    results = process_league_raw()  # we’ll add this
+    athlete_row = run_table[run_table["AthleteID"] == athlete_id]
 
-    profiles = build_athlete_profiles(results)
-
-    profile = profiles.get(athlete_id)
-
-    if not profile:
+    if athlete_row.empty:
         abort(404)
+
+    athlete_data = athlete_row.iloc[0]
+
+    # 🔥 BUILD HISTORY (you didn’t have this)
+    results = pd.concat([
+        pd.read_csv(os.path.join("results", f), sep=";")
+        for f in os.listdir("results") if f.endswith(".csv")
+    ])
+
+    history = results[results["Name"].str.lower() == athlete_data["Name"].lower()]
+
+    rival = rivals_map.get(athlete_id)
 
     return render_template(
         "athlete.html",
-        profile=profile
+        athlete=athlete_data,
+        rival=rival,
+        history=history
     )
+# -----------------------------------
+# POINTS
+# -----------------------------------
+
+@app.route("/points")
+def points():
+
+    try:
+        rules = pd.read_csv("points_rules.csv")
+    except:
+        rules = pd.DataFrame()
+
+    return render_template(
+        "points.html",
+        table=rules.to_html(index=False, classes="display nowrap", border=0)
+    )
+
 
 # -----------------------------------
 # ERROR HANDLING
