@@ -146,7 +146,7 @@ def clear_cache():
 
 @app.route("/")
 def home():
-    run_table, _ = get_tables()
+    run_table, _, _, _ = get_tables()
 
     print("RUN TABLE SHAPE:",run_table.shape)
     print(run_table.head())
@@ -170,7 +170,7 @@ def home():
 
 @app.route("/walk")
 def walk():
-    _, walk_table = get_tables()
+    _, walk_table, _, _ = get_tables()
 
     last_updated = datetime.now(
         ZoneInfo("Africa/Johannesburg")
@@ -248,7 +248,7 @@ def logout():
 @app.route("/athlete/<athlete_id>")
 def athlete(athlete_id):
 
-    run_table, _, rivals_map = get_tables()
+    run_table, _, rivals_map, _ = get_tables()
 
     athlete_row = run_table[run_table["AthleteID"] == athlete_id]
 
