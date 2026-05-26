@@ -63,11 +63,20 @@ th{
 
     <h3>🔥 Rival</h3>
 
-    {% if rival %}
-        <p>{{ rival }}</p>
-    {% else %}
-        <p>No rival yet</p>
+{% if rival_data.rival %}
+    <p><strong>{{ rival_data.rival }}</strong></p>
+
+    {% if rival_data.direction == "behind" %}
+        <p>⬆️ You are {{ rival_data.gap }} points behind</p>
+        <p>👉 One good race could overtake them</p>
+    {% elif rival_data.direction == "ahead" %}
+        <p>⬇️ You are {{ rival_data.gap }} points ahead</p>
+        <p>⚠️ They are chasing you</p>
     {% endif %}
+
+{% else %}
+    <p>No rival yet</p>
+{% endif %}
 </div>
 
 <div class="card">

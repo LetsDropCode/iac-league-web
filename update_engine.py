@@ -259,23 +259,45 @@ def attach_rivals(race_table):
 
     for (gender, category), group in race_table.groupby(["Gender", "PointsCategory"]):
 
-        group = group.sort_values("Rank")
+        group = group.sort_values("RankNum").reset_index(drop=True)
 
         for i in range(len(group)):
 
-            athlete_id = group.iloc[i]["AthleteID"]
+            athlete = group.iloc[i]
+            athlete_id = athlete["AthleteID"]
+            athlete_points = athlete["Total Points"]
 
+            rival = None
+            gap = None
+            direction = None
+
+            # -----------------------------------
+            # CASE 1: NOT FIRST → chase person above
+            # -----------------------------------
             if i > 0:
-                rival = group.iloc[i - 1]["Name"]
-            elif i < len(group) - 1:
-                rival = group.iloc[i + 1]["Name"]
-            else:
-                rival = None
+                rival_row = group.iloc[i - 1]
 
-            rivals[athlete_id] = rival
+                rival = rival_row["Name"]
+                gap = rival_row["Total Points"] - athlete_points
+                direction = "behind"
+
+            # -----------------------------------
+            # CASE 2: FIRST → show who is chasing you
+            # -----------------------------------
+            elif i < len(group) - 1:
+                rival_row = group.iloc[i + 1]
+
+                rival = rival_row["Name"]
+                gap = athlete_points - rival_row["Total Points"]
+                direction = "ahead"
+
+            rivals[athlete_id] = {
+                "rival": rival,
+                "gap": int(gap) if gap is not None else None,
+                "direction": direction
+            }
 
     return rivals
-
 
 # -----------------------------------
 # HELPERS

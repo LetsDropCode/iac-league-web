@@ -278,7 +278,7 @@ def athlete(athlete_id):
     history["Time"] = history.get("Time", "")
     history["Points"] = history.get("Points", "")
 
-    rival = rivals_map.get(athlete_id)
+    rival_data = rivals_map.get(athlete_id, {})
 
     return render_template(
         "athlete.html",
