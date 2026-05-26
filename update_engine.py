@@ -44,7 +44,7 @@ def process_league():
             all_results.append(df)
 
     if not all_results:
-        return empty_table(), empty_table()
+        return empty_table(), empty_table(), {}, {}
 
     results = pd.concat(all_results, ignore_index=True)
 
@@ -61,7 +61,8 @@ def process_league():
     results["Distance"] = results["Distance"].apply(clean_distance)
     results["Distance"] = pd.to_numeric(results["Distance"], errors="coerce").round().astype("Int64")
 
-    # TEXT FIELDS
+    # TEXT
+    results["Name"] = results.get("Name", "").astype(str).str.strip()
     results["Gender"] = results.get("Gender", "").astype(str).str.strip()
     results["Category"] = results.get("Category", "").astype(str).str.strip()
 
@@ -86,19 +87,14 @@ def process_league():
     print(f"🏃 Run rows: {len(run_results)}")
     print(f"🚶 Walk rows: {len(walk_results)}")
 
-    # -----------------------------------
-    # BUILD TABLES (🔥 THIS WAS MISSING)
-    # -----------------------------------
     run_table = build_league(run_results, rules_run, max_times_run)
     walk_table = build_league(walk_results, rules_walk, max_times_walk)
 
-    # -----------------------------------
-    # RIVALS (AFTER TABLES EXIST)
-    # -----------------------------------
     run_rivals = attach_rivals(run_table) if not run_table.empty else {}
     walk_rivals = attach_rivals(walk_table) if not walk_table.empty else {}
 
     return run_table, walk_table, run_rivals, walk_rivals
+
 
 # -----------------------------------
 # CORE ENGINE
@@ -107,7 +103,6 @@ def process_league():
 def build_league(results, rules, max_times):
 
     if results.empty:
-        print("⚠️ No results for this discipline")
         return empty_table()
 
     if rules.empty:
@@ -117,13 +112,7 @@ def build_league(results, rules, max_times):
     results = results.copy()
 
     # -----------------------------------
-    # CLEAN TEXT
-    # -----------------------------------
-    results["Name"] = results.get("Name", "").astype(str).str.strip()
-    results["Gender"] = results.get("Gender", "").astype(str).str.strip()
-
-    # -----------------------------------
-    # ASSIGN POINTS (CRITICAL FIX)
+    # ASSIGN POINTS
     # -----------------------------------
     def assign_points(row):
 
@@ -149,31 +138,21 @@ def build_league(results, rules, max_times):
         except Exception as e:
             print("⚠️ Scoring error:", e)
 
-        # fallback = valid finisher
         if pd.notnull(row["Time"]):
             return 1
 
         return 0
 
-    # ✅ THIS LINE WAS MISSING
     results.loc[:, "Points"] = results.apply(assign_points, axis=1)
 
     # -----------------------------------
-    # VALIDATION (AFTER SCORING)
+    # VALIDATION
     # -----------------------------------
     total_points = results["Points"].sum()
     print("🏁 Total Points:", total_points)
 
     if total_points == 0:
-        print("\n🚨 CRITICAL: ALL POINTS = 0")
-        print("Likely rules mismatch\n")
-
-        print("Sample results:")
-        print(results[["Distance", "Gender", "PointsCategory"]].drop_duplicates())
-
-        print("\nRules:")
-        print(rules[["Distance", "Gender", "Category"]].drop_duplicates())
-
+        print("🚨 All points = 0 → rules mismatch")
         return empty_table()
 
     # -----------------------------------
@@ -188,11 +167,14 @@ def build_league(results, rules, max_times):
     results["RaceLabel"] = results.apply(
         lambda r: f"{r['RaceName']} {int(r['Distance'])}km"
         if pd.notnull(r["Distance"])
-        else f"{r['RaceName']} Unknown",
+        else f"{r['RaceName']}",
         axis=1
     )
+
+    print("🟢 RACES FOUND:", results["RaceLabel"].unique())
+
     # -----------------------------------
-    # DEDUPLICATE RESULTS
+    # DEDUPLICATE
     # -----------------------------------
     results = results.sort_values("Time")
 
@@ -202,13 +184,14 @@ def build_league(results, rules, max_times):
     )
 
     # -----------------------------------
-    # ATHLETE ID (FOR CLICKABLE UI)
+    # ATHLETE ID (UNIQUE + STABLE)
     # -----------------------------------
     results["AthleteID"] = (
-        results["Name"]
-        .str.strip()
-        .str.lower()
-        .str.replace(r"\s+", "-", regex=True)
+        results["Name"].str.lower().str.replace(r"\s+", "-", regex=True)
+        + "_" +
+        results["Gender"].str.lower()
+        + "_" +
+        results["PointsCategory"].str.lower()
     )
 
     # -----------------------------------
@@ -219,12 +202,18 @@ def build_league(results, rules, max_times):
             index=["AthleteID", "Name", "Gender", "PointsCategory"],
             columns="RaceLabel",
             values="Points",
-            aggfunc="max",   # 🔥 FIXED
+            aggfunc="max",
             fill_value=0
         )
         .reset_index()
-    )   
-    race_cols = [c for c in race_table.columns if "km" in str(c)]
+    )
+
+    # -----------------------------------
+    # DYNAMIC RACE COLS (FIXED)
+    # -----------------------------------
+    base_cols = ["AthleteID", "Name", "Gender", "PointsCategory"]
+
+    race_cols = [c for c in race_table.columns if c not in base_cols]
 
     # -----------------------------------
     # TOTALS
@@ -235,85 +224,57 @@ def build_league(results, rules, max_times):
     # -----------------------------------
     # RANK
     # -----------------------------------
-    race_table["Rank"] = (
+    race_table["RankNum"] = (
         race_table.groupby("Gender")["Total Points"]
         .rank(method="dense", ascending=False)
         .astype(int)
     )
 
-    race_table = race_table.sort_values(["Gender", "Rank"])
-
-    # -----------------------------------
-    # MEDALS
-    # -----------------------------------
     def medal(rank):
         return "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else ""
 
-    race_table["Rank"] = race_table["Rank"].apply(
-        lambda r: f"{medal(r)} {r}" if isinstance(r, int) and r <= 3 else r
+    race_table["Rank"] = race_table["RankNum"].apply(
+        lambda r: f"{medal(r)} {r}" if r <= 3 else r
     )
 
-    base_cols = ["AthleteID", "Name", "Gender", "PointsCategory", "Rank", "Races Completed", "Total Points"]
+    race_table = race_table.sort_values(["Gender", "RankNum"])
 
-    return race_table[base_cols + race_cols]
+    # -----------------------------------
+    # FINAL
+    # -----------------------------------
+    final_cols = ["AthleteID", "Name", "Gender", "PointsCategory", "Rank", "Races Completed", "Total Points"]
+
+    return race_table[final_cols + race_cols]
+
 
 # -----------------------------------
-# RIVALS (BY GENDER + CATEGORY)
+# RIVALS
 # -----------------------------------
+
 def attach_rivals(race_table):
 
     race_table = race_table.copy()
-
-    # Extract numeric rank
-    race_table["RankNum"] = race_table["Rank"].astype(str).str.extract(r"(\d+)").astype(int)
 
     rivals = {}
 
     for (gender, category), group in race_table.groupby(["Gender", "PointsCategory"]):
 
-        group = group.sort_values("RankNum")
+        group = group.sort_values("Rank")
 
         for i in range(len(group)):
 
             athlete_id = group.iloc[i]["AthleteID"]
-            rival = None
 
             if i > 0:
                 rival = group.iloc[i - 1]["Name"]
             elif i < len(group) - 1:
                 rival = group.iloc[i + 1]["Name"]
+            else:
+                rival = None
 
             rivals[athlete_id] = rival
 
     return rivals
-
-# -----------------------------------
-# ATHLETE PROFILES
-# -----------------------------------
-
-def build_athlete_profiles(results):
-
-    results = results.copy()
-
-    results["AthleteID"] = (
-        results["Name"].str.strip().str.lower().str.replace(" ", "-")
-    )
-
-    profiles = {}
-
-    for athlete, df in results.groupby("AthleteID"):
-
-        profiles[athlete] = {
-            "name": df["Name"].iloc[0],
-            "gender": df["Gender"].iloc[0],
-            "total_points": df["Points"].sum(),
-            "races": df.shape[0],
-            "history": df.sort_values("Time")[[
-                "Race", "Distance", "Time", "Points"
-            ]]
-        }
-
-    return profiles
 
 
 # -----------------------------------
@@ -322,8 +283,7 @@ def build_athlete_profiles(results):
 
 def safe_read(file, cols=None):
     try:
-        df = pd.read_csv(file)
-        return df
+        return pd.read_csv(file)
     except:
         return pd.DataFrame(columns=cols if cols else [])
 
@@ -343,13 +303,12 @@ def build_max_times(rules):
     if rules.empty:
         return {}
 
-    grouped = (
+    return (
         rules.dropna(subset=["TimeTo"])
         .groupby(["Distance", "Gender", "Category"])["TimeTo"]
         .max()
+        .to_dict()
     )
-
-    return grouped.to_dict()
 
 
 def clean_distance(val):
@@ -373,8 +332,10 @@ def clean_distance(val):
 
 def empty_table():
     return pd.DataFrame(columns=[
+        "AthleteID",
         "Name",
         "Gender",
+        "PointsCategory",
         "Rank",
         "Races Completed",
         "Total Points"
