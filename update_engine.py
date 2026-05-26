@@ -255,6 +255,15 @@ def attach_rivals(race_table):
 
     race_table = race_table.copy()
 
+    # Safety: ensure RankNum exists
+    if "RankNum" not in race_table.columns:
+        race_table["RankNum"] = (
+            race_table["Rank"]
+            .astype(str)
+            .str.extract(r"(\d+)")
+            .astype(int)
+        )
+
     rivals = {}
 
     for (gender, category), group in race_table.groupby(["Gender", "PointsCategory"]):
@@ -271,22 +280,16 @@ def attach_rivals(race_table):
             gap = None
             direction = None
 
-            # -----------------------------------
-            # CASE 1: NOT FIRST → chase person above
-            # -----------------------------------
+            # chase person above
             if i > 0:
                 rival_row = group.iloc[i - 1]
-
                 rival = rival_row["Name"]
                 gap = rival_row["Total Points"] - athlete_points
                 direction = "behind"
 
-            # -----------------------------------
-            # CASE 2: FIRST → show who is chasing you
-            # -----------------------------------
+            # leader → show who is chasing
             elif i < len(group) - 1:
                 rival_row = group.iloc[i + 1]
-
                 rival = rival_row["Name"]
                 gap = athlete_points - rival_row["Total Points"]
                 direction = "ahead"
@@ -298,7 +301,6 @@ def attach_rivals(race_table):
             }
 
     return rivals
-
 # -----------------------------------
 # HELPERS
 # -----------------------------------
