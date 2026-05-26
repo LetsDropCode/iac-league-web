@@ -240,6 +240,31 @@ def logout():
     session.clear()
     return redirect("/")
 
+
+# -----------------------------------
+# ATHLETE PROFILE
+# -----------------------------------
+
+@app.route("/athlete/<athlete_id>")
+def athlete(athlete_id):
+
+    run_table, _ = get_tables()
+
+    # Rebuild raw results
+    results = process_league_raw()  # we’ll add this
+
+    profiles = build_athlete_profiles(results)
+
+    profile = profiles.get(athlete_id)
+
+    if not profile:
+        abort(404)
+
+    return render_template(
+        "athlete.html",
+        profile=profile
+    )
+
 # -----------------------------------
 # ERROR HANDLING
 # -----------------------------------

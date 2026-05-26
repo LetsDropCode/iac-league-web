@@ -240,6 +240,35 @@ def build_league(results, rules, max_times):
     return race_table[base_cols + race_cols]
 
 # -----------------------------------
+# ATHLETE PROFILES
+# -----------------------------------
+
+def build_athlete_profiles(results):
+
+    results = results.copy()
+
+    results["AthleteID"] = (
+        results["Name"].str.strip().str.lower().str.replace(" ", "-")
+    )
+
+    profiles = {}
+
+    for athlete, df in results.groupby("AthleteID"):
+
+        profiles[athlete] = {
+            "name": df["Name"].iloc[0],
+            "gender": df["Gender"].iloc[0],
+            "total_points": df["Points"].sum(),
+            "races": df.shape[0],
+            "history": df.sort_values("Time")[[
+                "Race", "Distance", "Time", "Points"
+            ]]
+        }
+
+    return profiles
+
+
+# -----------------------------------
 # HELPERS
 # -----------------------------------
 
