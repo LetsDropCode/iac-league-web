@@ -86,6 +86,15 @@ def process_league():
     print(f"🏃 Run rows: {len(run_results)}")
     print(f"🚶 Walk rows: {len(walk_results)}")
 
+    # -----------------------------------
+    # BUILD TABLES (🔥 THIS WAS MISSING)
+    # -----------------------------------
+    run_table = build_league(run_results, rules_run, max_times_run)
+    walk_table = build_league(walk_results, rules_walk, max_times_walk)
+
+    # -----------------------------------
+    # RIVALS (AFTER TABLES EXIST)
+    # -----------------------------------
     run_rivals = attach_rivals(run_table) if not run_table.empty else {}
     walk_rivals = attach_rivals(walk_table) if not walk_table.empty else {}
 
