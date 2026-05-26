@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, abort
 import os
 import logging
+import pandas as pd
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -93,20 +94,14 @@ def log_requests():
     logging.info(f"{request.remote_addr} accessed {request.path}")
 
 # -----------------------------------
-# BOT BLOCKER (SAFE VERSION)
+# BOT BLOCKER
 # -----------------------------------
 
 @app.before_request
 def block_bots():
     ua = request.headers.get("User-Agent", "").lower()
 
-    blocked = [
-        "curl",
-        "wget",
-        "python-requests",
-        "scrapy",
-        "httpclient"
-    ]
+    blocked = ["curl", "wget", "python-requests", "scrapy", "httpclient"]
 
     if any(bot in ua for bot in blocked):
         abort(403)
@@ -116,9 +111,7 @@ def block_bots():
 # -----------------------------------
 
 def sanitize(value):
-    if value:
-        return bleach.clean(value)
-    return value
+    return bleach.clean(value) if value else value
 
 # -----------------------------------
 # FILE VALIDATION
@@ -130,7 +123,7 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # -----------------------------------
-# CACHE (BIG PERFORMANCE BOOST)
+# CACHE
 # -----------------------------------
 
 @lru_cache(maxsize=1)
@@ -141,15 +134,15 @@ def clear_cache():
     get_tables.cache_clear()
 
 # -----------------------------------
-# ROUTES
+# HOME (RUN)
 # -----------------------------------
 
 @app.route("/")
 def home():
     run_table, _, _, _ = get_tables()
 
-    print("RUN TABLE SHAPE:",run_table.shape)
-    print(run_table.head())
+    # 🔥 Hide backend columns
+    run_table = run_table.drop(columns=["AthleteID"], errors="ignore")
 
     last_updated = datetime.now(
         ZoneInfo("Africa/Johannesburg")
@@ -167,10 +160,15 @@ def home():
         league="Run"
     )
 
+# -----------------------------------
+# WALK
+# -----------------------------------
 
 @app.route("/walk")
 def walk():
     _, walk_table, _, _ = get_tables()
+
+    walk_table = walk_table.drop(columns=["AthleteID"], errors="ignore")
 
     last_updated = datetime.now(
         ZoneInfo("Africa/Johannesburg")
@@ -187,12 +185,14 @@ def walk():
         last_updated=last_updated,
         league="Walk"
     )
+
+# -----------------------------------
+# ADMIN LOGIN
 # -----------------------------------
 
 @app.route("/admin", methods=["GET", "POST"])
 @limiter.limit("5 per minute")
 def admin():
-
     if request.method == "POST":
 
         password = sanitize(request.form.get("password"))
@@ -206,6 +206,8 @@ def admin():
 
     return render_template("login.html")
 
+# -----------------------------------
+# UPLOAD
 # -----------------------------------
 
 @app.route("/upload", methods=["GET", "POST"])
@@ -226,7 +228,7 @@ def upload():
 
             file.save(filepath)
 
-            # 🔥 Recalculate on upload
+            # 🔥 Recalculate
             clear_cache()
 
         return redirect("/")
@@ -234,12 +236,13 @@ def upload():
     return render_template("admin.html")
 
 # -----------------------------------
+# LOGOUT
+# -----------------------------------
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
-
 
 # -----------------------------------
 # ATHLETE PROFILE
@@ -257,13 +260,23 @@ def athlete(athlete_id):
 
     athlete_data = athlete_row.iloc[0]
 
-    # 🔥 BUILD HISTORY (you didn’t have this)
-    results = pd.concat([
+    # Load all results
+    all_files = [
         pd.read_csv(os.path.join("results", f), sep=";")
         for f in os.listdir("results") if f.endswith(".csv")
-    ])
+    ]
 
-    history = results[results["Name"].str.lower() == athlete_data["Name"].lower()]
+    results = pd.concat(all_files, ignore_index=True)
+
+    history = results[
+        results["Name"].str.lower() == athlete_data["Name"].lower()
+    ].copy()
+
+    # Clean history
+    history["Race"] = history.get("Race", "Unknown")
+    history["Distance"] = history.get("Distance", "")
+    history["Time"] = history.get("Time", "")
+    history["Points"] = history.get("Points", "")
 
     rival = rivals_map.get(athlete_id)
 
@@ -273,39 +286,42 @@ def athlete(athlete_id):
         rival=rival,
         history=history
     )
+
 # -----------------------------------
-# POINTS
+# POINTS SYSTEM (FIXED)
 # -----------------------------------
 
 @app.route("/points")
 def points():
 
     try:
-        rules = pd.read_csv("points_rules.csv")
+        df = pd.read_csv("points_rules.csv")
     except:
-        rules = pd.DataFrame()
+        df = pd.DataFrame()
 
     return render_template(
         "points.html",
-        table=rules.to_html(index=False, classes="display nowrap", border=0)
+        table=df.to_html(
+            index=False,
+            classes="display nowrap",
+            border=0
+        )
     )
 
-
 # -----------------------------------
-# ERROR HANDLING
+# ERRORS
 # -----------------------------------
 
 @app.errorhandler(403)
 def forbidden(e):
     return "Forbidden", 403
 
-
 @app.errorhandler(404)
 def not_found(e):
     return "Page not found", 404
 
 # -----------------------------------
-# EXTRA SECURITY HEADERS
+# SECURITY HEADERS
 # -----------------------------------
 
 @app.after_request
