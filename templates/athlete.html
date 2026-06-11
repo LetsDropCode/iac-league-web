@@ -7,20 +7,55 @@
 
 <style>
 body{
-    font-family: Arial;
-    margin:15px;
+    font-family: Arial, sans-serif;
+    margin:0;
     background:#f5f7fb;
+    color:#1f2937;
+}
+
+.page{
+    max-width:900px;
+    margin:0 auto;
+    padding:18px;
 }
 
 .card{
     background:white;
     padding:15px;
-    border-radius:10px;
+    border-radius:8px;
+    border:1px solid #dbe3f0;
     box-shadow:0 3px 8px rgba(0,0,0,0.08);
     margin-bottom:15px;
 }
 
 h1{ color:#0047AB; margin-bottom:5px; }
+a{ color:#0047AB; font-weight:bold; text-decoration:none; }
+a:hover, a:focus{ text-decoration:underline; }
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:10px;
+}
+
+.stat{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:8px;
+    padding:10px;
+}
+
+.stat span{
+    color:#64748b;
+    display:block;
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.stat strong{
+    display:block;
+    font-size:16px;
+}
 
 table{
     width:100%;
@@ -40,6 +75,8 @@ th{
 }
 
 @media (max-width: 768px){
+    .page{ padding:10px; }
+    .stats{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
     table{
         font-size:12px;
     }
@@ -49,29 +86,42 @@ th{
 
 <body>
 
-<a href="/">← Back to leaderboard</a>
+<main class="page">
+<a href="{{ back_url }}">Back to {{ league }} leaderboard</a>
 
 <div class="card">
     <h1>{{ athlete["Name"] }}</h1>
 
-    <p><strong>Gender:</strong> {{ athlete["Gender"] }}</p>
-    <p><strong>Category:</strong> {{ athlete["PointsCategory"] }}</p>
-    <p><strong>Total Points:</strong> {{ athlete["Total Points"] }}</p>
-    <p><strong>Races Completed:</strong> {{ athlete["Races Completed"] }}</p>
+    <div class="stats">
+        <div class="stat">
+            <span>Gender</span>
+            <strong>{{ athlete["Gender"] }}</strong>
+        </div>
+        <div class="stat">
+            <span>Category</span>
+            <strong>{{ athlete["PointsCategory"] }}</strong>
+        </div>
+        <div class="stat">
+            <span>Total Points</span>
+            <strong>{{ athlete["Total Points"] }}</strong>
+        </div>
+        <div class="stat">
+            <span>Races Completed</span>
+            <strong>{{ athlete["Races Completed"] }}</strong>
+        </div>
+    </div>
 
     <hr>
 
-    <h3>🔥 Rival</h3>
+    <h3>Rival</h3>
 
 {% if rival_data.rival %}
     <p><strong>{{ rival_data.rival }}</strong></p>
 
     {% if rival_data.direction == "behind" %}
-        <p>⬆️ You are {{ rival_data.gap }} points behind</p>
-        <p>👉 One good race could overtake them</p>
+        <p>This athlete is {{ rival_data.gap }} points behind them.</p>
     {% elif rival_data.direction == "ahead" %}
-        <p>⬇️ You are {{ rival_data.gap }} points ahead</p>
-        <p>⚠️ They are chasing you</p>
+        <p>This athlete is {{ rival_data.gap }} points ahead of them.</p>
     {% endif %}
 
 {% else %}
@@ -86,24 +136,21 @@ th{
     <table>
         <tr>
             <th>Race</th>
-            <th>Distance</th>
-            <th>Time</th>
             <th>Points</th>
         </tr>
 
         {% for row in history.values %}
         <tr>
             <td>{{ row[0] }}</td>
-            <td>{{ row[1] }} km</td>
-            <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
+            <td>{{ row[1] }}</td>
         </tr>
         {% endfor %}
     </table>
     {% else %}
         <p>No race history available</p>
-    {% endif %}
+{% endif %}
 </div>
 
+</main>
 </body>
 </html>

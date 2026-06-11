@@ -15,53 +15,109 @@ href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 
 body{
     font-family: Arial, sans-serif;
-    margin:12px;
+    margin:0;
     background:#f5f7fb;
+    color:#1f2937;
 }
 
 h1{
     color:#0047AB;
-    font-size:20px;
+    font-size:26px;
     margin-bottom:5px;
 }
 
+.page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:18px;
+}
+
 .nav{
-    margin-bottom:10px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
 }
 
 .nav a{
-    margin-right:10px;
     text-decoration:none;
     font-weight:bold;
     color:#0047AB;
     font-size:14px;
+    padding:8px 10px;
+    border-radius:6px;
+    background:white;
+    border:1px solid #dbe3f0;
+}
+
+.nav a.active{
+    background:#0047AB;
+    color:white;
+    border-color:#0047AB;
 }
 
 .updated{
     font-size:12px;
     color:#666;
-    margin-bottom:10px;
+    margin:0 0 14px;
 }
 
-/* 🔥 FILTER BAR */
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0, 1fr));
+    gap:10px;
+    margin:16px 0;
+}
+
+.summary-card{
+    background:white;
+    border:1px solid #dbe3f0;
+    border-radius:8px;
+    padding:12px;
+    min-height:64px;
+}
+
+.summary-card span{
+    display:block;
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:6px;
+}
+
+.summary-card strong{
+    display:block;
+    color:#111827;
+    font-size:17px;
+    line-height:1.25;
+}
+
 .filter-container{
     display:flex;
     gap:10px;
     flex-wrap:wrap;
-    margin-bottom:10px;
+    align-items:center;
+    margin-bottom:12px;
 }
 
 select{
-    padding:6px;
+    padding:8px 10px;
     border-radius:6px;
-    border:1px solid #ccc;
+    border:1px solid #ccd3df;
+    background:white;
+    min-width:150px;
+}
+
+.filter-note{
+    color:#64748b;
+    font-size:13px;
 }
 
 /* TABLE */
 .table-container{
     background:white;
     padding:10px;
-    border-radius:10px;
+    border-radius:8px;
+    border:1px solid #dbe3f0;
     box-shadow:0 3px 8px rgba(0,0,0,0.08);
     overflow-x:auto;
 }
@@ -81,6 +137,66 @@ table.dataTable tbody tr:hover{
     cursor:pointer;
 }
 
+.athlete-link{
+    color:#0047AB;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.athlete-link:hover,
+.athlete-link:focus{
+    text-decoration:underline;
+}
+
+.flash{
+    border-radius:8px;
+    padding:10px 12px;
+    margin-bottom:12px;
+    font-size:14px;
+}
+
+.flash.success{
+    background:#ecfdf3;
+    color:#067647;
+    border:1px solid #abefc6;
+}
+
+.flash.error{
+    background:#fef3f2;
+    color:#b42318;
+    border:1px solid #fecdca;
+}
+
+.rank-change{
+    display:inline-block;
+    min-width:44px;
+    text-align:center;
+    border-radius:999px;
+    padding:3px 8px;
+    font-weight:bold;
+    font-size:12px;
+}
+
+.rank-change.up{
+    background:#ecfdf3;
+    color:#067647;
+}
+
+.rank-change.down{
+    background:#fef3f2;
+    color:#b42318;
+}
+
+.rank-change.same{
+    background:#f1f5f9;
+    color:#475569;
+}
+
+.rank-change.new{
+    background:#eef4ff;
+    color:#0047AB;
+}
+
 /* PODIUM */
 .rank-1{ background:#fff7cc; }
 .rank-2{ background:#f2f2f2; }
@@ -89,8 +205,10 @@ table.dataTable tbody tr:hover{
 /* MOBILE */
 @media (max-width: 768px){
 
-    body{ margin:8px; }
+    .page{ padding:10px; }
     h1{ font-size:18px; }
+    .summary-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    .summary-card strong{ font-size:15px; }
 
     table.dataTable{ font-size:12px; }
 
@@ -109,10 +227,12 @@ table.dataTable tbody tr:hover{
 
 <body>
 
+<main class="page">
 <div class="nav">
-    <a href="/">🏃 Run</a>
-    <a href="/walk">🚶 Walk</a>
-    <a href="/points">📊 Points System</a>
+    <a href="/" class="{% if league == 'Run' %}active{% endif %}">Run</a>
+    <a href="/walk" class="{% if league == 'Walk' %}active{% endif %}">Walk</a>
+    <a href="/points">Points System</a>
+    <a href="/admin">Admin</a>
 </div>
 
 <h1>Irene AC {{ league }} League</h1>
@@ -120,6 +240,37 @@ table.dataTable tbody tr:hover{
 <p class="updated">
 <strong>Updated:</strong> {{ last_updated }}
 </p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<section class="summary-grid" aria-label="League summary">
+    <div class="summary-card">
+        <span>Athletes</span>
+        <strong>{{ summary.athletes }}</strong>
+    </div>
+    <div class="summary-card">
+        <span>Races</span>
+        <strong>{{ summary.races }}</strong>
+    </div>
+    <div class="summary-card">
+        <span>Top Male</span>
+        <strong>{{ summary.leader_male }}</strong>
+    </div>
+    <div class="summary-card">
+        <span>Top Female</span>
+        <strong>{{ summary.leader_female }}</strong>
+    </div>
+    <div class="summary-card">
+        <span>Latest Upload</span>
+        <strong>{{ latest_result }}</strong>
+    </div>
+</section>
 
 <div class="filter-container">
 
@@ -132,6 +283,8 @@ table.dataTable tbody tr:hover{
 <select id="categoryFilter">
     <option value="">All Categories</option>
 </select>
+
+<span class="filter-note">Choose a category to view its leaderboard.</span>
 
 </div>
 
@@ -170,14 +323,7 @@ $(document).ready(function(){
     var genderCol = findCol("Gender");
     var categoryCol = findCol("PointsCategory");
     var rankCol = findCol("Rank");
-    var idCol = findCol("AthleteID");
-
-    // -----------------------------
-    // HIDE BACKEND COLUMNS
-    // -----------------------------
-    if(idCol !== -1){
-        table.column(idCol).visible(false);
-    }
+    var rankChangeCol = findCol("Rank Change");
 
     // keep category hidden but usable
     if(categoryCol !== -1){
@@ -210,7 +356,7 @@ $(document).ready(function(){
         });
 
         categories.forEach(function(c){
-            $('#categoryFilter').append(`<option value="${c}">${c}</option>`);
+            $('#categoryFilter').append($('<option>', { value:c, text:c }));
         });
 
         $('#categoryFilter').on('change', function(){
@@ -236,23 +382,39 @@ $(document).ready(function(){
     });
 
     // -----------------------------
+    // RANK MOVEMENT BADGES
+    // -----------------------------
+    if(rankChangeCol !== -1){
+        table.rows().every(function(){
+            let data = this.data();
+            let raw = String(data[rankChangeCol]).trim();
+            let state = "same";
+
+            if(raw === "new") state = "new";
+            else if(raw.indexOf("+") === 0) state = "up";
+            else if(raw.indexOf("-") === 0) state = "down";
+
+            data[rankChangeCol] = '<span class="rank-change '+state+'">'+raw+'</span>';
+            this.data(data);
+        });
+        table.draw(false);
+    }
+
+    // -----------------------------
     // CLICKABLE ROWS (ROBUST)
     // -----------------------------
     $('#leagueTable tbody').on('click','tr',function(){
 
-        let data = table.row(this).data();
+        let href = $(this).find('a.athlete-link').attr('href');
 
-        if(!data || idCol === -1) return;
-
-        let athleteId = data[idCol];
-
-        if(athleteId){
-            window.location.href = "/athlete/" + athleteId;
+        if(href){
+            window.location.href = href;
         }
     });
 
 });
 </script>
 
+</main>
 </body>
 </html>

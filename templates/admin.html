@@ -1,10 +1,153 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Upload Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:20px;
+            background:#f5f7fb;
+            color:#1f2937;
+        }
+
+        .panel{
+            max-width:460px;
+            background:white;
+            padding:20px;
+            border-radius:8px;
+            box-shadow:0 3px 8px rgba(0,0,0,0.08);
+            margin-bottom:16px;
+        }
+
+        input, button{
+            width:100%;
+            box-sizing:border-box;
+            padding:10px;
+            border-radius:6px;
+            font-size:15px;
+        }
+
+        input{
+            border:1px solid #ccd3df;
+            margin-bottom:10px;
+            background:#fff;
+        }
+
+        button{
+            border:0;
+            background:#0047AB;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+            margin-top:8px;
+        }
+
+        button.secondary{
+            background:#475569;
+        }
+
+        a{
+            color:#0047AB;
+            display:inline-block;
+            margin-bottom:12px;
+        }
+
+        .preview{
+            max-width:460px;
+            background:white;
+            border:1px solid #dbe3f0;
+            border-radius:8px;
+            padding:16px;
+        }
+
+        .preview.ok{
+            border-color:#abefc6;
+        }
+
+        .preview.error{
+            border-color:#fecdca;
+        }
+
+        .preview-grid{
+            display:grid;
+            grid-template-columns:repeat(2, minmax(0, 1fr));
+            gap:10px;
+        }
+
+        .metric{
+            background:#f8fafc;
+            border-radius:8px;
+            padding:10px;
+        }
+
+        .metric span{
+            color:#64748b;
+            display:block;
+            font-size:12px;
+            margin-bottom:4px;
+        }
+
+        .metric strong{
+            display:block;
+            font-size:18px;
+        }
+
+        .warning{
+            color:#b42318;
+            font-weight:bold;
+        }
+    </style>
+</head>
 <body>
+    <a href="/">Back to leaderboard</a>
+    <div class="panel">
     <h2>Upload Finishtime CSV</h2>
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Upload</button>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <input type="file" name="file" accept=".csv,text/csv" required>
+        <button type="submit" name="action" value="preview" class="secondary">Preview CSV</button>
+        <button type="submit" name="action" value="upload">Upload and recalculate</button>
     </form>
+    </div>
+
+    {% if preview %}
+    <div class="preview {% if preview.ok %}ok{% else %}error{% endif %}">
+        <h3>Upload Preview</h3>
+
+        {% if preview.error %}
+            <p class="warning">{{ preview.error }}</p>
+        {% else %}
+            <div class="preview-grid">
+                <div class="metric">
+                    <span>Rows</span>
+                    <strong>{{ preview.rows }}</strong>
+                </div>
+                <div class="metric">
+                    <span>Columns</span>
+                    <strong>{{ preview.columns }}</strong>
+                </div>
+                <div class="metric">
+                    <span>Duplicate name/distance rows</span>
+                    <strong>{{ preview.duplicates }}</strong>
+                </div>
+                <div class="metric">
+                    <span>Invalid times</span>
+                    <strong>{{ preview.invalid_times }}</strong>
+                </div>
+            </div>
+
+            {% if preview.missing %}
+                <p class="warning">Missing: {{ preview.missing|join(", ") }}</p>
+            {% else %}
+                <p>Required columns look ready.</p>
+            {% endif %}
+
+            {% if preview.blank_names %}
+                <p class="warning">{{ preview.blank_names }} rows have no athlete name.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endif %}
 </body>
 </html>

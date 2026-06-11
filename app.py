@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, redirect, session, abort
+from flask import Flask, render_template, request, redirect, session, abort, flash
 import os
 import logging
 import pandas as pd
+import re
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
+from html import escape
+from hmac import compare_digest
+from urllib.parse import quote
 
 import bleach
 from werkzeug.utils import secure_filename
@@ -83,6 +87,18 @@ limiter = Limiter(
 
 csrf = SeaSurf(app)
 
+BASE_LEAGUE_COLS = [
+    "AthleteID",
+    "Name",
+    "Gender",
+    "PointsCategory",
+    "Rank",
+    "Rank Change",
+    "Category Rank",
+    "Races Completed",
+    "Total Points",
+]
+
 # -----------------------------------
 # LOGGING
 # -----------------------------------
@@ -113,6 +129,149 @@ def block_bots():
 def sanitize(value):
     return bleach.clean(value) if value else value
 
+def numeric_rank(value):
+    match = re.search(r"\d+", str(value))
+    return int(match.group()) if match else None
+
+def latest_result_file():
+    files = [
+        os.path.join("results", f)
+        for f in os.listdir("results")
+        if f.endswith(".csv")
+    ]
+    if not files:
+        return None
+    return max(files, key=os.path.getmtime)
+
+def race_stem(filename):
+    if not filename:
+        return ""
+    name = os.path.basename(filename).replace(".csv", "")
+    return re.sub(r"^\d+K_", "", name).replace("_", " ")
+
+def add_leaderboard_context(df):
+    if df.empty:
+        return df
+
+    table = df.copy()
+    race_cols = [c for c in table.columns if c not in BASE_LEAGUE_COLS]
+
+    table["CategoryRankNum"] = (
+        table.groupby(["Gender", "PointsCategory"])["Total Points"]
+        .rank(method="dense", ascending=False)
+        .astype(int)
+    )
+    table["Category Rank"] = table["CategoryRankNum"]
+
+    latest_stem = race_stem(latest_result_file())
+    latest_cols = [c for c in race_cols if c.startswith(latest_stem)] if latest_stem else []
+
+    if latest_cols:
+        table["Previous Points"] = table["Total Points"] - table[latest_cols].sum(axis=1)
+        table["PreviousRankNum"] = (
+            table.groupby("Gender")["Previous Points"]
+            .rank(method="dense", ascending=False)
+            .astype(int)
+        )
+
+        def rank_change(row):
+            current = numeric_rank(row["Rank"])
+            previous = int(row["PreviousRankNum"])
+            if row["Previous Points"] <= 0 and row["Total Points"] > 0:
+                return "new"
+            delta = previous - current
+            if delta > 0:
+                return f"+{delta}"
+            if delta < 0:
+                return str(delta)
+            return "same"
+
+        table["Rank Change"] = table.apply(rank_change, axis=1)
+        table = table.drop(columns=["Previous Points", "PreviousRankNum"], errors="ignore")
+    else:
+        table["Rank Change"] = "same"
+
+    table = table.drop(columns=["CategoryRankNum"], errors="ignore")
+    race_cols = [c for c in table.columns if c not in BASE_LEAGUE_COLS]
+    ordered_cols = [c for c in BASE_LEAGUE_COLS if c in table.columns]
+    return table[ordered_cols + race_cols]
+
+def display_table(df, league):
+    if df.empty:
+        return df
+
+    display = df.copy()
+
+    for column in display.select_dtypes(include=["object"]).columns:
+        display[column] = display[column].astype(str).map(escape)
+
+    links = []
+    for _, row in df.iterrows():
+        athlete_id = quote(str(row["AthleteID"]), safe="")
+        name = escape(str(row["Name"]))
+        links.append(f'<a class="athlete-link" href="/athlete/{league.lower()}/{athlete_id}">{name}</a>')
+
+    display["Name"] = links
+    return display.drop(columns=["AthleteID"], errors="ignore")
+
+def league_summary(df):
+    if df.empty:
+        return {
+            "athletes": 0,
+            "races": 0,
+            "leader_male": "No results",
+            "leader_female": "No results",
+        }
+
+    race_cols = [c for c in df.columns if c not in BASE_LEAGUE_COLS]
+
+    def leader(gender):
+        subset = df[df["Gender"] == gender]
+        if subset.empty:
+            return "No results"
+        row = subset.sort_values("Total Points", ascending=False).iloc[0]
+        return f"{row['Name']} ({int(row['Total Points'])})"
+
+    return {
+        "athletes": len(df),
+        "races": len(race_cols),
+        "leader_male": leader("Male"),
+        "leader_female": leader("Female"),
+    }
+
+def latest_result_name():
+    latest = latest_result_file()
+    if not latest:
+        return "No uploads yet"
+    return os.path.basename(latest).replace(".csv", "").replace("_", " ")
+
+def preview_results_file(file):
+    try:
+        df = pd.read_csv(file, sep=";")
+    except Exception as exc:
+        return {"ok": False, "error": f"Could not read this CSV: {exc}"}
+
+    columns = set(df.columns)
+    time_col = next((c for c in df.columns if "time" in c.lower() or "finish" in c.lower()), None)
+    missing = [c for c in ["Name", "Gender", "Category", "Distance"] if c not in columns]
+    if not time_col:
+        missing.append("Time/Finish column")
+
+    duplicate_subset = [c for c in ["Name", "Distance"] if c in columns]
+    duplicates = int(df.duplicated(subset=duplicate_subset).sum()) if duplicate_subset else 0
+    blank_names = int(df["Name"].isna().sum()) if "Name" in columns else 0
+    invalid_times = int(pd.to_timedelta(df[time_col], errors="coerce").isna().sum()) if time_col else len(df)
+
+    return {
+        "ok": not missing,
+        "rows": len(df),
+        "columns": len(df.columns),
+        "missing": missing,
+        "duplicates": duplicates,
+        "blank_names": blank_names,
+        "invalid_times": invalid_times,
+    }
+
 # -----------------------------------
 # FILE VALIDATION
 # -----------------------------------
@@ -140,9 +299,7 @@ def clear_cache():
 @app.route("/")
 def home():
     run_table, _, _, _ = get_tables()
-
-    # 🔥 Hide backend columns
-    run_table = run_table.drop(columns=["AthleteID"], errors="ignore")
+    run_table = add_leaderboard_context(run_table)
 
     last_updated = datetime.now(
         ZoneInfo("Africa/Johannesburg")
@@ -150,14 +307,17 @@ def home():
 
     return render_template(
         "index.html",
-        table=run_table.to_html(
+        table=display_table(run_table, "run").to_html(
             index=False,
             classes="display nowrap",
             border=0,
-            table_id="leagueTable"
+            table_id="leagueTable",
+            escape=False
         ),
         last_updated=last_updated,
-        league="Run"
+        league="Run",
+        summary=league_summary(run_table),
+        latest_result=latest_result_name()
     )
 
 # -----------------------------------
@@ -167,8 +327,7 @@ def home():
 @app.route("/walk")
 def walk():
     _, walk_table, _, _ = get_tables()
-
-    walk_table = walk_table.drop(columns=["AthleteID"], errors="ignore")
+    walk_table = add_leaderboard_context(walk_table)
 
     last_updated = datetime.now(
         ZoneInfo("Africa/Johannesburg")
@@ -176,14 +335,17 @@ def walk():
 
     return render_template(
         "index.html",
-        table=walk_table.to_html(
+        table=display_table(walk_table, "walk").to_html(
             index=False,
             classes="display nowrap",
             border=0,
-            table_id="leagueTable"
+            table_id="leagueTable",
+            escape=False
         ),
         last_updated=last_updated,
-        league="Walk"
+        league="Walk",
+        summary=league_summary(walk_table),
+        latest_result=latest_result_name()
     )
 
 # -----------------------------------
@@ -197,7 +359,7 @@ def admin():
 
         password = sanitize(request.form.get("password"))
 
-        if password == ADMIN_PASSWORD:
+        if ADMIN_PASSWORD and compare_digest(password or "", ADMIN_PASSWORD):
             session.permanent = True
             session["admin"] = True
             return redirect("/upload")
@@ -220,8 +382,14 @@ def upload():
     if request.method == "POST":
 
         file = request.files.get("file")
+        action = request.form.get("action", "upload")
 
         if file and allowed_file(file.filename):
+            preview = preview_results_file(file)
+            file.seek(0)
+
+            if action == "preview":
+                return render_template("admin.html", preview=preview)
 
             filename = secure_filename(file.filename)
             filepath = os.path.join("results", filename)
@@ -230,6 +398,9 @@ def upload():
 
             # 🔥 Recalculate
             clear_cache()
+            flash(f"Uploaded {filename} and recalculated the league.", "success")
+        else:
+            flash("Please choose a valid CSV file.", "error")
 
         return redirect("/")
 
@@ -250,41 +421,50 @@ def logout():
 
 @app.route("/athlete/<athlete_id>")
 def athlete(athlete_id):
+    return athlete_profile("run", athlete_id)
 
-    run_table, _, rivals_map, _ = get_tables()
+@app.route("/athlete/<league>/<athlete_id>")
+def athlete_profile(league, athlete_id):
+    run_table, walk_table, run_rivals, walk_rivals = get_tables()
+    run_table = add_leaderboard_context(run_table)
+    walk_table = add_leaderboard_context(walk_table)
 
-    athlete_row = run_table[run_table["AthleteID"] == athlete_id]
+    if league == "walk":
+        table = walk_table
+        rivals_map = walk_rivals
+        back_url = "/walk"
+        league_label = "Walk"
+    else:
+        table = run_table
+        rivals_map = run_rivals
+        back_url = "/"
+        league_label = "Run"
+
+    athlete_row = table[table["AthleteID"] == athlete_id]
 
     if athlete_row.empty:
         abort(404)
 
     athlete_data = athlete_row.iloc[0]
 
-    # Load all results
-    all_files = [
-        pd.read_csv(os.path.join("results", f), sep=";")
-        for f in os.listdir("results") if f.endswith(".csv")
-    ]
-
-    results = pd.concat(all_files, ignore_index=True)
-
-    history = results[
-        results["Name"].str.lower() == athlete_data["Name"].lower()
-    ].copy()
-
-    # Clean history
-    history["Race"] = history.get("Race", "Unknown")
-    history["Distance"] = history.get("Distance", "")
-    history["Time"] = history.get("Time", "")
-    history["Points"] = history.get("Points", "")
+    race_cols = [c for c in table.columns if c not in BASE_LEAGUE_COLS]
+    history = (
+        athlete_row[race_cols]
+        .T
+        .reset_index()
+        .rename(columns={"index": "Race", athlete_row.index[0]: "Points"})
+    )
+    history = history[history["Points"] > 0]
 
     rival_data = rivals_map.get(athlete_id, {})
 
     return render_template(
         "athlete.html",
         athlete=athlete_data,
-        rival=rival,
-        history=history
+        rival_data=rival_data,
+        history=history,
+        back_url=back_url,
+        league=league_label
     )
 
 # -----------------------------------
@@ -327,7 +507,6 @@ def not_found(e):
 @app.after_request
 def apply_security_headers(response):
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
-    response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
     response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
     return response
 
