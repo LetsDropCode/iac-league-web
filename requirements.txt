@@ -5,3 +5,4 @@ flask-seasurf
 flask-talisman
 bleach
 gunicorn
+openpyxl

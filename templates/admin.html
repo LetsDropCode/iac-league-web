@@ -102,11 +102,11 @@
 <body>
     <a href="/">Back to leaderboard</a>
     <div class="panel">
-    <h2>Upload Finishtime CSV</h2>
+    <h2>Upload Finishtime Results</h2>
     <form method="POST" enctype="multipart/form-data">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-        <input type="file" name="file" accept=".csv,text/csv" required>
-        <button type="submit" name="action" value="preview" class="secondary">Preview CSV</button>
+        <input type="file" name="file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
+        <button type="submit" name="action" value="preview" class="secondary">Preview results</button>
         <button type="submit" name="action" value="upload">Upload and recalculate</button>
     </form>
     </div>

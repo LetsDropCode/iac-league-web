@@ -19,7 +19,7 @@ from flask_seasurf import SeaSurf
 from flask_talisman import Talisman
 
 # Your engine
-from update_engine import process_league
+from update_engine import process_league, read_result_file
 
 from functools import lru_cache
 
@@ -137,7 +137,7 @@ def latest_result_file():
     files = [
         os.path.join("results", f)
         for f in os.listdir("results")
-        if f.endswith(".csv")
+        if f.lower().endswith((".csv", ".xlsx"))
     ]
     if not files:
         return None
@@ -146,7 +146,7 @@ def latest_result_file():
 def race_stem(filename):
     if not filename:
         return ""
-    name = os.path.basename(filename).replace(".csv", "")
+    name = os.path.splitext(os.path.basename(filename))[0]
     return re.sub(r"^\d+K_", "", name).replace("_", " ")
 
 def add_leaderboard_context(df):
@@ -247,9 +247,9 @@ def latest_result_name():
 
 def preview_results_file(file):
     try:
-        df = pd.read_csv(file, sep=";")
+        df = read_result_file(file)
     except Exception as exc:
-        return {"ok": False, "error": f"Could not read this CSV: {exc}"}
+        return {"ok": False, "error": f"Could not read this result file: {exc}"}
 
     columns = set(df.columns)
     time_col = next((c for c in df.columns if "time" in c.lower() or "finish" in c.lower()), None)
@@ -276,7 +276,8 @@ def preview_results_file(file):
 # FILE VALIDATION
 # -----------------------------------
 
-ALLOWED_EXTENSIONS = {"csv"}
+ALLOWED_EXTENSIONS = {"csv", "xlsx"}
+UNSUPPORTED_EXTENSIONS = {"numbers"}
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -400,7 +401,11 @@ def upload():
             clear_cache()
             flash(f"Uploaded {filename} and recalculated the league.", "success")
         else:
-            flash("Please choose a valid CSV file.", "error")
+            ext = file.filename.rsplit(".", 1)[1].lower() if file and "." in file.filename else ""
+            if ext in UNSUPPORTED_EXTENSIONS:
+                flash("Numbers files cannot be read by the league app. Export it as CSV or Excel, then upload again.", "error")
+            else:
+                flash("Please choose a valid CSV or Excel file.", "error")
 
         return redirect("/")
 
@@ -474,18 +479,55 @@ def athlete_profile(league, athlete_id):
 @app.route("/points")
 def points():
 
-    try:
-        df = pd.read_csv("points_rules.csv")
-    except:
-        df = pd.DataFrame()
+    def read_points_rules(filename, discipline):
+        try:
+            df = pd.read_csv(filename)
+        except:
+            return pd.DataFrame(columns=["Discipline", "Distance", "Gender", "Category", "TimeFrom", "TimeTo", "Points"])
+
+        df = df.copy()
+        df.insert(0, "Discipline", discipline)
+        return df
+
+    df = pd.concat(
+        [
+            read_points_rules("points_rules.csv", "Run"),
+            read_points_rules("points_rules_walk.csv", "Walk"),
+        ],
+        ignore_index=True
+    )
+
+    if not df.empty:
+        df["Distance"] = pd.to_numeric(df["Distance"], errors="coerce").astype("Int64")
+        df["Points"] = pd.to_numeric(df["Points"], errors="coerce").astype("Int64")
+        df["TimeFrom"] = pd.to_timedelta(df["TimeFrom"], errors="coerce")
+        df["TimeTo"] = pd.to_timedelta(df["TimeTo"], errors="coerce")
+
+        def display_time(value):
+            if pd.isna(value):
+                return ""
+            seconds = int(value.total_seconds())
+            hours = seconds // 3600
+            minutes = (seconds % 3600) // 60
+            secs = seconds % 60
+            return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
+        df["TimeFrom"] = df["TimeFrom"].map(display_time)
+        df["TimeTo"] = df["TimeTo"].map(display_time)
+
+    rules = df.to_dict(orient="records") if not df.empty else []
 
     return render_template(
         "points.html",
         table=df.to_html(
             index=False,
             classes="display nowrap",
-            border=0
-        )
+            border=0,
+            table_id="pointsTable"
+        ),
+        rules=rules,
+        distances=sorted(df["Distance"].dropna().unique().tolist()) if not df.empty else [],
+        categories=sorted(df["Category"].dropna().unique().tolist()) if not df.empty else [],
     )
 
 # -----------------------------------

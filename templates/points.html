@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Points System</title>
+<title>Irene AC Points System</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet"
 href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
@@ -11,36 +13,380 @@ href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 
 <style>
 body{
-    font-family: Arial;
-    margin:20px;
+    font-family:Arial, sans-serif;
+    margin:0;
     background:#f5f7fb;
+    color:#1f2937;
 }
-h1{ color:#0047AB; }
+
+.page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:18px;
+}
+
+.nav{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+}
+
+.nav a{
+    text-decoration:none;
+    font-weight:bold;
+    color:#0047AB;
+    font-size:14px;
+    padding:8px 10px;
+    border-radius:6px;
+    background:white;
+    border:1px solid #dbe3f0;
+}
+
+.nav a.active{
+    background:#0047AB;
+    color:white;
+    border-color:#0047AB;
+}
+
+h1{
+    color:#0047AB;
+    margin:0 0 6px;
+    font-size:26px;
+}
+
+.subtitle{
+    color:#64748b;
+    margin:0 0 16px;
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.summary-card,
+.calculator,
+.table-panel{
+    background:white;
+    border:1px solid #dbe3f0;
+    border-radius:8px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+}
+
+.summary-card{
+    padding:12px;
+}
+
+.summary-card span{
+    display:block;
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:6px;
+}
+
+.summary-card strong{
+    display:block;
+    font-size:18px;
+}
+
+.calculator{
+    padding:14px;
+    margin-bottom:16px;
+}
+
+.calculator h2,
+.table-panel h2{
+    font-size:18px;
+    margin:0 0 12px;
+    color:#111827;
+}
+
+.calculator-grid{
+    display:grid;
+    grid-template-columns:repeat(6, minmax(0, 1fr));
+    gap:10px;
+    align-items:end;
+}
+
+label{
+    display:block;
+    color:#475569;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+select,
+input{
+    width:100%;
+    box-sizing:border-box;
+    padding:9px 10px;
+    border:1px solid #ccd3df;
+    border-radius:6px;
+    background:white;
+    font-size:14px;
+}
+
+button{
+    width:100%;
+    border:0;
+    border-radius:6px;
+    padding:10px;
+    background:#0047AB;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.result{
+    margin-top:12px;
+    padding:12px;
+    border-radius:8px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+}
+
+.result strong{
+    color:#0047AB;
+}
+
+.filter-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.filter-row select{
+    width:auto;
+    min-width:150px;
+}
+
+.table-panel{
+    padding:12px;
+    overflow-x:auto;
+}
+
+table.dataTable{
+    font-size:13px;
+}
+
+table.dataTable thead th{
+    background:#0047AB;
+    color:white;
+    white-space:nowrap;
+}
+
+@media (max-width: 900px){
+    .summary-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    .calculator-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px){
+    .page{ padding:10px; }
+    h1{ font-size:20px; }
+    .calculator-grid{ grid-template-columns:1fr; }
+    .filter-row select{ width:100%; }
+}
 </style>
 </head>
 
 <body>
-
-<a href="/">← Back</a>
-
-<h1>Points System</h1>
-
-<p>
-Points are awarded based on <strong>Distance + Gender + Category + Time</strong>.
-</p>
-
-<div>
-{{ table|safe }}
+<main class="page">
+<div class="nav">
+    <a href="/">Run</a>
+    <a href="/walk">Walk</a>
+    <a href="/points" class="active">Points System</a>
+    <a href="/admin">Admin</a>
 </div>
 
+<h1>Irene AC Points System</h1>
+<p class="subtitle">Points are based on discipline, distance, gender, category, and finish time.</p>
+
+<section class="summary-grid" aria-label="Points system summary">
+    <div class="summary-card">
+        <span>Disciplines</span>
+        <strong>Run + Walk</strong>
+    </div>
+    <div class="summary-card">
+        <span>Distances</span>
+        <strong>{{ distances|length }}</strong>
+    </div>
+    <div class="summary-card">
+        <span>Categories</span>
+        <strong>{{ categories|length }}</strong>
+    </div>
+    <div class="summary-card">
+        <span>Rules</span>
+        <strong>{{ rules|length }}</strong>
+    </div>
+</section>
+
+<section class="calculator">
+    <h2>Points Calculator</h2>
+    <div class="calculator-grid">
+        <div>
+            <label for="calcDiscipline">Discipline</label>
+            <select id="calcDiscipline">
+                <option>Run</option>
+                <option>Walk</option>
+            </select>
+        </div>
+        <div>
+            <label for="calcDistance">Distance</label>
+            <select id="calcDistance">
+                {% for distance in distances %}
+                <option value="{{ distance }}">{{ distance }} km</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="calcGender">Gender</label>
+            <select id="calcGender">
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+        </div>
+        <div>
+            <label for="calcCategory">Category</label>
+            <select id="calcCategory">
+                {% for category in categories %}
+                <option>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="calcTime">Finish Time</label>
+            <input id="calcTime" type="text" placeholder="01:05:30">
+        </div>
+        <div>
+            <button id="calculatePoints" type="button">Calculate</button>
+        </div>
+    </div>
+    <div id="calculatorResult" class="result">Enter a finish time to estimate points.</div>
+</section>
+
+<section class="table-panel">
+    <h2>Rules Table</h2>
+    <div class="filter-row">
+        <select id="disciplineFilter">
+            <option value="">All Disciplines</option>
+            <option value="Run">Run</option>
+            <option value="Walk">Walk</option>
+        </select>
+        <select id="distanceFilter">
+            <option value="">All Distances</option>
+            {% for distance in distances %}
+            <option value="{{ distance }}">{{ distance }} km</option>
+            {% endfor %}
+        </select>
+        <select id="genderFilter">
+            <option value="">All Genders</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        <select id="categoryFilter">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+            <option>{{ category }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {{ table|safe }}
+</section>
+</main>
+
 <script>
+const rules = {{ rules|tojson }};
+
+function findCol(name){
+    const headers = $('#pointsTable thead th');
+    for(let i=0; i<headers.length; i++){
+        if($(headers[i]).text().trim().toLowerCase() === name.toLowerCase()){
+            return i;
+        }
+    }
+    return -1;
+}
+
+function secondsFromTime(value){
+    const parts = String(value || '').trim().split(':').map(Number);
+    if(parts.some(Number.isNaN)) return null;
+    if(parts.length === 2) return parts[0] * 60 + parts[1];
+    if(parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    return null;
+}
+
+function displayRuleTime(rule){
+    return `${rule.TimeFrom} - ${rule.TimeTo}`;
+}
+
 $(document).ready(function(){
-    $('.display').DataTable({
+    const table = $('#pointsTable').DataTable({
         scrollX:true,
-        pageLength:25
+        pageLength:25,
+        autoWidth:false,
+        order:[[0,'asc'],[1,'asc'],[2,'asc'],[3,'asc'],[6,'desc']],
+        dom:'<"top"f>rt<"bottom"lip>',
+        language:{
+            search:'',
+            searchPlaceholder:'Search rules...'
+        }
+    });
+
+    const disciplineCol = findCol('Discipline');
+    const distanceCol = findCol('Distance');
+    const genderCol = findCol('Gender');
+    const categoryCol = findCol('Category');
+
+    function applyFilter(selector, column){
+        $(selector).on('change', function(){
+            const value = $(this).val();
+            if(column !== -1){
+                table.column(column).search(value ? `^${value}$` : '', true, false).draw();
+            }
+        });
+    }
+
+    applyFilter('#disciplineFilter', disciplineCol);
+    applyFilter('#distanceFilter', distanceCol);
+    applyFilter('#genderFilter', genderCol);
+    applyFilter('#categoryFilter', categoryCol);
+
+    $('#calculatePoints').on('click', function(){
+        const discipline = $('#calcDiscipline').val();
+        const distance = Number($('#calcDistance').val());
+        const gender = $('#calcGender').val();
+        const category = $('#calcCategory').val();
+        const seconds = secondsFromTime($('#calcTime').val());
+
+        if(seconds === null){
+            $('#calculatorResult').html('Use a time like <strong>45:30</strong> or <strong>01:05:30</strong>.');
+            return;
+        }
+
+        const match = rules.find(rule => {
+            return rule.Discipline === discipline &&
+                Number(rule.Distance) === distance &&
+                rule.Gender === gender &&
+                rule.Category === category &&
+                seconds >= secondsFromTime(rule.TimeFrom) &&
+                seconds <= secondsFromTime(rule.TimeTo);
+        });
+
+        if(match){
+            $('#calculatorResult').html(
+                `<strong>${match.Points} points</strong> for ${discipline.toLowerCase()} ${distance}km, ${gender}, ${category}. ` +
+                `Rule band: ${displayRuleTime(match)}.`
+            );
+        } else {
+            $('#calculatorResult').html('No exact band found. A valid finisher may still receive minimum points depending on league rules.');
+        }
     });
 });
 </script>
-
 </body>
 </html>

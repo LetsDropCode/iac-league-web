@@ -2,6 +2,9 @@ import pandas as pd
 import os
 
 
+RESULT_EXTENSIONS = (".csv", ".xlsx")
+
+
 # -----------------------------------
 # MAIN ENTRY
 # -----------------------------------
@@ -30,15 +33,15 @@ def process_league():
     all_results = []
 
     for file in os.listdir("results"):
-        if file.endswith(".csv"):
+        if file.lower().endswith(RESULT_EXTENSIONS):
 
             try:
-                df = pd.read_csv(os.path.join("results", file), sep=";")
+                df = read_result_file(os.path.join("results", file))
             except Exception as e:
                 print(f"❌ Skipping {file}: {e}")
                 continue
 
-            df["Race"] = file.replace(".csv", "")
+            df["Race"] = os.path.splitext(file)[0]
             df["Discipline"] = "Walk" if "walk" in file.lower() else "Run"
 
             all_results.append(df)
@@ -194,12 +197,22 @@ def build_league(results, rules, max_times):
         results["PointsCategory"].str.lower()
     )
 
+    athlete_profiles = (
+        results.groupby("AthleteID")
+        .agg({
+            "Name": canonical_name,
+            "Gender": "first",
+            "PointsCategory": "first"
+        })
+        .reset_index()
+    )
+
     # -----------------------------------
     # PIVOT
     # -----------------------------------
     race_table = (
         results.pivot_table(
-            index=["AthleteID", "Name", "Gender", "PointsCategory"],
+            index=["AthleteID"],
             columns="RaceLabel",
             values="Points",
             aggfunc="max",
@@ -207,6 +220,8 @@ def build_league(results, rules, max_times):
         )
         .reset_index()
     )
+
+    race_table = race_table.merge(athlete_profiles, on="AthleteID", how="left")
 
     # -----------------------------------
     # DYNAMIC RACE COLS (FIXED)
@@ -310,6 +325,118 @@ def safe_read(file, cols=None):
         return pd.read_csv(file)
     except:
         return pd.DataFrame(columns=cols if cols else [])
+
+
+def read_result_file(path):
+    filename = getattr(path, "filename", str(path))
+    ext = os.path.splitext(filename)[1].lower()
+    source = getattr(path, "stream", path)
+
+    if hasattr(source, "seek"):
+        source.seek(0)
+
+    if ext == ".csv":
+        df = pd.read_csv(source, sep=";")
+    elif ext == ".xlsx":
+        df = pd.read_excel(source)
+    else:
+        raise ValueError("Unsupported result file type")
+
+    return normalize_result_columns(df)
+
+
+def normalize_result_columns(df):
+    df = df.dropna(how="all").copy()
+
+    if not has_result_headers(df.columns):
+        header_idx = find_result_header_row(df)
+        if header_idx is None:
+            raise ValueError("Could not find result headers")
+
+        header = df.iloc[header_idx].tolist()
+        df = df.iloc[header_idx + 1:].copy()
+        df.columns = header
+
+    df.columns = [normalize_header(c) for c in df.columns]
+    df = df.rename(columns={
+        "Participant": "Name",
+        "Bibno": "Race No",
+        "Bib No": "Race No",
+        "Pos": "Pos",
+    })
+
+    df = df.dropna(how="all").copy()
+
+    if "Time" not in df.columns and "Finish" in df.columns:
+        df["Time"] = df["Finish"]
+
+    for column in ["Time", "Finish"]:
+        if column in df.columns:
+            df[column] = df[column].apply(normalize_time_value)
+
+    required = ["Name", "Gender", "Category", "Distance"]
+    missing = [c for c in required if c not in df.columns]
+    if missing:
+        raise ValueError(f"Missing required columns: {', '.join(missing)}")
+
+    return df
+
+
+def normalize_header(value):
+    value = str(value).strip()
+    value = value.replace("\ufeff", "")
+    value = value.rstrip(".")
+    return value
+
+
+def normalize_time_value(value):
+    if pd.isna(value):
+        return value
+
+    text = str(value).strip()
+    if text.count(":") == 1:
+        minutes, seconds = text.split(":")
+        if minutes.isdigit() and seconds.isdigit():
+            return f"00:{int(minutes):02d}:{int(seconds):02d}"
+
+    return value
+
+
+def canonical_name(values):
+    names = [str(v).strip() for v in values if pd.notna(v) and str(v).strip()]
+    if not names:
+        return ""
+
+    return sorted(
+        names,
+        key=lambda name: (
+            sum(1 for char in name if char.isupper()),
+            len(name)
+        ),
+        reverse=True
+    )[0]
+
+
+def header_key(value):
+    return normalize_header(value).lower().replace(" ", "")
+
+
+def has_result_headers(columns):
+    keys = {header_key(c) for c in columns}
+    return (
+        ("name" in keys or "participant" in keys) and
+        "gender" in keys and
+        "category" in keys and
+        "distance" in keys and
+        ("time" in keys or "finish" in keys)
+    )
+
+
+def find_result_header_row(df):
+    for idx in range(min(len(df), 10)):
+        if has_result_headers(df.iloc[idx].tolist()):
+            return idx
+    return None
 
 
 def clean_rules(rules):
