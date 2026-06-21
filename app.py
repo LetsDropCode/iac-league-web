@@ -19,7 +19,7 @@ from flask_seasurf import SeaSurf
 from flask_talisman import Talisman
 
 # Your engine
-from update_engine import process_league, read_result_file
+from update_engine import process_league, read_result_file, clean_distance
 
 from functools import lru_cache
 
@@ -245,6 +245,106 @@ def latest_result_name():
         return "No uploads yet"
     return os.path.basename(latest).replace(".csv", "").replace("_", " ")
 
+def result_race_label(row):
+    race_name = (
+        str(row["Race"])
+        .replace(".csv", "")
+        .replace(".xlsx", "")
+    )
+    race_name = re.sub(r"\d+K_", "", race_name).replace("_", " ")
+    if pd.notnull(row["Distance"]):
+        return f"{race_name} {int(row['Distance'])}km"
+    return race_name
+
+def format_duration(value):
+    if pd.isna(value):
+        return ""
+    seconds = int(value.total_seconds())
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    secs = seconds % 60
+    return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
+def load_result_details():
+    try:
+        category_map = pd.read_csv("category_map.csv")
+    except Exception:
+        category_map = pd.DataFrame(columns=["FinishtimeCategory", "PointsCategory"])
+    frames = []
+
+    for file in os.listdir("results"):
+        if not file.lower().endswith((".csv", ".xlsx")):
+            continue
+
+        try:
+            df = read_result_file(os.path.join("results", file))
+        except Exception:
+            continue
+
+        df = df.copy()
+        df["Race"] = os.path.splitext(file)[0]
+        df["Discipline"] = "Walk" if "walk" in file.lower() else "Run"
+        df["Distance"] = df["Distance"].apply(clean_distance)
+        df["Distance"] = pd.to_numeric(df["Distance"], errors="coerce").round().astype("Int64")
+        df["Name"] = df["Name"].astype(str).str.strip()
+        df["Gender"] = df["Gender"].astype(str).str.strip()
+        df["Category"] = df["Category"].astype(str).str.strip()
+
+        if not category_map.empty:
+            df = df.merge(
+                category_map,
+                left_on="Category",
+                right_on="FinishtimeCategory",
+                how="left"
+            )
+
+        df["PointsCategory"] = df.get("PointsCategory", "Senior").fillna("Senior")
+        df["AthleteID"] = (
+            df["Name"].str.lower().str.replace(r"\s+", "-", regex=True)
+            + "_" +
+            df["Gender"].str.lower()
+            + "_" +
+            df["PointsCategory"].str.lower()
+        )
+        time_col = next((c for c in df.columns if "time" in c.lower() or "finish" in c.lower()), None)
+        df["Time"] = pd.to_timedelta(df[time_col], errors="coerce") if time_col else pd.NaT
+        df["RaceLabel"] = df.apply(result_race_label, axis=1)
+        frames.append(df[["AthleteID", "Discipline", "RaceLabel", "Time"]])
+
+    if not frames:
+        return pd.DataFrame(columns=["AthleteID", "Discipline", "RaceLabel", "Time"])
+
+    details = pd.concat(frames, ignore_index=True)
+    details = details.sort_values("Time")
+    return details.drop_duplicates(
+        subset=["AthleteID", "Discipline", "RaceLabel"],
+        keep="first"
+    )
+
+def athlete_history_with_times(athlete_row, table, league):
+    race_cols = [c for c in table.columns if c not in BASE_LEAGUE_COLS]
+    history = (
+        athlete_row[race_cols]
+        .T
+        .reset_index()
+        .rename(columns={"index": "Race", athlete_row.index[0]: "Points"})
+    )
+    history = history[history["Points"] > 0].copy()
+
+    if history.empty:
+        history["Time"] = []
+        return history
+
+    details = load_result_details()
+    details = details[
+        (details["AthleteID"] == athlete_row.iloc[0]["AthleteID"]) &
+        (details["Discipline"].str.lower() == league.lower())
+    ]
+
+    time_map = details.set_index("RaceLabel")["Time"].to_dict()
+    history["Time"] = history["Race"].map(time_map).map(format_duration)
+    return history[["Race", "Time", "Points"]]
+
 def preview_results_file(file):
     try:
         df = read_result_file(file)
@@ -452,14 +552,7 @@ def athlete_profile(league, athlete_id):
 
     athlete_data = athlete_row.iloc[0]
 
-    race_cols = [c for c in table.columns if c not in BASE_LEAGUE_COLS]
-    history = (
-        athlete_row[race_cols]
-        .T
-        .reset_index()
-        .rename(columns={"index": "Race", athlete_row.index[0]: "Points"})
-    )
-    history = history[history["Points"] > 0]
+    history = athlete_history_with_times(athlete_row, table, league)
 
     rival_data = rivals_map.get(athlete_id, {})
 

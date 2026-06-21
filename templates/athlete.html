@@ -136,13 +136,15 @@ th{
     <table>
         <tr>
             <th>Race</th>
+            <th>Time</th>
             <th>Points</th>
         </tr>
 
         {% for row in history.values %}
         <tr>
             <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
+            <td>{{ row[1] or "Unknown" }}</td>
+            <td>{{ row[2] }}</td>
         </tr>
         {% endfor %}
     </table>
