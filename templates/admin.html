@@ -98,8 +98,18 @@
             font-weight:bold;
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/irene-brand.css') }}">
 </head>
 <body>
+    <main class="page">
+    <header class="brand-header">
+        <img class="brand-logo" src="{{ url_for('static', filename='images/irene-logo.jpeg') }}" alt="Irene Athletics Club logo">
+        <div class="brand-copy">
+            <p class="brand-kicker">Irene Athletics Club</p>
+            <h1 class="brand-heading">League Admin</h1>
+            <p class="brand-subtitle">Upload and review new race results.</p>
+        </div>
+    </header>
     <a href="/">Back to leaderboard</a>
     <div class="panel">
     <h2>Upload Finishtime Results</h2>
@@ -149,5 +159,6 @@
         {% endif %}
     </div>
     {% endif %}
+    </main>
 </body>
 </html>

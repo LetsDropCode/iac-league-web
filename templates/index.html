@@ -223,19 +223,26 @@ table.dataTable tbody tr:hover{
 }
 
 </style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/irene-brand.css') }}">
 </head>
 
 <body>
 
 <main class="page">
+<header class="brand-header">
+    <img class="brand-logo" src="{{ url_for('static', filename='images/irene-logo.jpeg') }}" alt="Irene Athletics Club logo">
+    <div class="brand-copy">
+        <p class="brand-kicker">Irene Athletics Club</p>
+        <h1 class="brand-heading">{{ league }} League</h1>
+        <p class="brand-subtitle">Serious about our run — and every point earned along the way.</p>
+    </div>
+</header>
 <div class="nav">
     <a href="/" class="{% if league == 'Run' %}active{% endif %}">Run</a>
     <a href="/walk" class="{% if league == 'Walk' %}active{% endif %}">Walk</a>
     <a href="/points">Points System</a>
     <a href="/admin">Admin</a>
 </div>
-
-<h1>Irene AC {{ league }} League</h1>
 
 <p class="updated">
 <strong>Updated:</strong> {{ last_updated }}

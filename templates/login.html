@@ -45,8 +45,17 @@
             font-size:14px;
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/irene-brand.css') }}">
 </head>
 <body>
+    <main class="page">
+    <header class="brand-header">
+        <img class="brand-logo" src="{{ url_for('static', filename='images/irene-logo.jpeg') }}" alt="Irene Athletics Club logo">
+        <div class="brand-copy">
+            <p class="brand-kicker">Irene Athletics Club</p>
+            <h1 class="brand-heading">League Admin</h1>
+        </div>
+    </header>
     <div class="panel">
     <h2>Admin Login</h2>
     {% if error %}
@@ -58,5 +67,6 @@
         <button type="submit">Login</button>
     </form>
     </div>
+    </main>
 </body>
 </html>

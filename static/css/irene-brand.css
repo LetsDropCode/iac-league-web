@@ -1,0 +1,199 @@
+:root {
+    --irene-green: #49b45b;
+    --irene-green-dark: #287d42;
+    --irene-brown: #743136;
+    --irene-lavender: #aeb7dc;
+    --irene-aqua: #79cec3;
+    --irene-ink: #2f3544;
+    --irene-mist: #f3faf7;
+    --irene-border: #d7e7df;
+}
+
+body {
+    background: linear-gradient(135deg, #eff9f4 0%, #f8fbfa 48%, #eef9f8 100%);
+    color: var(--irene-ink);
+}
+
+.page {
+    padding-top: 24px;
+}
+
+.brand-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 16px;
+    padding: 14px 18px;
+    border: 1px solid var(--irene-border);
+    border-radius: 16px;
+    background: linear-gradient(112deg, #ffffff 0%, #ffffff 70%, #e2f5ee 100%);
+    box-shadow: 0 7px 20px rgba(42, 97, 70, 0.10);
+}
+
+.brand-logo {
+    width: 116px;
+    height: 86px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.brand-copy {
+    min-width: 0;
+}
+
+.brand-kicker {
+    margin: 0 0 3px;
+    color: var(--irene-brown);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.brand-heading {
+    margin: 0;
+    color: var(--irene-green-dark);
+    font-size: clamp(22px, 4vw, 30px);
+    line-height: 1.1;
+}
+
+.brand-subtitle {
+    margin: 6px 0 0;
+    color: #596677;
+    font-size: 14px;
+}
+
+.nav {
+    gap: 7px;
+    margin-bottom: 16px;
+}
+
+.nav a,
+a {
+    color: var(--irene-green-dark);
+}
+
+.nav a {
+    border-color: var(--irene-border);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .9);
+}
+
+.nav a.active {
+    background: var(--irene-green-dark);
+    border-color: var(--irene-green-dark);
+}
+
+h1, h2, h3 {
+    color: var(--irene-green-dark);
+}
+
+.summary-card,
+.card,
+.calculator,
+.table-panel,
+.table-container,
+.panel,
+.preview {
+    border-color: var(--irene-border);
+    box-shadow: 0 5px 16px rgba(42, 97, 70, 0.09);
+}
+
+.summary-card,
+.card,
+.calculator,
+.table-panel,
+.table-container,
+.panel,
+.preview {
+    border-radius: 14px;
+}
+
+.summary-card {
+    border-top: 4px solid var(--irene-aqua);
+}
+
+.summary-card span,
+.stat span,
+.metric span,
+.subtitle,
+.updated,
+.filter-note,
+label {
+    color: #65736e;
+}
+
+.stat,
+.metric,
+.result {
+    background: var(--irene-mist);
+    border-color: #dcece5;
+}
+
+input,
+select {
+    border-color: #bad5c8;
+}
+
+input:focus,
+select:focus {
+    outline: 3px solid rgba(121, 206, 195, .35);
+    border-color: var(--irene-green);
+}
+
+button {
+    background: var(--irene-green-dark);
+}
+
+button:hover,
+button:focus {
+    background: var(--irene-brown);
+}
+
+button.secondary {
+    background: var(--irene-brown);
+}
+
+.athlete-link,
+.result strong {
+    color: var(--irene-green-dark);
+}
+
+table.dataTable thead th,
+th {
+    background: var(--irene-green-dark);
+}
+
+table.dataTable tbody tr:hover {
+    background: #e7f6ee;
+}
+
+.rank-change.up,
+.flash.success {
+    background: #e9f7ec;
+    color: var(--irene-green-dark);
+}
+
+.rank-change.new {
+    background: #e7f7f5;
+    color: #247a72;
+}
+
+.rank-1 { background: #fff7cf; }
+.rank-2 { background: #f0f3f2; }
+.rank-3 { background: #f8e6e1; }
+
+@media (max-width: 560px) {
+    .brand-header {
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .brand-logo {
+        width: 76px;
+        height: 64px;
+    }
+
+    .brand-subtitle { font-size: 12px; }
+}
