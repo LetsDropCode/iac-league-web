@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Import FinishTime Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/irene-brand.css') }}">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f7fb; color: #1f2937; }
+        .panel { max-width: 760px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,.08); margin: 16px 0; }
+        input, select, button { box-sizing: border-box; padding: 10px; border-radius: 6px; font-size: 15px; }
+        input, select { border: 1px solid #ccd3df; width: 100%; margin: 6px 0 12px; background: #fff; }
+        button { border: 0; background: #0047AB; color: white; font-weight: bold; cursor: pointer; }
+        .race { border-top: 1px solid #dbe3f0; padding: 16px 0; }
+        .race:first-of-type { border-top: 0; }
+        .race h3 { margin: 0 0 4px; }
+        .race p { margin: 0 0 12px; color: #475569; }
+        .fields { display: grid; grid-template-columns: 1fr 120px 120px; gap: 10px; align-items: end; }
+        .fields label { font-size: 13px; font-weight: bold; }
+        .error { color: #b42318; font-weight: bold; }
+        @media (max-width: 640px) { .fields { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="brand-header">
+            <img class="brand-logo" src="{{ url_for('static', filename='images/irene-logo.jpeg') }}" alt="Irene Athletics Club logo">
+            <div class="brand-copy">
+                <p class="brand-kicker">Irene Athletics Club</p>
+                <h1 class="brand-heading">Import FinishTime Results</h1>
+                <p class="brand-subtitle">Choose the dated event first, then import your club's results.</p>
+            </div>
+        </header>
+        <a href="/upload">Back to uploads</a>
+
+        <section class="panel">
+            <h2>1. Find the race</h2>
+            <form method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <label for="query">Race name</label>
+                <input id="query" name="query" value="{{ query }}" placeholder="e.g. Jackie Mekler" minlength="2" required>
+                <button type="submit">Search FinishTime</button>
+            </form>
+            {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        </section>
+
+        {% if races %}
+        <section class="panel">
+            <h2>2. Choose the exact dated race and import</h2>
+            {% for race in races %}
+            <article class="race">
+                <h3>{{ race.name }}</h3>
+                <p>{{ race.date }}</p>
+                <form method="post" action="{{ url_for('import_finishtime_results') }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="race_url" value="{{ race.url }}">
+                    <div class="fields">
+                        <div>
+                            <label for="club-{{ loop.index }}">Exact FinishTime club name</label>
+                            <input id="club-{{ loop.index }}" name="club" value="IRENE ATHLETIC CLUB" required>
+                        </div>
+                        <div>
+                            <label for="distance-{{ loop.index }}">Distance (km)</label>
+                            <input id="distance-{{ loop.index }}" name="distance" type="number" min="1" required>
+                        </div>
+                        <div>
+                            <label for="discipline-{{ loop.index }}">League</label>
+                            <select id="discipline-{{ loop.index }}" name="discipline">
+                                <option value="run">Run</option>
+                                <option value="walk">Walk</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit">Import this club's results</button>
+                </form>
+            </article>
+            {% endfor %}
+        </section>
+        {% endif %}
+    </main>
+</body>
+</html>

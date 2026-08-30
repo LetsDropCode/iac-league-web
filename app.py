@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, abort, flash
+from flask import Flask, render_template, request, redirect, session, abort, flash, url_for
 import os
 import logging
 import pandas as pd
@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from html import escape
 from hmac import compare_digest
-from urllib.parse import quote
+from urllib.parse import quote, parse_qs, urlparse
 
 import bleach
 from werkzeug.utils import secure_filename
@@ -20,6 +20,7 @@ from flask_talisman import Talisman
 
 # Your engine
 from update_engine import process_league, read_result_file, clean_distance
+from finishtime import FinishTimeClient, FinishTimeError
 
 from functools import lru_cache
 
@@ -382,6 +383,12 @@ UNSUPPORTED_EXTENSIONS = {"numbers"}
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+def finishtime_import_filename(race_url, discipline, distance):
+    params = parse_qs(urlparse(race_url).query)
+    race_id = params["RId"][0]
+    return f"{int(distance)}K_FinishTime_{race_id}_{discipline.lower()}.csv"
+
 # -----------------------------------
 # CACHE
 # -----------------------------------
@@ -510,6 +517,63 @@ def upload():
         return redirect("/")
 
     return render_template("admin.html")
+
+
+@app.route("/finishtime", methods=["GET", "POST"])
+@limiter.limit("10 per hour")
+def finishtime_import():
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    query = request.values.get("query", "").strip()
+    races = []
+    error = None
+
+    if request.method == "POST":
+        try:
+            races = FinishTimeClient().search_races(query)
+        except FinishTimeError as exc:
+            error = str(exc)
+        except Exception:
+            logging.exception("FinishTime race search failed")
+            error = "FinishTime could not be reached. Please try again shortly."
+
+    return render_template("finishtime.html", query=query, races=races, error=error)
+
+
+@app.route("/finishtime/import", methods=["POST"])
+@limiter.limit("10 per hour")
+def import_finishtime_results():
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    race_url = request.form.get("race_url", "")
+    club = request.form.get("club", "").strip()
+    discipline = request.form.get("discipline", "run").lower()
+    try:
+        distance = int(request.form.get("distance", ""))
+        if discipline not in {"run", "walk"}:
+            raise FinishTimeError("Choose Run or Walk before importing.")
+
+        results = FinishTimeClient().results_for_club(race_url, club, distance)
+        filename = finishtime_import_filename(race_url, discipline, distance)
+        filepath = os.path.join("results", filename)
+        results.to_csv(filepath, sep=";", index=False)
+        clear_cache()
+        flash(
+            f"Imported {len(results)} {discipline} result(s) for {club} and recalculated the league.",
+            "success",
+        )
+        return redirect("/")
+    except FinishTimeError as exc:
+        flash(str(exc), "error")
+    except (TypeError, ValueError):
+        flash("Distance must be a whole number of kilometres.", "error")
+    except Exception:
+        logging.exception("FinishTime import failed")
+        flash("FinishTime could not be imported. No league results were changed.", "error")
+
+    return redirect(url_for("finishtime_import"))
 
 # -----------------------------------
 # LOGOUT

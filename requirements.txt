@@ -6,3 +6,6 @@ flask-talisman
 bleach
 gunicorn
 openpyxl
+requests
+beautifulsoup4
+lxml

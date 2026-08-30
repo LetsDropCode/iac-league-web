@@ -121,6 +121,12 @@
     </form>
     </div>
 
+    <div class="panel">
+        <h2>Import from FinishTime</h2>
+        <p>Search for an event, select its exact date, then import a club's Run or Walk results.</p>
+        <a href="{{ url_for('finishtime_import') }}">Find and import a FinishTime race</a>
+    </div>
+
     {% if preview %}
     <div class="preview {% if preview.ok %}ok{% else %}error{% endif %}">
         <h3>Upload Preview</h3>

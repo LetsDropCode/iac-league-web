@@ -1,0 +1,146 @@
+{"kind":"deck","id":"pr/3js6ep","name":"Deck"}
+{"kind":"layout","layoutId":"99ebb6d2-31fb-4a2b-b6f3-8cc9754a72de","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"6402b9a9-f723-4942-9ef0-c381df7f0ba1","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/19dtd3","slide":1,"title":"CLUB LEAGUE PORTAL","textShapes":9}
+{"kind":"shape","id":"sh/vmxw7i1k","slide":1,"bbox":[0,0,390,720]}
+{"kind":"shape","id":"sh/g7qxgni5","slide":1,"bbox":[390,0,14,720]}
+{"kind":"textbox","id":"sh/h8ze9sja","slide":1,"text":"CLUB LEAGUE PORTAL","textPreview":"CLUB LEAGUE PORTAL","textChars":18,"textLines":1,"bbox":[72,78,240,22]}
+{"kind":"textbox","id":"sh/i98fix0v","slide":1,"text":"An easier way\nto run your\nclub league.","textPreview":"An easier way | to run your | club league.","textChars":38,"textLines":3,"bbox":[72,150,290,250]}
+{"kind":"textbox","id":"sh/3ahwb21g","slide":1,"text":"A practical, branded league portal - ready to make your results clearer for every athlete.","textPreview":"A practical, branded league portal - ready to make your results clearer for every athlete.","textChars":90,"textLines":1,"bbox":[72,454,250,90]}
+{"kind":"shape","id":"sh/4bqxk7i1","slide":1,"bbox":[474,126,98,7]}
+{"kind":"textbox","id":"sh/5czedcjm","slide":1,"text":"Your club gets one clear\nplace for results, points\nand progress.","textPreview":"Your club gets one clear | place for results, points | and progress.","textChars":64,"textLines":3,"bbox":[474,164,710,165]}
+{"kind":"textbox","id":"sh/qd8fmx07","slide":1,"text":"Pricing & implementation prospectus","textPreview":"Pricing & implementation prospectus","textChars":35,"textLines":1,"bbox":[478,355,420,28]}
+{"kind":"shape","id":"sh/re1wf21s","slide":1,"bbox":[474,438,614,128]}
+{"kind":"textbox","id":"sh/n6d07y5o","slide":1,"text":"IMPLEMENTATION","textPreview":"IMPLEMENTATION","textChars":14,"textLines":1,"bbox":[505,464,170,18]}
+{"kind":"textbox","id":"sh/m54jytoj","slide":1,"text":"R12,500","textPreview":"R12,500","textChars":7,"textLines":1,"bbox":[505,492,210,48]}
+{"kind":"textbox","id":"sh/98vi98nu","slide":1,"text":"Live in approximately 5 working days*","textPreview":"Live in approximately 5 working days*","textChars":37,"textLines":1,"bbox":[760,500,285,28]}
+{"kind":"textbox","id":"sh/o7m10369","slide":1,"text":"*From receipt of the agreed information and files.","textPreview":"*From receipt of the agreed information and files.","textChars":50,"textLines":1,"bbox":[478,608,450,18]}
+{"kind":"notes","id":"nt/19dtd3","slide":1,"text":""}
+{"kind":"slide","id":"sl/2iquh2","slide":2,"title":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textShapes":10}
+{"kind":"textbox","id":"sh/t4fmdg3e","slide":2,"text":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textPreview":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textChars":33,"textLines":1,"bbox":[72,678,420,16]}
+{"kind":"textbox","id":"sh/614ni14n","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1168,678,40,16]}
+{"kind":"textbox","id":"sh/72d4b6l8","slide":2,"text":"Your league should not live in spreadsheets and WhatsApp messages.","textPreview":"Your league should not live in spreadsheets and WhatsApp messages.","textChars":66,"textLines":1,"bbox":[72,70,940,82]}
+{"kind":"shape","id":"sh/kzm5gbmh","slide":2,"bbox":[72,173,82,5]}
+{"kind":"textbox","id":"sh/50vm9g32","slide":2,"text":"The portal gives athletes a reliable, public view of the league while keeping result administration simple for the club.","textPreview":"The portal gives athletes a reliable, public view of the league while keeping result administration simple for the club.","textChars":120,"textLines":1,"bbox":[72,208,960,54]}
+{"kind":"shape","id":"sh/ix4ne14b","slide":2,"bbox":[72,314,350,242]}
+{"kind":"textbox","id":"sh/jyd476lw","slide":2,"text":"For athletes","textPreview":"For athletes","textChars":12,"textLines":1,"bbox":[104,347,220,30]}
+{"kind":"textbox","id":"sh/4vq5sv21","slide":2,"text":"See current rank, points, race history and the next person to chase.","textPreview":"See current rank, points, race history and the next person to chase.","textChars":68,"textLines":1,"bbox":[104,399,265,90]}
+{"kind":"shape","id":"sh/pwz6l036","slide":2,"bbox":[466,314,350,242]}
+{"kind":"textbox","id":"sh/5sb2tgje","slide":2,"text":"For administrators","textPreview":"For administrators","textChars":18,"textLines":1,"bbox":[498,347,255,30]}
+{"kind":"textbox","id":"sh/kr2l0bit","slide":2,"text":"Upload results, recalculate automatically and keep one consistent points table.","textPreview":"Upload results, recalculate automatically and keep one consistent points table.","textChars":79,"textLines":1,"bbox":[498,399,270,90]}
+{"kind":"shape","id":"sh/jqtkr618","slide":2,"bbox":[860,314,348,242]}
+{"kind":"textbox","id":"sh/ipkjyl03","slide":2,"text":"For the club","textPreview":"For the club","textChars":12,"textLines":1,"bbox":[892,347,205,30]}
+{"kind":"textbox","id":"sh/xob2pgji","slide":2,"text":"A club-branded home for the league that is ready to share with members.","textPreview":"A club-branded home for the league that is ready to share with members.","textChars":71,"textLines":1,"bbox":[892,399,265,90]}
+{"kind":"notes","id":"nt/2iquh2","slide":2,"text":""}
+{"kind":"slide","id":"sl/q383mt","slide":3,"title":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textShapes":18}
+{"kind":"textbox","id":"sh/ux83edkv","slide":3,"text":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textPreview":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textChars":33,"textLines":1,"bbox":[72,678,420,16]}
+{"kind":"textbox","id":"sh/h0zmp836","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1168,678,40,16]}
+{"kind":"textbox","id":"sh/wzqlg32l","slide":3,"text":"What your club receives","textPreview":"What your club receives","textChars":23,"textLines":1,"bbox":[72,70,600,48]}
+{"kind":"textbox","id":"sh/32h4rilc","slide":3,"text":"The core system is already built and working. Your implementation configures it for your club.","textPreview":"The core system is already built and working. Your implementation configures it for your club.","textChars":94,"textLines":1,"bbox":[72,130,865,35]}
+{"kind":"shape","id":"sh/i183idkr","slide":3,"bbox":[74,227,34,34]}
+{"kind":"textbox","id":"sh/54jmts3i","slide":3,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[74,233,34,20]}
+{"kind":"textbox","id":"sh/43qlkn2x","slide":3,"text":"Public leaderboards","textPreview":"Public leaderboards","textChars":19,"textLines":1,"bbox":[128,225,390,27]}
+{"kind":"textbox","id":"sh/z6xkfyl8","slide":3,"text":"Separate Run and Walk views, clear rankings and a current league overview.","textPreview":"Separate Run and Walk views, clear rankings and a current league overview.","textChars":74,"textLines":1,"bbox":[128,258,410,54]}
+{"kind":"shape","id":"sh/y5o36t4n","slide":3,"bbox":[74,364,34,34]}
+{"kind":"textbox","id":"sh/47epkvu9","slide":3,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[74,370,34,20]}
+{"kind":"textbox","id":"sh/587qt0vu","slide":3,"text":"Athlete profiles","textPreview":"Athlete profiles","textChars":16,"textLines":1,"bbox":[128,362,390,27]}
+{"kind":"textbox","id":"sh/i5w7ilc3","slide":3,"text":"Individual pages show race history, finish times, points and close rivals.","textPreview":"Individual pages show race history, finish times, points and close rivals.","textChars":74,"textLines":1,"bbox":[128,395,410,54]}
+{"kind":"shape","id":"sh/j658rqdo","slide":3,"bbox":[650,227,34,34]}
+{"kind":"textbox","id":"sh/svypofu5","slide":3,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[650,233,34,20]}
+{"kind":"textbox","id":"sh/tw7qx0vq","slide":3,"text":"Protected result uploads","textPreview":"Protected result uploads","textChars":24,"textLines":1,"bbox":[704,225,390,27]}
+{"kind":"textbox","id":"sh/69g7m5cz","slide":3,"text":"An authorised administrator uploads CSV or Excel results and the table recalculates.","textPreview":"An authorised administrator uploads CSV or Excel results and the table recalculates.","textChars":84,"textLines":1,"bbox":[704,258,410,54]}
+{"kind":"shape","id":"sh/rup8vadk","slide":3,"bbox":[650,364,34,34]}
+{"kind":"textbox","id":"sh/8zupcbu1","slide":3,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[650,370,34,20]}
+{"kind":"textbox","id":"sh/903qlgvm","slide":3,"text":"Transparent points rules","textPreview":"Transparent points rules","textChars":24,"textLines":1,"bbox":[704,362,390,27]}
+{"kind":"textbox","id":"sh/pkvet8jy","slide":3,"text":"A public points page makes the scoring approach easy for athletes to understand.","textPreview":"A public points page makes the scoring approach easy for athletes to understand.","textChars":80,"textLines":1,"bbox":[704,395,410,54]}
+{"kind":"shape","id":"sh/ojmx032d","slide":3,"bbox":[72,536,1136,88]}
+{"kind":"textbox","id":"sh/3itwry1s","slide":3,"text":"Built for a club league, not a generic race-results website.","textPreview":"Built for a club league, not a generic race-results website.","textChars":60,"textLines":1,"bbox":[106,563,790,28]}
+{"kind":"textbox","id":"sh/2hkvytkn","slide":3,"text":"Simple for members. Manageable for your committee.","textPreview":"Simple for members. Manageable for your committee.","textChars":50,"textLines":1,"bbox":[106,593,630,18]}
+{"kind":"notes","id":"nt/q383mt","slide":3,"text":""}
+{"kind":"slide","id":"sl/ghrdst","slide":4,"title":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textShapes":21}
+{"kind":"textbox","id":"sh/svqpgjad","slide":4,"text":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textPreview":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textChars":33,"textLines":1,"bbox":[72,678,420,16]}
+{"kind":"textbox","id":"sh/ruh87e9s","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1168,678,40,16]}
+{"kind":"textbox","id":"sh/qt87e9s7","slide":4,"text":"Implementation: allow 5 working days.","textPreview":"Implementation: allow 5 working days.","textChars":37,"textLines":1,"bbox":[72,70,970,50]}
+{"kind":"textbox","id":"sh/10jqdoru","slide":4,"text":"We allow enough time to set up the league properly, check the data and hand it over with confidence.","textPreview":"We allow enough time to set up the league properly, check the data and hand it over with confidence.","textChars":100,"textLines":1,"bbox":[72,136,900,32]}
+{"kind":"shape","id":"sh/0zapkja9","slide":4,"bbox":[72,318,86,86]}
+{"kind":"textbox","id":"sh/fy18by94","slide":4,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[72,341,86,24]}
+{"kind":"textbox","id":"sh/exs7itsj","slide":4,"text":"Day 1","textPreview":"Day 1","textChars":5,"textLines":1,"bbox":[72,435,210,20]}
+{"kind":"textbox","id":"sh/po3qh8r6","slide":4,"text":"Set-up","textPreview":"Set-up","textChars":6,"textLines":1,"bbox":[72,465,220,28]}
+{"kind":"textbox","id":"sh/o3apo3al","slide":4,"text":"Receive branding, rules, categories and sample results.","textPreview":"Receive branding, rules, categories and sample results.","textChars":55,"textLines":1,"bbox":[72,508,220,75]}
+{"kind":"shape","id":"sh/q1gzut4r","slide":4,"bbox":[338,358,34,4]}
+{"kind":"shape","id":"sh/r290ne5c","slide":4,"bbox":[362,318,86,86]}
+{"kind":"textbox","id":"sh/s3ihwjmx","slide":4,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[362,341,86,24]}
+{"kind":"textbox","id":"sh/d4riponi","slide":4,"text":"Day 2","textPreview":"Day 2","textChars":5,"textLines":1,"bbox":[362,435,210,20]}
+{"kind":"textbox","id":"sh/e50zyt43","slide":4,"text":"Configure","textPreview":"Configure","textChars":9,"textLines":1,"bbox":[362,465,220,28]}
+{"kind":"textbox","id":"sh/z690ry5o","slide":4,"text":"Apply club identity and points configuration.","textPreview":"Apply club identity and points configuration.","textChars":45,"textLines":1,"bbox":[362,508,220,75]}
+{"kind":"shape","id":"sh/07ih03m9","slide":4,"bbox":[628,358,34,4]}
+{"kind":"shape","id":"sh/18rit8ne","slide":4,"bbox":[652,318,86,86]}
+{"kind":"textbox","id":"sh/u9wzmp4z","slide":4,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[652,341,86,24]}
+{"kind":"textbox","id":"sh/va5gfu54","slide":4,"text":"Days 3-4","textPreview":"Days 3-4","textChars":8,"textLines":1,"bbox":[652,435,210,20]}
+{"kind":"textbox","id":"sh/jelwnqlw","slide":4,"text":"Validate","textPreview":"Validate","textChars":8,"textLines":1,"bbox":[652,465,220,28]}
+{"kind":"textbox","id":"sh/ydcfu5kr","slide":4,"text":"Import results, resolve file issues and test the rankings.","textPreview":"Import results, resolve file issues and test the rankings.","textChars":58,"textLines":1,"bbox":[652,508,220,75]}
+{"kind":"shape","id":"sh/lg3ep032","slide":4,"bbox":[918,358,34,4]}
+{"kind":"shape","id":"sh/kfuxwv2h","slide":4,"bbox":[942,318,86,86]}
+{"kind":"textbox","id":"sh/bq1wjql0","slide":4,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[942,341,86,24]}
+{"kind":"textbox","id":"sh/apsvqlkf","slide":4,"text":"Day 5","textPreview":"Day 5","textChars":5,"textLines":1,"bbox":[942,435,210,20]}
+{"kind":"textbox","id":"sh/xc3el036","slide":4,"text":"Launch","textPreview":"Launch","textChars":6,"textLines":1,"bbox":[942,465,220,28]}
+{"kind":"textbox","id":"sh/wradsv2l","slide":4,"text":"Deploy, check access and hand over the upload process.","textPreview":"Deploy, check access and hand over the upload process.","textChars":54,"textLines":1,"bbox":[942,508,220,75]}
+{"kind":"textbox","id":"sh/vm5wval4","slide":4,"text":"Timing assumes the required information is supplied promptly and the initial historical data is in CSV or XLSX format.","textPreview":"Timing assumes the required information is supplied promptly and the initial historical data is in CSV or XLSX format.","textChars":118,"textLines":1,"bbox":[72,625,1020,22]}
+{"kind":"notes","id":"nt/ghrdst","slide":4,"text":""}
+{"kind":"slide","id":"sl/3t2ehi","slide":5,"title":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textShapes":13}
+{"kind":"textbox","id":"sh/xcvi54ja","slide":5,"text":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textPreview":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textChars":33,"textLines":1,"bbox":[72,678,420,16]}
+{"kind":"textbox","id":"sh/a94ju90j","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1168,678,40,16]}
+{"kind":"textbox","id":"sh/bad03u14","slide":5,"text":"A clear, fixed-price starting point","textPreview":"A clear, fixed-price starting point","textChars":35,"textLines":1,"bbox":[72,70,800,48]}
+{"kind":"shape","id":"sh/o7m1szit","slide":5,"bbox":[72,162,482,385]}
+{"kind":"textbox","id":"sh/98vi14je","slide":5,"text":"IMPLEMENTATION","textPreview":"IMPLEMENTATION","textChars":14,"textLines":1,"bbox":[112,208,220,20]}
+{"kind":"textbox","id":"sh/2lkjqp0n","slide":5,"text":"R12,500","textPreview":"R12,500","textChars":7,"textLines":1,"bbox":[112,250,310,72]}
+{"kind":"textbox","id":"sh/nmt0zu18","slide":5,"text":"Once-off setup for one club.","textPreview":"Once-off setup for one club.","textChars":28,"textLines":1,"bbox":[112,336,280,28]}
+{"kind":"shape","id":"sh/83614jix","slide":5,"bbox":[112,385,330,3]}
+{"kind":"textbox","id":"sh/t4f2doji","slide":5,"text":"Includes configuration, historical result import, testing, deployment and a handover session.","textPreview":"Includes configuration, historical result import, testing, deployment and a handover session.","textChars":93,"textLines":1,"bbox":[112,419,335,75]}
+{"kind":"textbox","id":"sh/pc7ilo36","slide":5,"text":"ONGOING HOSTING & SUPPORT","textPreview":"ONGOING HOSTING & SUPPORT","textChars":25,"textLines":1,"bbox":[648,190,350,20]}
+{"kind":"textbox","id":"sh/4behcjml","slide":5,"text":"R500 / month","textPreview":"R500 / month","textChars":12,"textLines":1,"bbox":[648,230,395,48]}
+{"kind":"textbox","id":"sh/3a5gjelg","slide":5,"text":"For hosting, basic support and the day-to-day running of the portal.","textPreview":"For hosting, basic support and the day-to-day running of the portal.","textChars":68,"textLines":1,"bbox":[648,298,440,52]}
+{"kind":"shape","id":"sh/29wza94v","slide":5,"bbox":[648,383,450,2]}
+{"kind":"textbox","id":"sh/h8nyh43a","slide":5,"text":"The fixed implementation includes","textPreview":"The fixed implementation includes","textChars":33,"textLines":1,"bbox":[648,420,420,26]}
+{"kind":"textbox","id":"sh/g7eh8zmp","slide":5,"text":"• One club-branded portal\n• Current feature set\n• One branding review\n• CSV/XLSX result files","textPreview":"• One club-branded portal | • Current feature set | • One branding review | • CSV/XLSX result files","textChars":93,"textLines":4,"bbox":[648,462,390,100]}
+{"kind":"textbox","id":"sh/v65gful4","slide":5,"text":"Custom functionality, major historical data clean-up and non-standard scoring are scoped separately before work begins.","textPreview":"Custom functionality, major historical data clean-up and non-standard scoring are scoped separately before work begins.","textChars":119,"textLines":1,"bbox":[72,594,1110,36]}
+{"kind":"notes","id":"nt/3t2ehi","slide":5,"text":""}
+{"kind":"slide","id":"sl/gtdkax","slide":6,"title":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textShapes":17}
+{"kind":"textbox","id":"sh/nmxg3m1s","slide":6,"text":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textPreview":"CLUB LEAGUE PORTAL  |  PROSPECTUS","textChars":33,"textLines":1,"bbox":[72,678,420,16]}
+{"kind":"textbox","id":"sh/on6hcrix","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1168,678,40,16]}
+{"kind":"textbox","id":"sh/9ofy5wji","slide":6,"text":"What we need from your club to get started","textPreview":"What we need from your club to get started","textChars":42,"textLines":1,"bbox":[72,70,890,50]}
+{"kind":"textbox","id":"sh/ex4f6xkv","slide":6,"text":"Nothing complicated - just the information that makes the league yours.","textPreview":"Nothing complicated - just the information that makes the league yours.","textChars":71,"textLines":1,"bbox":[72,130,750,28]}
+{"kind":"textbox","id":"sh/zydgz21g","slide":6,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[78,218,42,34]}
+{"kind":"textbox","id":"sh/0z6h8721","slide":6,"text":"Club identity","textPreview":"Club identity","textChars":13,"textLines":1,"bbox":[150,218,260,28]}
+{"kind":"textbox","id":"sh/10fy1cjm","slide":6,"text":"Logo, preferred colours and the public name of your league.","textPreview":"Logo, preferred colours and the public name of your league.","textChars":59,"textLines":1,"bbox":[446,221,640,42]}
+{"kind":"shape","id":"sh/qt4f2xkz","slide":6,"bbox":[72,294,1020,1]}
+{"kind":"textbox","id":"sh/rudgv21k","slide":6,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[78,320,42,34]}
+{"kind":"textbox","id":"sh/zyto7u18","slide":6,"text":"League rules","textPreview":"League rules","textChars":12,"textLines":1,"bbox":[150,320,260,28]}
+{"kind":"textbox","id":"sh/yxk7yp0n","slide":6,"text":"Points tables, age categories, run/walk requirements and season approach.","textPreview":"Points tables, age categories, run/walk requirements and season approach.","textChars":73,"textLines":1,"bbox":[446,323,640,42]}
+{"kind":"shape","id":"sh/l0vq9kje","slide":6,"bbox":[72,396,1020,1]}
+{"kind":"textbox","id":"sh/0zmp0zit","slide":6,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[78,422,42,34]}
+{"kind":"textbox","id":"sh/n2d8bu14","slide":6,"text":"Race results","textPreview":"Race results","textChars":12,"textLines":1,"bbox":[150,422,260,28]}
+{"kind":"textbox","id":"sh/m1472p0z","slide":6,"text":"Historical and current results in CSV or Excel format where possible.","textPreview":"Historical and current results in CSV or Excel format where possible.","textChars":69,"textLines":1,"bbox":[446,425,640,42]}
+{"kind":"shape","id":"sh/94vqd4za","slide":6,"bbox":[72,498,1020,1]}
+{"kind":"textbox","id":"sh/83mp4zip","slide":6,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[78,524,42,34]}
+{"kind":"textbox","id":"sh/369oza10","slide":6,"text":"Club contact","textPreview":"Club contact","textChars":12,"textLines":1,"bbox":[150,524,260,28]}
+{"kind":"textbox","id":"sh/2507q50f","slide":6,"text":"One person to answer questions and approve the final set-up.","textPreview":"One person to answer questions and approve the final set-up.","textChars":60,"textLines":1,"bbox":[446,527,640,42]}
+{"kind":"shape","id":"sh/6l8redk3","slide":6,"bbox":[72,600,1020,1]}
+{"kind":"shape","id":"sh/7mhs7i1o","slide":6,"bbox":[72,623,1020,42]}
+{"kind":"textbox","id":"sh/snqtgn29","slide":6,"text":"If your files need attention, we will flag it early and agree the additional work before continuing.","textPreview":"If your files need attention, we will flag it early and agree the additional work before continuing.","textChars":100,"textLines":1,"bbox":[94,634,965,18]}
+{"kind":"notes","id":"nt/gtdkax","slide":6,"text":""}
+{"kind":"slide","id":"sl/z0hh6m","slide":7,"title":"READY WHEN","textShapes":10}
+{"kind":"shape","id":"sh/vm58fuh8","slide":7,"bbox":[0,0,620,720]}
+{"kind":"textbox","id":"sh/wne98zyt","slide":7,"text":"READY WHEN\nYOUR CLUB IS.","textPreview":"READY WHEN | YOUR CLUB IS.","textChars":24,"textLines":2,"bbox":[72,88,470,128]}
+{"kind":"textbox","id":"sh/xonqhkzy","slide":7,"text":"A clear league view is one of the simplest ways to keep members engaged and your committee in control.","textPreview":"A clear league view is one of the simplest ways to keep members engaged and your committee in control.","textChars":102,"textLines":1,"bbox":[72,268,430,90]}
+{"kind":"shape","id":"sh/mxc725gb","slide":7,"bbox":[72,410,108,6]}
+{"kind":"textbox","id":"sh/nyl8bahw","slide":7,"text":"Next step","textPreview":"Next step","textChars":9,"textLines":1,"bbox":[72,449,200,24]}
+{"kind":"textbox","id":"sh/8jep4fyh","slide":7,"text":"Send through your logo, points rules and a sample result file. We will confirm the implementation date and get the portal underway.","textPreview":"Send through your logo, points rules and a sample result file. We will confirm the implementation date and get the portal underway.","textChars":131,"textLines":1,"bbox":[72,485,450,90]}
+{"kind":"textbox","id":"sh/9knqdkz2","slide":7,"text":"Club League Portal","textPreview":"Club League Portal","textChars":18,"textLines":1,"bbox":[696,132,400,34]}
+{"kind":"textbox","id":"sh/6tgre9gv","slide":7,"text":"A practical league portal, built around the way clubs actually work.","textPreview":"A practical league portal, built around the way clubs actually work.","textChars":68,"textLines":1,"bbox":[696,190,420,56]}
+{"kind":"shape","id":"sh/7ep8nexg","slide":7,"bbox":[696,312,385,168]}
+{"kind":"textbox","id":"sh/radc7ix4","slide":7,"text":"IMPLEMENTATION","textPreview":"IMPLEMENTATION","textChars":14,"textLines":1,"bbox":[732,342,205,18]}
+{"kind":"textbox","id":"sh/q94bedgj","slide":7,"text":"R12,500","textPreview":"R12,500","textChars":7,"textLines":1,"bbox":[732,378,245,46]}
+{"kind":"textbox","id":"sh/dcfu98fu","slide":7,"text":"Allow 5 working days","textPreview":"Allow 5 working days","textChars":20,"textLines":1,"bbox":[732,435,245,20]}
+{"kind":"textbox","id":"sh/sb6tg3y9","slide":7,"text":"Pricing & implementation prospectus","textPreview":"Pricing & implementation prospectus","textChars":35,"textLines":1,"bbox":[696,595,340,18]}
+{"kind":"notes","id":"nt/z0hh6m","slide":7,"text":""}

@@ -1,0 +1,5 @@
+Sources and provenance
+
+- All product capabilities and pricing were drawn from the local Club League Portal codebase and the user's supplied discussion.
+- Irene Athletics Club logo: local asset static/images/irene-logo.jpeg, used as a user-provided brand asset.
+- No external assets or non-trivial external claims were used.
