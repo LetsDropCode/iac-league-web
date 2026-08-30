@@ -27,55 +27,20 @@
             <div class="brand-copy">
                 <p class="brand-kicker">Irene Athletics Club</p>
                 <h1 class="brand-heading">Import FinishTime Results</h1>
-                <p class="brand-subtitle">Choose the dated event first, then import your club's results.</p>
+                <p class="brand-subtitle">Search on FinishTime, choose the dated event and distance, then export its results.</p>
             </div>
         </header>
         <a href="/upload">Back to uploads</a>
 
         <section class="panel">
-            <h2>1. Find the race</h2>
-            <form method="post">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <h2>1. Find the race on FinishTime</h2>
+            <form method="get" action="{{ url_for('finishtime_source') }}" target="_blank" rel="noopener">
                 <label for="query">Race name</label>
                 <input id="query" name="query" value="{{ query }}" placeholder="e.g. Jackie Mekler" minlength="2" required>
-                <button type="submit">Search FinishTime</button>
+                <button type="submit">Open FinishTime search</button>
             </form>
-            {% if error %}<p class="error">{{ error }}</p>{% endif %}
+            <p>FinishTime opens in a new tab. Select the correct date, then use its distance and club filters. Export the resulting CSV and return to <a href="/upload">Uploads</a> to preview, import, and recalculate the league.</p>
         </section>
-
-        {% if races %}
-        <section class="panel">
-            <h2>2. Choose the exact dated race and import</h2>
-            {% for race in races %}
-            <article class="race">
-                <h3>{{ race.name }}</h3>
-                <p>{{ race.date }}</p>
-                <form method="post" action="{{ url_for('import_finishtime_results') }}">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="race_url" value="{{ race.url }}">
-                    <div class="fields">
-                        <div>
-                            <label for="club-{{ loop.index }}">Exact FinishTime club name</label>
-                            <input id="club-{{ loop.index }}" name="club" value="IRENE ATHLETIC CLUB" required>
-                        </div>
-                        <div>
-                            <label for="distance-{{ loop.index }}">Distance (km)</label>
-                            <input id="distance-{{ loop.index }}" name="distance" type="number" min="1" required>
-                        </div>
-                        <div>
-                            <label for="discipline-{{ loop.index }}">League</label>
-                            <select id="discipline-{{ loop.index }}" name="discipline">
-                                <option value="run">Run</option>
-                                <option value="walk">Walk</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit">Import this club's results</button>
-                </form>
-            </article>
-            {% endfor %}
-        </section>
-        {% endif %}
     </main>
 </body>
 </html>

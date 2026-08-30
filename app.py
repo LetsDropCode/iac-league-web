@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from html import escape
 from hmac import compare_digest
-from urllib.parse import quote, parse_qs, urlparse
+from urllib.parse import quote, parse_qs, urlencode, urlparse
 
 import bleach
 import requests
@@ -543,6 +543,20 @@ def finishtime_import():
             error = "FinishTime could not be reached. Please try again shortly."
 
     return render_template("finishtime.html", query=query, races=races, error=error)
+
+
+@app.route("/finishtime/source")
+def finishtime_source():
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    query = request.args.get("query", "").strip()
+    if len(query) < 2:
+        flash("Enter at least two characters of the race name.", "error")
+        return redirect(url_for("finishtime_import"))
+
+    source_url = "https://results.finishtime.co.za/spsearch.aspx?" + urlencode({"srch": query})
+    return redirect(source_url)
 
 
 @app.route("/finishtime/import", methods=["POST"])
