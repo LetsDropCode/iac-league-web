@@ -10,6 +10,7 @@ from hmac import compare_digest
 from urllib.parse import quote, parse_qs, urlparse
 
 import bleach
+import requests
 from werkzeug.utils import secure_filename
 
 # Security libraries
@@ -534,6 +535,9 @@ def finishtime_import():
             races = FinishTimeClient().search_races(query)
         except FinishTimeError as exc:
             error = str(exc)
+        except requests.RequestException as exc:
+            logging.warning("FinishTime race search request failed: %s", exc)
+            error = "FinishTime rejected or timed out the search request. Please try again shortly."
         except Exception:
             logging.exception("FinishTime race search failed")
             error = "FinishTime could not be reached. Please try again shortly."

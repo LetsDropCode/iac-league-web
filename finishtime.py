@@ -14,7 +14,13 @@ from bs4 import BeautifulSoup
 
 BASE_URL = "https://results.finishtime.co.za/"
 ALLOWED_HOST = "results.finishtime.co.za"
-USER_AGENT = "Irene-Athletics-League/1.0 (+https://iac-league.onrender.com)"
+# FinishTime serves its search data to the browser-based results interface.
+# Match that ordinary request shape rather than presenting an unknown client name.
+USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/131.0.0.0 Safari/537.36"
+)
 
 
 class Race(NamedTuple):
@@ -42,7 +48,12 @@ def _race_url(value: str) -> str:
 class FinishTimeClient:
     def __init__(self) -> None:
         self.session = requests.Session()
-        self.session.headers.update({"User-Agent": USER_AGENT})
+        self.session.headers.update({
+            "User-Agent": USER_AGENT,
+            "Accept": "application/json, text/plain, */*",
+            "Referer": BASE_URL,
+            "X-Requested-With": "XMLHttpRequest",
+        })
 
     def _get(self, url: str) -> requests.Response:
         response = self.session.get(url, timeout=30)
