@@ -122,9 +122,9 @@
     </div>
 
     <div class="panel">
-        <h2>Import from FinishTime</h2>
-        <p>Search for an event, select its exact date, then import a club's Run or Walk results.</p>
-        <a href="{{ url_for('finishtime_import') }}">Find and import a FinishTime race</a>
+        <h2>Paste FinishTime Results</h2>
+        <p>Copy a club-filtered result table from FinishTime and paste it here. The portal cleans it and saves the league CSV for you.</p>
+        <a href="{{ url_for('paste_results') }}">Paste and save race results</a>
     </div>
 
     {% if preview %}

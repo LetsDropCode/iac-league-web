@@ -4,6 +4,7 @@ import logging
 import pandas as pd
 import re
 from datetime import datetime, timedelta
+from io import StringIO
 from zoneinfo import ZoneInfo
 from html import escape
 from hmac import compare_digest
@@ -411,6 +412,66 @@ def finishtime_import_filename(race_url, discipline, distance):
     race_id = params["RId"][0]
     return f"{int(distance)}K_FinishTime_{race_id}_{discipline.lower()}.csv"
 
+
+def pasted_results_filename(race_name, discipline, distance):
+    """Create the same distance/race/discipline filename convention as uploads."""
+    race_slug = secure_filename(race_name).strip("_")
+    if not race_slug:
+        raise ValueError("Enter a race name using letters or numbers.")
+    return f"{int(distance)}K_{race_slug}_{discipline.lower()}.csv"
+
+
+def _pasted_column(columns, *terms):
+    """Find a copied-table column by common FinishTime-style headings."""
+    for column in columns:
+        label = re.sub(r"[^a-z0-9]+", "", str(column).lower())
+        if any(term in label for term in terms):
+            return column
+    return None
+
+
+def parse_pasted_results(raw_results, distance):
+    """Turn an HTML or tab-delimited copied result table into league columns."""
+    raw_results = raw_results.strip()
+    if not raw_results:
+        raise ValueError("Paste the copied FinishTime result table before importing.")
+
+    try:
+        if "<table" in raw_results.lower():
+            tables = pd.read_html(StringIO(raw_results))
+            if not tables:
+                raise ValueError
+            table = tables[0]
+        else:
+            table = pd.read_csv(StringIO(raw_results), sep="\t", dtype=str)
+    except (ValueError, pd.errors.ParserError) as exc:
+        raise ValueError("The pasted data could not be read as a FinishTime table.") from exc
+
+    table.columns = [str(column).replace("", "").strip() for column in table.columns]
+    name_col = _pasted_column(table.columns, "name")
+    gender_col = _pasted_column(table.columns, "gender", "sex")
+    category_col = _pasted_column(table.columns, "category", "cat")
+    time_col = _pasted_column(table.columns, "time", "finish")
+    if not all((name_col, gender_col, category_col, time_col)):
+        raise ValueError(
+            "The pasted table needs Name, Gender, Category, and Time (or Finish) columns."
+        )
+
+    output = pd.DataFrame({
+        "Name": table[name_col].astype(str).str.replace(r"\s*#\S+.*$", "", regex=True).str.strip(),
+        "Gender": table[gender_col].astype(str).str.extract(r"(Male|Female)", expand=False),
+        "Category": table[category_col].astype(str).str.strip(),
+        "Distance": int(distance),
+        "Time": table[time_col].astype(str).str.strip(),
+    })
+    valid_time = pd.to_timedelta(output["Time"], errors="coerce").notna()
+    output = output.dropna(subset=["Name", "Gender", "Category"])
+    output = output[(output["Name"] != "") & valid_time]
+    output = output[output["Name"].str.lower() != "name"]
+    if output.empty:
+        raise ValueError("No usable result rows were found in the pasted table.")
+    return output[["Name", "Gender", "Category", "Distance", "Time"]]
+
 # -----------------------------------
 # CACHE
 # -----------------------------------
@@ -539,6 +600,57 @@ def upload():
         return redirect("/")
 
     return render_template("admin.html")
+
+
+@app.route("/paste-results", methods=["GET", "POST"])
+@limiter.limit("10 per hour")
+def paste_results():
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    if request.method == "POST":
+        race_name = request.form.get("race_name", "").strip()
+        discipline = request.form.get("discipline", "run").lower()
+        try:
+            distance = int(request.form.get("distance", ""))
+            if distance <= 0:
+                raise ValueError("Distance must be a whole number of kilometres.")
+            if discipline not in {"run", "walk"}:
+                raise ValueError("Choose Run or Walk before importing.")
+
+            results = parse_pasted_results(request.form.get("results", ""), distance)
+            filename = pasted_results_filename(race_name, discipline, distance)
+            filepath = os.path.join("results", filename)
+            is_new_race = not os.path.exists(filepath)
+            results.to_csv(filepath, sep=";", index=False)
+            if is_new_race:
+                clear_cache()
+                message = (
+                    f"Saved {len(results)} {discipline} result(s) to results/{filename} "
+                    "and recalculated the league."
+                )
+            else:
+                message = (
+                    f"Updated results/{filename} with {len(results)} {discipline} result(s). "
+                    "The league was not recalculated because this race is already in the results folder."
+                )
+            flash(message, "success")
+            return redirect("/")
+        except (TypeError, ValueError) as exc:
+            return render_template(
+                "paste_results.html",
+                error=str(exc),
+                form=request.form,
+            )
+        except Exception:
+            logging.exception("Pasted result import failed")
+            return render_template(
+                "paste_results.html",
+                error="The pasted results could not be saved. No league results were changed.",
+                form=request.form,
+            )
+
+    return render_template("paste_results.html", error=None, form={})
 
 
 @app.route("/finishtime", methods=["GET", "POST"])
