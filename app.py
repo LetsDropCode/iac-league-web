@@ -430,6 +430,69 @@ def _pasted_column(columns, *terms):
     return None
 
 
+def _pasted_category(value):
+    """Recognise FinishTime's age-band and named category labels."""
+    return bool(re.fullmatch(r"\d{1,2}\s*[-–]\s*\d{1,2}", value)) or bool(
+        re.fullmatch(r"(?:Junior|Senior|Master|Veteran|Grand Master|\d{2,3})", value, re.IGNORECASE)
+    )
+
+
+def _parse_finish_time_cards(raw_results, distance):
+    """Parse FinishTime's mobile/card clipboard text, where each cell is a line."""
+    lines = [line.strip() for line in raw_results.splitlines() if line.strip()]
+    header_index = next(
+        (index for index, line in enumerate(lines) if all(word in line.upper() for word in ("NAME", "GENDER", "TIME"))),
+        None,
+    )
+    if header_index is None:
+        raise ValueError("The pasted data could not be read as a FinishTime table.")
+
+    lines = lines[header_index + 1:]
+    gender_indexes = [
+        index for index, value in enumerate(lines)
+        if value.lower() in {"male", "female"}
+    ]
+    records = []
+    cursor = 0
+    time_pattern = re.compile(r"^\d{1,2}:\d{2}:\d{2}$")
+    for gender_index in gender_indexes:
+        before_gender = lines[cursor:gender_index]
+        after_gender = lines[gender_index + 1:]
+        time_indexes = [
+            index for index, value in enumerate(after_gender)
+            if time_pattern.fullmatch(value)
+        ]
+        if not time_indexes:
+            continue
+
+        category = next((value for value in reversed(before_gender) if _pasted_category(value)), None)
+        name = next((
+            value for value in before_gender
+            if any(character.isalpha() for character in value)
+            and not value.startswith("#")
+            and " of " not in value.lower()
+            and "athletics club" not in value.lower()
+            and not _pasted_category(value)
+        ), None)
+        if name and category:
+            records.append({
+                "Name": name,
+                "Gender": lines[gender_index].title(),
+                "Category": category.replace("–", "-"),
+                "Distance": int(distance),
+                "Time": after_gender[time_indexes[0]],
+            })
+
+        # FinishTime puts Time and Finish directly after Gender. Start the next
+        # card after both values so its name is not mistaken for this result.
+        cursor = gender_index + 1 + time_indexes[min(1, len(time_indexes) - 1)] + 1
+
+    output = pd.DataFrame(records, columns=["Name", "Gender", "Category", "Distance", "Time"])
+    if output.empty:
+        raise ValueError("No usable result rows were found in the pasted table.")
+    return output
+
+
 def parse_pasted_results(raw_results, distance):
     """Turn an HTML or tab-delimited copied result table into league columns."""
     raw_results = raw_results.strip()
@@ -448,14 +511,14 @@ def parse_pasted_results(raw_results, distance):
         raise ValueError("The pasted data could not be read as a FinishTime table.") from exc
 
     table.columns = [str(column).replace("", "").strip() for column in table.columns]
+    if len(table.columns) == 1:
+        return _parse_finish_time_cards(raw_results, distance)
     name_col = _pasted_column(table.columns, "name")
     gender_col = _pasted_column(table.columns, "gender", "sex")
     category_col = _pasted_column(table.columns, "category", "cat")
     time_col = _pasted_column(table.columns, "time", "finish")
     if not all((name_col, gender_col, category_col, time_col)):
-        raise ValueError(
-            "The pasted table needs Name, Gender, Category, and Time (or Finish) columns."
-        )
+        return _parse_finish_time_cards(raw_results, distance)
 
     output = pd.DataFrame({
         "Name": table[name_col].astype(str).str.replace(r"\s*#\S+.*$", "", regex=True).str.strip(),
@@ -464,9 +527,11 @@ def parse_pasted_results(raw_results, distance):
         "Distance": int(distance),
         "Time": table[time_col].astype(str).str.strip(),
     })
-    valid_time = pd.to_timedelta(output["Time"], errors="coerce").notna()
     output = output.dropna(subset=["Name", "Gender", "Category"])
-    output = output[(output["Name"] != "") & valid_time]
+    output = output[
+        (output["Name"] != "")
+        & pd.to_timedelta(output["Time"], errors="coerce").notna()
+    ]
     output = output[output["Name"].str.lower() != "name"]
     if output.empty:
         raise ValueError("No usable result rows were found in the pasted table.")
