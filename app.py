@@ -597,12 +597,20 @@ def import_finishtime_results():
         results = FinishTimeClient().results_for_club(race_url, club, distance)
         filename = finishtime_import_filename(race_url, discipline, distance)
         filepath = os.path.join("results", filename)
+        is_new_race = not os.path.exists(filepath)
         results.to_csv(filepath, sep=";", index=False)
-        clear_cache()
-        flash(
-            f"Imported {len(results)} {discipline} result(s) for {club} and recalculated the league.",
-            "success",
-        )
+        if is_new_race:
+            clear_cache()
+            message = (
+                f"Saved {len(results)} {discipline} result(s) to results/{filename} "
+                "and recalculated the league."
+            )
+        else:
+            message = (
+                f"Updated results/{filename} with {len(results)} {discipline} result(s). "
+                "The league was not recalculated because this race is already in the results folder."
+            )
+        flash(message, "success")
         return redirect("/")
     except FinishTimeError as exc:
         flash(str(exc), "error")
