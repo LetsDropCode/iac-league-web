@@ -20,7 +20,7 @@ from flask_seasurf import SeaSurf
 from flask_talisman import Talisman
 
 # Your engine
-from update_engine import process_league, read_result_file, clean_distance
+from update_engine import process_league, read_result_file, clean_distance, race_event_count
 from finishtime import FinishTimeClient, FinishTimeError
 
 from functools import lru_cache
@@ -217,15 +217,14 @@ def display_table(df, league):
     return display.drop(columns=["AthleteID"], errors="ignore")
 
 def league_summary(df):
+    races = race_event_count()
     if df.empty:
         return {
             "athletes": 0,
-            "races": 0,
+            "races": races,
             "leader_male": "No results",
             "leader_female": "No results",
         }
-
-    race_cols = [c for c in df.columns if c not in BASE_LEAGUE_COLS]
 
     def leader(gender):
         subset = df[df["Gender"] == gender]
@@ -236,7 +235,7 @@ def league_summary(df):
 
     return {
         "athletes": len(df),
-        "races": len(race_cols),
+        "races": races,
         "leader_male": leader("Male"),
         "leader_female": leader("Female"),
     }

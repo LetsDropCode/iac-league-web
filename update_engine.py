@@ -1,8 +1,29 @@
 import pandas as pd
 import os
+import re
 
 
 RESULT_EXTENSIONS = (".csv", ".xlsx")
+
+
+def race_event_key(race):
+    """Return a stable event identifier, independent of distance or discipline."""
+    name = os.path.splitext(os.path.basename(str(race)))[0]
+    name = re.sub(r"^\d+K_", "", name, flags=re.IGNORECASE)
+    name = re.sub(r"_(run|walk)$", "", name, flags=re.IGNORECASE)
+    return re.sub(r"[^a-z0-9]+", "", name.lower())
+
+
+def race_event_count(results_dir="results"):
+    """Count imported race events once, even where each has multiple files."""
+    if not os.path.isdir(results_dir):
+        return 0
+
+    return len({
+        race_event_key(filename)
+        for filename in os.listdir(results_dir)
+        if filename.lower().endswith(RESULT_EXTENSIONS)
+    })
 
 
 # -----------------------------------
@@ -68,6 +89,7 @@ def process_league():
     results["Name"] = results.get("Name", "").astype(str).str.strip()
     results["Gender"] = results.get("Gender", "").astype(str).str.strip()
     results["Category"] = results.get("Category", "").astype(str).str.strip()
+    results["RaceEvent"] = results["Race"].map(race_event_key)
 
     # CATEGORY MAP
     if not category_map.empty:
@@ -234,7 +256,12 @@ def build_league(results, rules, max_times):
     # TOTALS
     # -----------------------------------
     race_table["Total Points"] = race_table[race_cols].sum(axis=1)
-    race_table["Races Completed"] = (race_table[race_cols] > 0).sum(axis=1)
+    completed_events = (
+        results[results["Points"] > 0]
+        .groupby("AthleteID")["RaceEvent"]
+        .nunique()
+    )
+    race_table["Races Completed"] = race_table["AthleteID"].map(completed_events).fillna(0).astype(int)
 
     # -----------------------------------
     # RANK
