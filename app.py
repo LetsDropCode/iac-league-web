@@ -432,7 +432,7 @@ def _pasted_column(columns, *terms):
 
 def _pasted_category(value):
     """Recognise FinishTime's age-band and named category labels."""
-    return bool(re.fullmatch(r"\d{1,2}\s*[-–]\s*\d{1,2}", value)) or bool(
+    return bool(re.fullmatch(r"\d{1,2}\s*[^\w\s]+\s*\d{1,2}", value)) or bool(
         re.fullmatch(r"(?:Junior|Senior|Master|Veteran|Grand Master|\d{2,3})", value, re.IGNORECASE)
     )
 
@@ -445,6 +445,13 @@ def _parse_finish_time_cards(raw_results, distance):
         None,
     )
     if header_index is None:
+        # Some browser copies put every heading on its own line instead of
+        # retaining the original header row.
+        header_index = next(
+            (index for index, line in enumerate(lines) if line.upper() == "FINISH"),
+            None,
+        )
+    if header_index is None:
         raise ValueError("The pasted data could not be read as a FinishTime table.")
 
     lines = lines[header_index + 1:]
@@ -454,13 +461,13 @@ def _parse_finish_time_cards(raw_results, distance):
     ]
     records = []
     cursor = 0
-    time_pattern = re.compile(r"^\d{1,2}:\d{2}:\d{2}$")
+    time_pattern = re.compile(r"\b\d{1,2}:\d{2}:\d{2}\b")
     for gender_index in gender_indexes:
         before_gender = lines[cursor:gender_index]
         after_gender = lines[gender_index + 1:]
         time_indexes = [
             index for index, value in enumerate(after_gender)
-            if time_pattern.fullmatch(value)
+            if time_pattern.search(value)
         ]
         if not time_indexes:
             continue
@@ -478,9 +485,9 @@ def _parse_finish_time_cards(raw_results, distance):
             records.append({
                 "Name": name,
                 "Gender": lines[gender_index].title(),
-                "Category": category.replace("–", "-"),
+                "Category": re.sub(r"\D+", "-", category),
                 "Distance": int(distance),
-                "Time": after_gender[time_indexes[0]],
+                "Time": time_pattern.search(after_gender[time_indexes[0]]).group(),
             })
 
         # FinishTime puts Time and Finish directly after Gender. Start the next
