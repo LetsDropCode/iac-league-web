@@ -74,6 +74,74 @@ th{
     color:white;
 }
 
+.section-heading{
+    margin:0 0 4px;
+    color:#0f2d5c;
+}
+
+.section-intro{
+    margin:0 0 16px;
+    color:#64748b;
+    font-size:14px;
+}
+
+.personal-bests{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(155px, 1fr));
+    gap:10px;
+}
+
+.personal-best{
+    padding:12px;
+    border-radius:8px;
+    background:#eef5ff;
+    border:1px solid #c9dcf8;
+}
+
+.personal-best span, .personal-best small{
+    display:block;
+}
+
+.personal-best span{ color:#34557f; font-size:13px; }
+.personal-best strong{ display:block; margin:4px 0; font-size:20px; color:#0047AB; }
+.personal-best small{ color:#64748b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.chart-scroll{ overflow-x:auto; padding-bottom:4px; }
+.points-chart{
+    min-width:500px;
+    height:220px;
+    display:flex;
+    align-items:flex-end;
+    gap:10px;
+    padding:8px 4px 0;
+    border-bottom:2px solid #dbe3f0;
+}
+.bar-item{
+    width:58px;
+    height:100%;
+    flex:0 0 58px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+}
+.bar-value{ font-size:12px; font-weight:bold; color:#0f2d5c; margin-bottom:5px; }
+.bar{
+    width:36px;
+    min-height:4px;
+    border-radius:6px 6px 0 0;
+    background:linear-gradient(180deg, #2f80ed, #0047AB);
+}
+.bar-label{
+    width:72px;
+    margin-top:7px;
+    color:#475569;
+    font-size:11px;
+    text-align:center;
+    line-height:1.2;
+    overflow-wrap:anywhere;
+}
+
 @media (max-width: 768px){
     .page{ padding:10px; }
     .stats{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
@@ -138,8 +206,44 @@ th{
 {% endif %}
 </div>
 
+{% if personal_bests %}
 <div class="card">
-    <h2>Race History</h2>
+    <h2 class="section-heading">Personal Bests</h2>
+    <p class="section-intro">Fastest recorded finish at each distance.</p>
+    <div class="personal-bests">
+        {% for pb in personal_bests %}
+        <div class="personal-best" title="{{ pb.race }}">
+            <span>{{ pb.distance }}</span>
+            <strong>{{ pb.time }}</strong>
+            <small>{{ pb.race }}</small>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="card">
+    <h2 class="section-heading">Points by Race</h2>
+    <p class="section-intro">A quick view of where this athlete earned their league points.</p>
+
+    {% if history is not none and history.shape[0] > 0 %}
+    {% set max_points = history["Points"].max() %}
+    <div class="chart-scroll" aria-label="Points by race chart">
+        <div class="points-chart">
+            {% for row in history.values %}
+            <div class="bar-item" title="{{ row[0] }}: {{ row[2] }} points">
+                <span class="bar-value">{{ row[2] }}</span>
+                <div class="bar" style="height: {{ ((row[2] / max_points) * 165) if max_points else 4 }}px"></div>
+                <span class="bar-label">{{ row[0] }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2 class="section-heading">Race History</h2>
 
     {% if history is not none and history.shape[0] > 0 %}
     <table>

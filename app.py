@@ -346,6 +346,28 @@ def athlete_history_with_times(athlete_row, table, league):
     history["Time"] = history["Race"].map(time_map).map(format_duration)
     return history[["Race", "Time", "Points"]]
 
+
+def athlete_personal_bests(history):
+    """Return the fastest recorded result at each available distance."""
+    if history.empty:
+        return []
+
+    timed = history.copy()
+    timed["Duration"] = pd.to_timedelta(timed["Time"], errors="coerce")
+    timed["Distance"] = timed["Race"].str.extract(r"(\d+)km$", expand=False)
+    timed = timed.dropna(subset=["Duration", "Distance"])
+    if timed.empty:
+        return []
+
+    personal_bests = (
+        timed.loc[timed.groupby("Distance")["Duration"].idxmin()]
+        .sort_values("Distance", key=lambda distance: pd.to_numeric(distance))
+    )
+    return [
+        {"distance": f"{row.Distance} km", "time": row.Time, "race": row.Race}
+        for row in personal_bests.itertuples()
+    ]
+
 def preview_results_file(file):
     try:
         df = read_result_file(file)
@@ -634,6 +656,7 @@ def athlete_profile(league, athlete_id):
     athlete_data = athlete_row.iloc[0]
 
     history = athlete_history_with_times(athlete_row, table, league)
+    personal_bests = athlete_personal_bests(history)
 
     rival_data = rivals_map.get(athlete_id, {})
 
@@ -642,6 +665,7 @@ def athlete_profile(league, athlete_id):
         athlete=athlete_data,
         rival_data=rival_data,
         history=history,
+        personal_bests=personal_bests,
         back_url=back_url,
         league=league_label
     )
