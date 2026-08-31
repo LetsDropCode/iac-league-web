@@ -534,7 +534,9 @@ def parse_pasted_results(raw_results, distance):
     ]
     output = output[output["Name"].str.lower() != "name"]
     if output.empty:
-        raise ValueError("No usable result rows were found in the pasted table.")
+        # FinishTime can copy a tabular header followed by mobile/card-style
+        # rows. In that hybrid case the column names look valid but no row is.
+        return _parse_finish_time_cards(raw_results, distance)
     return output[["Name", "Gender", "Category", "Distance", "Time"]]
 
 # -----------------------------------
