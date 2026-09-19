@@ -1,0 +1,86 @@
+{
+  "created_utc": "2026-09-19T18:39:29.696002+00:00",
+  "target": "/Users/lindsaybull/iac-league/outputs/recovery",
+  "files": [
+    {
+      "path": "RECONCILIATION-BATCH-02.md",
+      "bytes": 1012,
+      "sha256": "10d66233838b9c852dde74af2d3e2667f8ec6ba0c8db9d4034e4d316b5a71d6d"
+    },
+    {
+      "path": "RECONCILIATION.md",
+      "bytes": 3925,
+      "sha256": "99f8913577bfb7f2e21fcf6c088fefe1b916a7c0294660c0695d47289dcf2612"
+    },
+    {
+      "path": "comparison-batch-02.json",
+      "bytes": 484,
+      "sha256": "7cb72b1e41b6cf0550a0ccdcc1e44a27f7491bd5e36ea38277ea7fedf7fe8f8e"
+    },
+    {
+      "path": "comparison.json",
+      "bytes": 2033,
+      "sha256": "1aca568b1daf3a973f46925203d8008089b35687b2d138270b3641042110672a"
+    },
+    {
+      "path": "evidence-checksums-batch-02.json",
+      "bytes": 422,
+      "sha256": "b661a5edc62793a0caf467d426adbe9b9a2ea6970195502ea68d29e9cf5844dc"
+    },
+    {
+      "path": "evidence-checksums.json",
+      "bytes": 838,
+      "sha256": "b9c4e0e3354d55aeb7d0478663d63154d0c0fe23c516521b04dc003eef24e56a"
+    },
+    {
+      "path": "expected-history.json",
+      "bytes": 34293,
+      "sha256": "9eca91928a43d99243fb899ea6481282f688465d7ceb2751eb30e2fb362a561a"
+    },
+    {
+      "path": "local-recovery-candidate.zip",
+      "bytes": 38383,
+      "sha256": "95b2d0836e5158ee999c9ed8eedda5843ad5c27f0aa51ffd959baaa23f610221"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 5097,
+      "sha256": "fd30a5cfa8aef194041d6403def05f09542c059fc5db0a0da6162e66bda3afaf"
+    },
+    {
+      "path": "public-histories-batch-02.json",
+      "bytes": 22889,
+      "sha256": "dd15c3d7301f349589c5d7db0b1a8c98492fd9cfbb7c8f7b4119f9071ec16eec"
+    },
+    {
+      "path": "public-histories.json",
+      "bytes": 94473,
+      "sha256": "ec6da047413b6f6a63c1a8dd58e327ec415f2286533e94e9a4e762a173a619b8"
+    },
+    {
+      "path": "public-rules.json",
+      "bytes": 225356,
+      "sha256": "77b6768b7e60d0f280d55f1c6f6ade58552350a10104b690899e4c870b720728"
+    },
+    {
+      "path": "public-run.json",
+      "bytes": 86116,
+      "sha256": "62bbd54e9d9ea9c0da955c579c425f7c11476c7a3e7d6b70bd09383099cd6931"
+    },
+    {
+      "path": "public-walk.json",
+      "bytes": 8728,
+      "sha256": "acdf7ab19987eb6955d00c1b6d5c6451edec97d4b7b6528c3ac1259b9bc940b0"
+    },
+    {
+      "path": "remaining-history-paths-after-batch-02.json",
+      "bytes": 8921,
+      "sha256": "027387d19329055db1423a4db5640251f48449ac28d20d127582a3a1a1c0ea92"
+    },
+    {
+      "path": "remaining-history-paths.json",
+      "bytes": 9389,
+      "sha256": "921258fb87219b9823fa93584e461197dda6e8dbb503782b8e2a1d490e444660"
+    }
+  ]
+}

@@ -76,6 +76,9 @@ def validate_payload(name, data):
             raise StorageError('Result must contain rows and a Time/Finish column.')
         if frame['Name'].isna().any() or frame['Name'].astype(str).str.strip().eq('').any():
             raise StorageError('Result contains blank athlete names.')
+        time_col = next(c for c in frame.columns if c in ('Time', 'Finish'))
+        if pd.to_timedelta(frame[time_col], errors='coerce').notna().sum() == 0:
+            raise StorageError('Result does not contain a usable finisher time.')
     elif name in RULE_FILES:
         frame = pd.read_csv(io.BytesIO(data))
         required = ({'FinishtimeCategory', 'PointsCategory'} if name == 'category_map.csv'

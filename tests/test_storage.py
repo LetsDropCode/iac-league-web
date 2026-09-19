@@ -246,7 +246,8 @@ class StorageTests(unittest.TestCase):
                 with patch.object(app.FinishTimeClient, 'results_for_club', return_value=frame):
                     response = client.post('/finishtime/import', base_url='https://localhost',
                                            data={'race_url': 'https://results.finishtime.co.za/results.aspx?CId=1&RId=2',
-                                                 'club': 'Test', 'discipline': 'run', 'distance': '10'})
+                                                 'club': 'Test', 'discipline': 'run', 'distance': '10',
+                                                 'action': 'import'})
                 self.assertEqual(response.status_code, 302)
                 self.assertTrue(self.store.path('results/10K_FinishTime_2_run.csv').exists())
                 self.assertEqual(len(app.load_result_details()), 3)

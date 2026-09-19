@@ -6,12 +6,18 @@ services:
     runtime: python
     region: oregon
     repo: https://github.com/LetsDropCode/iac-league-web
-    branch: main
+    branch: codex/storage-durability
     plan: starter
     numInstances: 1
     autoDeployTrigger: "off"
     buildCommand: pip install -r requirements.txt
-    startCommand: python backup_runner.py
+    # First boot is maintenance-only so the empty disk can be seeded explicitly.
+    # After seeding and secure environment configuration, change this to
+    # `python backup_runner.py` and deploy the same recorded commit.
+    startCommand: >-
+      mkdir -p /tmp/league-maintenance &&
+      printf 'League staging maintenance' > /tmp/league-maintenance/index.html &&
+      python -m http.server "$PORT" --bind 0.0.0.0 --directory /tmp/league-maintenance
     disk:
       name: staging-league-data
       mountPath: /var/data

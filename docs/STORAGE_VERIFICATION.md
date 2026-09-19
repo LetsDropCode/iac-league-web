@@ -1,6 +1,6 @@
 # Storage durability evidence — P0 OPEN
 
-Updated **2026-09-19 08:35 UTC**. Branch `codex/storage-durability`; changes are local and uncommitted. Local baseline HEAD is `d285886d4347e11578a5667ff4870f7c035b95fe`. Production is verified at that baseline commit; the storage implementation has **not** been committed or deployed. Staging deployed commit: **NOT RUN**. No paid resources, production deployment, restart, disk attachment or live migration was performed.
+Updated **2026-09-19 18:14 UTC**. Branch `codex/storage-durability`; storage implementation commit `365e31bd35cbb3c5ddbd6d23a15c0b22dff93c17` is present on `origin/codex/storage-durability`. Production remains at baseline commit `d285886d4347e11578a5667ff4870f7c035b95fe`; the storage implementation has **not** been deployed to production. Staging deployed commit: **NOT RUN**. No paid resources, production deployment, restart, disk attachment or live migration was performed.
 
 PASS means the stated scope was observed. NOT RUN is not a pass. Local fake-S3 and mount-fixture tests cannot demonstrate real AWS/Render durability. No athlete identities or credential values are included here.
 
@@ -30,8 +30,11 @@ Reproduce suite: `PYTHONDONTWRITEBYTECODE=1 venv/bin/python -m unittest discover
 
 No staging resources have been approved or provisioned. Follow `STORAGE_STAGING.md`, `ops/render.staging.yaml.proposed`, and `ops/aws-storage.yaml.proposed`.
 
+Preparation evidence is separate from infrastructure acceptance: the proposed staging service targets `codex/storage-durability`, starts in maintenance mode for explicit empty-disk seeding, uses one 1 GB `/var/data` disk and one in-service backup supervisor with two Gunicorn workers. The independent AWS proposal contains a private encrypted/versioned S3 bucket, restricted runtime policy, CloudWatch missing/failure alarm and SNS notifications. The labelled synthetic fixture SHA-256 is `e8df6d47b2dc6b27c6ffef62188102324b7aae166b2f5a91bf7a21f5ef287c00`. These are reviewed configuration facts, not deployed evidence.
+
 | Check | Status | Verified time / deployed commit | Missing evidence |
 | --- | --- | --- | --- |
+| Reviewed staging deployment inputs | PASS (preparation only) | 2026-09-19 14:14 UTC / proposed `365e31bd35cbb3c5ddbd6d23a15c0b22dff93c17` | Paid-resource approval, AWS account/region and runtime principal, confirmed operator recipient, Render paid-resource permission, provider-side secrets |
 | Staging tier, disk ID/mount, one supervisor, two workers | NOT RUN | — / unknown | Resource approval, AWS account/region, Render access |
 | Scheduled hourly backup reads same mounted disk as app | NOT RUN | — / unknown | Mount/device evidence and an actual scheduled S3 manifest containing the UI import |
 | UI-imported synthetic results survive Render restart | NOT RUN | — / unknown | Actual restart and before/after checkpoint |
@@ -57,6 +60,7 @@ No staging resources have been approved or provisioned. Follow `STORAGE_STAGING.
 | Environment variable names | PASS | 08:20 | Only `ADMIN_PASSWORD` and `SECRET_KEY`; values remained masked and were not copied or printed. No linked environment groups or secret files |
 | Disk/mount | PASS | 08:19 | No disk. Disk page is an upgrade gate and explicitly says disks are unsupported on Free. No live mount path exists to inspect |
 | Shell/SSH/live filesystem access | FAIL | 08:21 | Shell page is an upgrade gate; Free does not support shell/SSH. Upgrading would restart/redeploy the service before current ephemeral files were backed up |
+| Render dashboard support response | FAIL (no extraction path) | 18:14 | Screenshot supplied by the owner shows Render's dashboard support response: no supported filesystem access for a running Free service without restart/replacement; `render ssh` requires paid service; ephemeral writes are lost on restart, redeploy or spin-down. It recommends an in-application copy/archive before disruption. No case ID or human-escalation evidence is visible |
 | Cold-start behavior | PASS (risk evidence) | 08:25 | Logs show repeated master/worker termination and fresh starts on 2026-09-19, consistent with Free spin-down. This demonstrates exposure to ephemeral reset; it does not inventory live files |
 | Other hosting access | NOT RUN | 07:54 | No Render connector/CLI, AWS CLI/config directory or relevant credential/config environment variable names available. No secret values printed |
 | Resource/cutover cost approval | NOT RUN | — | Explicitly not granted; conditional single approval scope in `STORAGE_COSTS.md` |
@@ -68,7 +72,7 @@ No staging resources have been approved or provisioned. Follow `STORAGE_STAGING.
 | Independent production restoration and standings comparison | NOT RUN | — / commit unknown | Requires actual live S3 backup restored independently |
 | Imports reopened / P0 closed | NOT RUN | — | **P0 OPEN** until production persistence, independent restoration and alerts are demonstrated |
 
-**Exact current blocker:** authenticated inspection confirms the live service is Free and has no shell/SSH or disk. Render offers those capabilities only after upgrading, and applying the upgrade would restart/redeploy the service before current ephemeral files could be inventoried and independently backed up. Do not upgrade, change environment/start commands, restart/redeploy, or attach a disk to obtain access. Arrange a non-restarting extraction with Render Support, or obtain another verified current-live-data source from the application owner. Repository files cannot substitute for live uploads.
+**Exact current blocker:** authenticated inspection confirms the live service is Free and has no shell/SSH or disk. The Render dashboard support response says there is no supported non-restarting filesystem-access route on Free. The only safe remaining recovery route is a complete, provenance-confirmed set of owner-retained source files, or a byte-preserving export already exposed by the currently deployed application and proven to cover every managed file. No such application export has been demonstrated; adding one would require a deployment and could erase the files it is intended to recover. Do not upgrade, change environment/start commands, restart/redeploy, attach a disk or deploy an export endpoint to obtain access. Repository files and matching public standings are supporting evidence, not substitutes for verified live uploads.
 
 ## Preparation completed in this continuation
 

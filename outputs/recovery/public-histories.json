@@ -1,0 +1,872 @@
+[
+  {
+    "url": "/athlete/walk/retha-knoetze_female_great%20grand%20master",
+    "capturedAt": "2026-09-19T18:20:55.446Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Retha KNOETZE\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Great Grand Master\n  - generic: Total Points\n  - strong: \"60\"\n  - generic: Races Completed\n  - strong: \"6\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Lucia WILLEMSE\n  - paragraph: This athlete is 16 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"JackieMekler walk 10km\":\n    - generic: 10 km\n    - strong: 01:09:12\n    - generic: JackieMekler walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Ace walk 10km\n    - 'generic \"Bobbies 3-in-1 walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Intercare walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Intercare walk 10km\n    - 'generic \"JackieMekler walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: JackieMekler walk 10km\n    - 'generic \"Linton walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Linton walk 10km\n    - 'generic \"TUT walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: TUT walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:11:46 10\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:11:46\"\n        - cell \"10\"\n      - row \"Bobbies 3-in-1 walk 10km 01:11:33 10\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:11:33\"\n        - cell \"10\"\n      - row \"Intercare walk 10km 01:09:57 10\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:09:57\"\n        - cell \"10\"\n      - row \"JackieMekler walk 10km 01:09:12 10\":\n        - cell \"JackieMekler walk 10km\"\n        - cell \"01:09:12\"\n        - cell \"10\"\n      - row \"Linton walk 10km 01:12:14 10\":\n        - cell \"Linton walk 10km\"\n        - cell \"01:12:14\"\n        - cell \"10\"\n      - row \"TUT walk 10km 01:10:25 10\":\n        - cell \"TUT walk 10km\"\n        - cell \"01:10:25\"\n        - cell \"10\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:11:46",
+        "10"
+      ],
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:11:33",
+        "10"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:09:57",
+        "10"
+      ],
+      [
+        "JackieMekler walk 10km",
+        "01:09:12",
+        "10"
+      ],
+      [
+        "Linton walk 10km",
+        "01:12:14",
+        "10"
+      ],
+      [
+        "TUT walk 10km",
+        "01:10:25",
+        "10"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/lucia-willemse_female_great%20grand%20master",
+    "capturedAt": "2026-09-19T18:20:57.490Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Lucia WILLEMSE\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Great Grand Master\n  - generic: Total Points\n  - strong: \"44\"\n  - generic: Races Completed\n  - strong: \"6\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Retha KNOETZE\n  - paragraph: This athlete is 16 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare walk 10km\":\n    - generic: 10 km\n    - strong: 01:19:08\n    - generic: Intercare walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Ace walk 10km\n    - 'generic \"Bobbies 3-in-1 walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Intercare walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Intercare walk 10km\n    - 'generic \"JackieMekler walk 10km: 5 points\"':\n      - generic: \"5\"\n      - generic: JackieMekler walk 10km\n    - 'generic \"Linton walk 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: Linton walk 10km\n    - 'generic \"TUT walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: TUT walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:20:27 8\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:20:27\"\n        - cell \"8\"\n      - row \"Bobbies 3-in-1 walk 10km 01:19:32 8\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:19:32\"\n        - cell \"8\"\n      - row \"Intercare walk 10km 01:19:08 8\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:19:08\"\n        - cell \"8\"\n      - row \"JackieMekler walk 10km 01:28:21 5\":\n        - cell \"JackieMekler walk 10km\"\n        - cell \"01:28:21\"\n        - cell \"5\"\n      - row \"Linton walk 10km 01:22:18 7\":\n        - cell \"Linton walk 10km\"\n        - cell \"01:22:18\"\n        - cell \"7\"\n      - row \"TUT walk 10km 01:21:28 8\":\n        - cell \"TUT walk 10km\"\n        - cell \"01:21:28\"\n        - cell \"8\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:20:27",
+        "8"
+      ],
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:19:32",
+        "8"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:19:08",
+        "8"
+      ],
+      [
+        "JackieMekler walk 10km",
+        "01:28:21",
+        "5"
+      ],
+      [
+        "Linton walk 10km",
+        "01:22:18",
+        "7"
+      ],
+      [
+        "TUT walk 10km",
+        "01:21:28",
+        "8"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/letha-kotze_female_great%20grand%20master",
+    "capturedAt": "2026-09-19T18:20:59.513Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Letha KOTZE\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Great Grand Master\n  - generic: Total Points\n  - strong: \"36\"\n  - generic: Races Completed\n  - strong: \"7\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Lucia WILLEMSE\n  - paragraph: This athlete is 8 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Soshanguve walk 10km\":\n    - generic: 10 km\n    - strong: 01:27:24\n    - generic: Soshanguve walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 5 points\"':\n      - generic: \"5\"\n      - generic: Ace walk 10km\n    - 'generic \"Bobbies 3-in-1 walk 10km: 5 points\"':\n      - generic: \"5\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Intercare walk 10km: 6 points\"':\n      - generic: \"6\"\n      - generic: Intercare walk 10km\n    - 'generic \"JackieMekler walk 10km: 5 points\"':\n      - generic: \"5\"\n      - generic: JackieMekler walk 10km\n    - 'generic \"Linton walk 10km: 4 points\"':\n      - generic: \"4\"\n      - generic: Linton walk 10km\n    - 'generic \"Soshanguve walk 10km: 6 points\"':\n      - generic: \"6\"\n      - generic: Soshanguve walk 10km\n    - 'generic \"TUT walk 10km: 5 points\"':\n      - generic: \"5\"\n      - generic: TUT walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:30:03 5\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:30:03\"\n        - cell \"5\"\n      - row \"Bobbies 3-in-1 walk 10km 01:29:40 5\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:29:40\"\n        - cell \"5\"\n      - row \"Intercare walk 10km 01:27:33 6\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:27:33\"\n        - cell \"6\"\n      - row \"JackieMekler walk 10km 01:28:22 5\":\n        - cell \"JackieMekler walk 10km\"\n        - cell \"01:28:22\"\n        - cell \"5\"\n      - row \"Linton walk 10km 01:33:29 4\":\n        - cell \"Linton walk 10km\"\n        - cell \"01:33:29\"\n        - cell \"4\"\n      - row \"Soshanguve walk 10km 01:27:24 6\":\n        - cell \"Soshanguve walk 10km\"\n        - cell \"01:27:24\"\n        - cell \"6\"\n      - row \"TUT walk 10km 01:30:03 5\":\n        - cell \"TUT walk 10km\"\n        - cell \"01:30:03\"\n        - cell \"5\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:30:03",
+        "5"
+      ],
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:29:40",
+        "5"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:27:33",
+        "6"
+      ],
+      [
+        "JackieMekler walk 10km",
+        "01:28:22",
+        "5"
+      ],
+      [
+        "Linton walk 10km",
+        "01:33:29",
+        "4"
+      ],
+      [
+        "Soshanguve walk 10km",
+        "01:27:24",
+        "6"
+      ],
+      [
+        "TUT walk 10km",
+        "01:30:03",
+        "5"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/elsa-meyer_female_great%20grand%20master",
+    "capturedAt": "2026-09-19T18:21:01.577Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Elsa MEYER\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Great Grand Master\n  - generic: Total Points\n  - strong: \"34\"\n  - generic: Races Completed\n  - strong: \"4\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Letha KOTZE\n  - paragraph: This athlete is 2 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Soshanguve walk 10km\":\n    - generic: 10 km\n    - strong: 01:16:48\n    - generic: Soshanguve walk 10km\n  - generic \"Intercare walk 21km\":\n    - generic: 21 km\n    - strong: 02:43:34\n    - generic: Intercare walk 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 21km: 8 points\"':\n      - generic: \"8\"\n      - generic: Ace walk 21km\n    - 'generic \"Intercare walk 21km: 9 points\"':\n      - generic: \"9\"\n      - generic: Intercare walk 21km\n    - 'generic \"Soshanguve walk 10km: 9 points\"':\n      - generic: \"9\"\n      - generic: Soshanguve walk 10km\n    - 'generic \"TUT walk 21km: 8 points\"':\n      - generic: \"8\"\n      - generic: TUT walk 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 21km 02:48:02 8\":\n        - cell \"Ace walk 21km\"\n        - cell \"02:48:02\"\n        - cell \"8\"\n      - row \"Intercare walk 21km 02:43:34 9\":\n        - cell \"Intercare walk 21km\"\n        - cell \"02:43:34\"\n        - cell \"9\"\n      - row \"Soshanguve walk 10km 01:16:48 9\":\n        - cell \"Soshanguve walk 10km\"\n        - cell \"01:16:48\"\n        - cell \"9\"\n      - row \"TUT walk 21km 02:51:28 8\":\n        - cell \"TUT walk 21km\"\n        - cell \"02:51:28\"\n        - cell \"8\"",
+    "rows": [
+      [
+        "Ace walk 21km",
+        "02:48:02",
+        "8"
+      ],
+      [
+        "Intercare walk 21km",
+        "02:43:34",
+        "9"
+      ],
+      [
+        "Soshanguve walk 10km",
+        "01:16:48",
+        "9"
+      ],
+      [
+        "TUT walk 21km",
+        "02:51:28",
+        "8"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/tania-thompson_female_grand%20master",
+    "capturedAt": "2026-09-19T18:21:03.477Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Tania THOMPSON\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"32\"\n  - generic: Races Completed\n  - strong: \"4\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Karin-Marié VAN NIEKERK\n  - paragraph: This athlete is 7 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Bobbies 3-in-1 walk 10km\":\n    - generic: 10 km\n    - strong: 01:18:28\n    - generic: Bobbies 3-in-1 walk 10km\n  - generic \"TUT walk 21km\":\n    - generic: 21 km\n    - strong: 02:46:14\n    - generic: TUT walk 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Bobbies 3-in-1 walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Intercare walk 21km: 7 points\"':\n      - generic: \"7\"\n      - generic: Intercare walk 21km\n    - 'generic \"Linton walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Linton walk 10km\n    - 'generic \"TUT walk 21km: 9 points\"':\n      - generic: \"9\"\n      - generic: TUT walk 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Bobbies 3-in-1 walk 10km 01:18:28 8\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:18:28\"\n        - cell \"8\"\n      - row \"Intercare walk 21km 02:55:24 7\":\n        - cell \"Intercare walk 21km\"\n        - cell \"02:55:24\"\n        - cell \"7\"\n      - row \"Linton walk 10km 01:19:49 8\":\n        - cell \"Linton walk 10km\"\n        - cell \"01:19:49\"\n        - cell \"8\"\n      - row \"TUT walk 21km 02:46:14 9\":\n        - cell \"TUT walk 21km\"\n        - cell \"02:46:14\"\n        - cell \"9\"",
+    "rows": [
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:18:28",
+        "8"
+      ],
+      [
+        "Intercare walk 21km",
+        "02:55:24",
+        "7"
+      ],
+      [
+        "Linton walk 10km",
+        "01:19:49",
+        "8"
+      ],
+      [
+        "TUT walk 21km",
+        "02:46:14",
+        "9"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/rhoda-van-staden_female_veteran",
+    "capturedAt": "2026-09-19T18:21:05.722Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Rhoda VAN STADEN\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Veteran\n  - generic: Total Points\n  - strong: \"30\"\n  - generic: Races Completed\n  - strong: \"3\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Janine RÄDEL\n  - paragraph: This athlete is 10 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"TUT walk 10km\":\n    - generic: 10 km\n    - strong: 01:02:03\n    - generic: TUT walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Ace walk 10km\n    - 'generic \"Linton walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Linton walk 10km\n    - 'generic \"TUT walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: TUT walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:05:32 10\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:05:32\"\n        - cell \"10\"\n      - row \"Linton walk 10km 01:02:12 10\":\n        - cell \"Linton walk 10km\"\n        - cell \"01:02:12\"\n        - cell \"10\"\n      - row \"TUT walk 10km 01:02:03 10\":\n        - cell \"TUT walk 10km\"\n        - cell \"01:02:03\"\n        - cell \"10\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:05:32",
+        "10"
+      ],
+      [
+        "Linton walk 10km",
+        "01:02:12",
+        "10"
+      ],
+      [
+        "TUT walk 10km",
+        "01:02:03",
+        "10"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/karin-mari%C3%A9-van-niekerk_female_grand%20master",
+    "capturedAt": "2026-09-19T18:21:07.883Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Karin-Marié VAN NIEKERK\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"25\"\n  - generic: Races Completed\n  - strong: \"4\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Tania THOMPSON\n  - paragraph: This athlete is 7 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Bobbies 3-in-1 walk 10km\":\n    - generic: 10 km\n    - strong: 01:23:10\n    - generic: Bobbies 3-in-1 walk 10km\n  - generic \"Intercare walk 21km\":\n    - generic: 21 km\n    - strong: 02:59:12\n    - generic: Intercare walk 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 21km: 6 points\"':\n      - generic: \"6\"\n      - generic: Ace walk 21km\n    - 'generic \"Bobbies 3-in-1 walk 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Intercare walk 21km: 6 points\"':\n      - generic: \"6\"\n      - generic: Intercare walk 21km\n    - 'generic \"TUT walk 21km: 6 points\"':\n      - generic: \"6\"\n      - generic: TUT walk 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 21km 03:02:06 6\":\n        - cell \"Ace walk 21km\"\n        - cell \"03:02:06\"\n        - cell \"6\"\n      - row \"Bobbies 3-in-1 walk 10km 01:23:10 7\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:23:10\"\n        - cell \"7\"\n      - row \"Intercare walk 21km 02:59:12 6\":\n        - cell \"Intercare walk 21km\"\n        - cell \"02:59:12\"\n        - cell \"6\"\n      - row \"TUT walk 21km 03:01:35 6\":\n        - cell \"TUT walk 21km\"\n        - cell \"03:01:35\"\n        - cell \"6\"",
+    "rows": [
+      [
+        "Ace walk 21km",
+        "03:02:06",
+        "6"
+      ],
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:23:10",
+        "7"
+      ],
+      [
+        "Intercare walk 21km",
+        "02:59:12",
+        "6"
+      ],
+      [
+        "TUT walk 21km",
+        "03:01:35",
+        "6"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/janine-r%C3%A4del_female_veteran",
+    "capturedAt": "2026-09-19T18:21:10.206Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Janine RÄDEL\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Veteran\n  - generic: Total Points\n  - strong: \"20\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Rhoda VAN STADEN\n  - paragraph: This athlete is 10 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare walk 10km\":\n    - generic: 10 km\n    - strong: 01:01:31\n    - generic: Intercare walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Intercare walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Intercare walk 10km\n    - 'generic \"JackieMekler walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: JackieMekler walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Intercare walk 10km 01:01:31 10\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:01:31\"\n        - cell \"10\"\n      - row \"JackieMekler walk 10km 01:03:46 10\":\n        - cell \"JackieMekler walk 10km\"\n        - cell \"01:03:46\"\n        - cell \"10\"",
+    "rows": [
+      [
+        "Intercare walk 10km",
+        "01:01:31",
+        "10"
+      ],
+      [
+        "JackieMekler walk 10km",
+        "01:03:46",
+        "10"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/fia-coetzee_female_grand%20master",
+    "capturedAt": "2026-09-19T18:21:12.288Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Fia COETZEE\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"17\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Karin-Marié VAN NIEKERK\n  - paragraph: This athlete is 8 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Bobbies 3-in-1 walk 10km\":\n    - generic: 10 km\n    - strong: 01:16:22\n    - generic: Bobbies 3-in-1 walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Bobbies 3-in-1 walk 10km: 9 points\"':\n      - generic: \"9\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Intercare walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Intercare walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Bobbies 3-in-1 walk 10km 01:16:22 9\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:16:22\"\n        - cell \"9\"\n      - row \"Intercare walk 10km 01:18:50 8\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:18:50\"\n        - cell \"8\"",
+    "rows": [
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:16:22",
+        "9"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:18:50",
+        "8"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/retha-stoltz_female_master",
+    "capturedAt": "2026-09-19T18:21:15.068Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Retha STOLTZ\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Master\n  - generic: Total Points\n  - strong: \"14\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph: No rival yet\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Ace walk 10km\":\n    - generic: 10 km\n    - strong: 01:21:47\n    - generic: Ace walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: Ace walk 10km\n    - 'generic \"Intercare walk 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: Intercare walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:21:47 7\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:21:47\"\n        - cell \"7\"\n      - row \"Intercare walk 10km 01:22:01 7\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:22:01\"\n        - cell \"7\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:21:47",
+        "7"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:22:01",
+        "7"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/retha-knoetze_female_senior",
+    "capturedAt": "2026-09-19T18:21:40.738Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Retha KNOETZE\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"9\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Elsa MEYER\n  - paragraph: This athlete is 2 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Green Mile walk 13km\":\n    - generic: 13 km\n    - strong: 01:32:08\n    - generic: Green Mile walk 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Green Mile walk 13km: 9 points\"':\n      - generic: \"9\"\n      - generic: Green Mile walk 13km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Green Mile walk 13km 01:32:08 9\":\n        - cell \"Green Mile walk 13km\"\n        - cell \"01:32:08\"\n        - cell \"9\"",
+    "rows": [
+      [
+        "Green Mile walk 13km",
+        "01:32:08",
+        "9"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/elsa-meyer_female_senior",
+    "capturedAt": "2026-09-19T18:21:43.021Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Elsa MEYER\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"7\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Retha KNOETZE\n  - paragraph: This athlete is 2 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Green Mile walk 13km\":\n    - generic: 13 km\n    - strong: 01:43:11\n    - generic: Green Mile walk 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Green Mile walk 13km: 7 points\"':\n      - generic: \"7\"\n      - generic: Green Mile walk 13km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Green Mile walk 13km 01:43:11 7\":\n        - cell \"Green Mile walk 13km\"\n        - cell \"01:43:11\"\n        - cell \"7\"",
+    "rows": [
+      [
+        "Green Mile walk 13km",
+        "01:43:11",
+        "7"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/lucia-willemse_female_senior",
+    "capturedAt": "2026-09-19T18:21:45.204Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Lucia WILLEMSE\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"5\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Elsa MEYER\n  - paragraph: This athlete is 2 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Green Mile walk 13km\":\n    - generic: 13 km\n    - strong: 02:11:47\n    - generic: Green Mile walk 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Green Mile walk 13km: 5 points\"':\n      - generic: \"5\"\n      - generic: Green Mile walk 13km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Green Mile walk 13km 02:11:47 5\":\n        - cell \"Green Mile walk 13km\"\n        - cell \"02:11:47\"\n        - cell \"5\"",
+    "rows": [
+      [
+        "Green Mile walk 13km",
+        "02:11:47",
+        "5"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/lynette-gough_female_grand%20master",
+    "capturedAt": "2026-09-19T18:21:47.439Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Lynette GOUGH\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"3\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Fia COETZEE\n  - paragraph: This athlete is 14 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Linton walk 10km\":\n    - generic: 10 km\n    - strong: 01:33:39\n    - generic: Linton walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Linton walk 10km: 3 points\"':\n      - generic: \"3\"\n      - generic: Linton walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Linton walk 10km 01:33:39 3\":\n        - cell \"Linton walk 10km\"\n        - cell \"01:33:39\"\n        - cell \"3\"",
+    "rows": [
+      [
+        "Linton walk 10km",
+        "01:33:39",
+        "3"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/estie-visser_female_grand%20master",
+    "capturedAt": "2026-09-19T18:21:49.949Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Estie VISSER\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"1\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Lynette GOUGH\n  - paragraph: This athlete is 2 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Ace walk 10km\":\n    - generic: 10 km\n    - strong: 01:47:06\n    - generic: Ace walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 1 points\"':\n      - generic: \"1\"\n      - generic: Ace walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:47:06 1\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:47:06\"\n        - cell \"1\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:47:06",
+        "1"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/jaap-willemse_male_grand%20master",
+    "capturedAt": "2026-09-19T18:21:52.213Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Jaap WILLEMSE\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"80\"\n  - generic: Races Completed\n  - strong: \"8\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Mark RICHARDSON\n  - paragraph: This athlete is 19 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare walk 10km\":\n    - generic: 10 km\n    - strong: 01:04:38\n    - generic: Intercare walk 10km\n  - generic \"Green Mile walk 13km\":\n    - generic: 13 km\n    - strong: 01:23:54\n    - generic: Green Mile walk 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Ace walk 10km\n    - 'generic \"Bobbies 3-in-1 walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Green Mile walk 13km: 10 points\"':\n      - generic: \"10\"\n      - generic: Green Mile walk 13km\n    - 'generic \"Intercare walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Intercare walk 10km\n    - 'generic \"JackieMekler walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: JackieMekler walk 10km\n    - 'generic \"Linton walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Linton walk 10km\n    - 'generic \"Soshanguve walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Soshanguve walk 10km\n    - 'generic \"TUT walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: TUT walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:07:27 10\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:07:27\"\n        - cell \"10\"\n      - row \"Bobbies 3-in-1 walk 10km 01:04:53 10\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:04:53\"\n        - cell \"10\"\n      - row \"Green Mile walk 13km 01:23:54 10\":\n        - cell \"Green Mile walk 13km\"\n        - cell \"01:23:54\"\n        - cell \"10\"\n      - row \"Intercare walk 10km 01:04:38 10\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:04:38\"\n        - cell \"10\"\n      - row \"JackieMekler walk 10km 01:05:14 10\":\n        - cell \"JackieMekler walk 10km\"\n        - cell \"01:05:14\"\n        - cell \"10\"\n      - row \"Linton walk 10km 01:06:42 10\":\n        - cell \"Linton walk 10km\"\n        - cell \"01:06:42\"\n        - cell \"10\"\n      - row \"Soshanguve walk 10km 01:05:22 10\":\n        - cell \"Soshanguve walk 10km\"\n        - cell \"01:05:22\"\n        - cell \"10\"\n      - row \"TUT walk 10km 01:06:02 10\":\n        - cell \"TUT walk 10km\"\n        - cell \"01:06:02\"\n        - cell \"10\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:07:27",
+        "10"
+      ],
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:04:53",
+        "10"
+      ],
+      [
+        "Green Mile walk 13km",
+        "01:23:54",
+        "10"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:04:38",
+        "10"
+      ],
+      [
+        "JackieMekler walk 10km",
+        "01:05:14",
+        "10"
+      ],
+      [
+        "Linton walk 10km",
+        "01:06:42",
+        "10"
+      ],
+      [
+        "Soshanguve walk 10km",
+        "01:05:22",
+        "10"
+      ],
+      [
+        "TUT walk 10km",
+        "01:06:02",
+        "10"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/mark-richardson_male_grand%20master",
+    "capturedAt": "2026-09-19T18:21:54.353Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Mark RICHARDSON\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"61\"\n  - generic: Races Completed\n  - strong: \"8\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Jaap WILLEMSE\n  - paragraph: This athlete is 19 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"TUT walk 10km\":\n    - generic: 10 km\n    - strong: 01:14:22\n    - generic: TUT walk 10km\n  - generic \"Green Mile walk 13km\":\n    - generic: 13 km\n    - strong: 01:39:04\n    - generic: Green Mile walk 13km\n  - generic \"Linton walk 21km\":\n    - generic: 21 km\n    - strong: 02:42:52\n    - generic: Linton walk 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 21km: 7 points\"':\n      - generic: \"7\"\n      - generic: Ace walk 21km\n    - 'generic \"Bobbies 3-in-1 walk 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Green Mile walk 13km: 9 points\"':\n      - generic: \"9\"\n      - generic: Green Mile walk 13km\n    - 'generic \"Intercare walk 21km: 7 points\"':\n      - generic: \"7\"\n      - generic: Intercare walk 21km\n    - 'generic \"JackieMekler walk 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: JackieMekler walk 10km\n    - 'generic \"Linton walk 21km: 8 points\"':\n      - generic: \"8\"\n      - generic: Linton walk 21km\n    - 'generic \"Soshanguve walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Soshanguve walk 10km\n    - 'generic \"TUT walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: TUT walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 21km 02:52:16 7\":\n        - cell \"Ace walk 21km\"\n        - cell \"02:52:16\"\n        - cell \"7\"\n      - row \"Bobbies 3-in-1 walk 10km 01:16:53 7\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:16:53\"\n        - cell \"7\"\n      - row \"Green Mile walk 13km 01:39:04 9\":\n        - cell \"Green Mile walk 13km\"\n        - cell \"01:39:04\"\n        - cell \"9\"\n      - row \"Intercare walk 21km 02:48:19 7\":\n        - cell \"Intercare walk 21km\"\n        - cell \"02:48:19\"\n        - cell \"7\"\n      - row \"JackieMekler walk 10km 01:16:36 7\":\n        - cell \"JackieMekler walk 10km\"\n        - cell \"01:16:36\"\n        - cell \"7\"\n      - row \"Linton walk 21km 02:42:52 8\":\n        - cell \"Linton walk 21km\"\n        - cell \"02:42:52\"\n        - cell \"8\"\n      - row \"Soshanguve walk 10km 01:15:16 8\":\n        - cell \"Soshanguve walk 10km\"\n        - cell \"01:15:16\"\n        - cell \"8\"\n      - row \"TUT walk 10km 01:14:22 8\":\n        - cell \"TUT walk 10km\"\n        - cell \"01:14:22\"\n        - cell \"8\"",
+    "rows": [
+      [
+        "Ace walk 21km",
+        "02:52:16",
+        "7"
+      ],
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:16:53",
+        "7"
+      ],
+      [
+        "Green Mile walk 13km",
+        "01:39:04",
+        "9"
+      ],
+      [
+        "Intercare walk 21km",
+        "02:48:19",
+        "7"
+      ],
+      [
+        "JackieMekler walk 10km",
+        "01:16:36",
+        "7"
+      ],
+      [
+        "Linton walk 21km",
+        "02:42:52",
+        "8"
+      ],
+      [
+        "Soshanguve walk 10km",
+        "01:15:16",
+        "8"
+      ],
+      [
+        "TUT walk 10km",
+        "01:14:22",
+        "8"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/sheren-naidoo_male_master",
+    "capturedAt": "2026-09-19T18:21:56.706Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Sheren NAIDOO\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Master\n  - generic: Total Points\n  - strong: \"39\"\n  - generic: Races Completed\n  - strong: \"6\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Gerald Wayne HARTMANN\n  - paragraph: This athlete is 31 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Linton walk 10km\":\n    - generic: 10 km\n    - strong: 01:14:51\n    - generic: Linton walk 10km\n  - generic \"Green Mile walk 13km\":\n    - generic: 13 km\n    - strong: 01:40:20\n    - generic: Green Mile walk 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 6 points\"':\n      - generic: \"6\"\n      - generic: Ace walk 10km\n    - 'generic \"Bobbies 3-in-1 walk 10km: 6 points\"':\n      - generic: \"6\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Green Mile walk 13km: 8 points\"':\n      - generic: \"8\"\n      - generic: Green Mile walk 13km\n    - 'generic \"Intercare walk 10km: 6 points\"':\n      - generic: \"6\"\n      - generic: Intercare walk 10km\n    - 'generic \"Linton walk 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: Linton walk 10km\n    - 'generic \"TUT walk 10km: 6 points\"':\n      - generic: \"6\"\n      - generic: TUT walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:18:09 6\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:18:09\"\n        - cell \"6\"\n      - row \"Bobbies 3-in-1 walk 10km 01:18:51 6\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:18:51\"\n        - cell \"6\"\n      - row \"Green Mile walk 13km 01:40:20 8\":\n        - cell \"Green Mile walk 13km\"\n        - cell \"01:40:20\"\n        - cell \"8\"\n      - row \"Intercare walk 10km 01:18:05 6\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:18:05\"\n        - cell \"6\"\n      - row \"Linton walk 10km 01:14:51 7\":\n        - cell \"Linton walk 10km\"\n        - cell \"01:14:51\"\n        - cell \"7\"\n      - row \"TUT walk 10km 01:18:32 6\":\n        - cell \"TUT walk 10km\"\n        - cell \"01:18:32\"\n        - cell \"6\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:18:09",
+        "6"
+      ],
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:18:51",
+        "6"
+      ],
+      [
+        "Green Mile walk 13km",
+        "01:40:20",
+        "8"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:18:05",
+        "6"
+      ],
+      [
+        "Linton walk 10km",
+        "01:14:51",
+        "7"
+      ],
+      [
+        "TUT walk 10km",
+        "01:18:32",
+        "6"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/johann-coetzee_male_grand%20master",
+    "capturedAt": "2026-09-19T18:21:59.081Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Johann COETZEE\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"20\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Mark RICHARDSON\n  - paragraph: This athlete is 41 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare walk 10km\":\n    - generic: 10 km\n    - strong: 01:08:00\n    - generic: Intercare walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Bobbies 3-in-1 walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Bobbies 3-in-1 walk 10km\n    - 'generic \"Intercare walk 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Intercare walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Bobbies 3-in-1 walk 10km 01:08:18 10\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:08:18\"\n        - cell \"10\"\n      - row \"Intercare walk 10km 01:08:00 10\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:08:00\"\n        - cell \"10\"",
+    "rows": [
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:08:18",
+        "10"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:08:00",
+        "10"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/gerald-wayne-hartmann_male_master",
+    "capturedAt": "2026-09-19T18:22:01.133Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Gerald Wayne HARTMANN\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Master\n  - generic: Total Points\n  - strong: \"8\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Sheren NAIDOO\n  - paragraph: This athlete is 31 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Ace walk 10km\":\n    - generic: 10 km\n    - strong: 01:10:15\n    - generic: Ace walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Ace walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:10:15 8\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:10:15\"\n        - cell \"8\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:10:15",
+        "8"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/fanie-van-wyngaard_male_great%20grand%20master",
+    "capturedAt": "2026-09-19T18:22:03.147Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Fanie VAN WYNGAARD\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Great Grand Master\n  - generic: Total Points\n  - strong: \"4\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Wynand BREYTENBACH\n  - paragraph: This athlete is 0 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Bobbies 3-in-1 walk 10km\":\n    - generic: 10 km\n    - strong: 01:31:27\n    - generic: Bobbies 3-in-1 walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Bobbies 3-in-1 walk 10km: 4 points\"':\n      - generic: \"4\"\n      - generic: Bobbies 3-in-1 walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Bobbies 3-in-1 walk 10km 01:31:27 4\":\n        - cell \"Bobbies 3-in-1 walk 10km\"\n        - cell \"01:31:27\"\n        - cell \"4\"",
+    "rows": [
+      [
+        "Bobbies 3-in-1 walk 10km",
+        "01:31:27",
+        "4"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/walk/wynand-breytenbach_male_great%20grand%20master",
+    "capturedAt": "2026-09-19T18:22:05.306Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Walk leaderboard\":\n    - /url: /walk\n  - heading \"Wynand BREYTENBACH\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Great Grand Master\n  - generic: Total Points\n  - strong: \"4\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Fanie VAN WYNGAARD\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare walk 10km\":\n    - generic: 10 km\n    - strong: 01:33:59\n    - generic: Intercare walk 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace walk 10km: 1 points\"':\n      - generic: \"1\"\n      - generic: Ace walk 10km\n    - 'generic \"Intercare walk 10km: 3 points\"':\n      - generic: \"3\"\n      - generic: Intercare walk 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace walk 10km 01:41:46 1\":\n        - cell \"Ace walk 10km\"\n        - cell \"01:41:46\"\n        - cell \"1\"\n      - row \"Intercare walk 10km 01:33:59 3\":\n        - cell \"Intercare walk 10km\"\n        - cell \"01:33:59\"\n        - cell \"3\"",
+    "rows": [
+      [
+        "Ace walk 10km",
+        "01:41:46",
+        "1"
+      ],
+      [
+        "Intercare walk 10km",
+        "01:33:59",
+        "3"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/ansie-breytenbach_female_grand%20master",
+    "capturedAt": "2026-09-19T18:22:25.745Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Ansie BREYTENBACH\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"70\"\n  - generic: Races Completed\n  - strong: \"7\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Amanda DE BEER\n  - paragraph: This athlete is 21 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 10km\":\n    - generic: 10 km\n    - strong: 00:51:19\n    - generic: Intercare run 10km\n  - generic \"Green Mile run 13km\":\n    - generic: 13 km\n    - strong: 01:08:53\n    - generic: Green Mile run 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace run 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Ace run 10km\n    - 'generic \"Bobbies 3-in-1 run 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Bobbies 3-in-1 run 10km\n    - 'generic \"Green Mile run 13km: 10 points\"':\n      - generic: \"10\"\n      - generic: Green Mile run 13km\n    - 'generic \"Intercare run 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Intercare run 10km\n    - 'generic \"Jackie Mekler run 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Jackie Mekler run 10km\n    - 'generic \"Linton run 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: Linton run 10km\n    - 'generic \"TUT run 10km: 10 points\"':\n      - generic: \"10\"\n      - generic: TUT run 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace run 10km 00:52:35 10\":\n        - cell \"Ace run 10km\"\n        - cell \"00:52:35\"\n        - cell \"10\"\n      - row \"Bobbies 3-in-1 run 10km 00:54:05 10\":\n        - cell \"Bobbies 3-in-1 run 10km\"\n        - cell \"00:54:05\"\n        - cell \"10\"\n      - row \"Green Mile run 13km 01:08:53 10\":\n        - cell \"Green Mile run 13km\"\n        - cell \"01:08:53\"\n        - cell \"10\"\n      - row \"Intercare run 10km 00:51:19 10\":\n        - cell \"Intercare run 10km\"\n        - cell \"00:51:19\"\n        - cell \"10\"\n      - row \"Jackie Mekler run 10km 00:52:39 10\":\n        - cell \"Jackie Mekler run 10km\"\n        - cell \"00:52:39\"\n        - cell \"10\"\n      - row \"Linton run 10km 00:53:50 10\":\n        - cell \"Linton run 10km\"\n        - cell \"00:53:50\"\n        - cell \"10\"\n      - row \"TUT run 10km 00:53:03 10\":\n        - cell \"TUT run 10km\"\n        - cell \"00:53:03\"\n        - cell \"10\"",
+    "rows": [
+      [
+        "Ace run 10km",
+        "00:52:35",
+        "10"
+      ],
+      [
+        "Bobbies 3-in-1 run 10km",
+        "00:54:05",
+        "10"
+      ],
+      [
+        "Green Mile run 13km",
+        "01:08:53",
+        "10"
+      ],
+      [
+        "Intercare run 10km",
+        "00:51:19",
+        "10"
+      ],
+      [
+        "Jackie Mekler run 10km",
+        "00:52:39",
+        "10"
+      ],
+      [
+        "Linton run 10km",
+        "00:53:50",
+        "10"
+      ],
+      [
+        "TUT run 10km",
+        "00:53:03",
+        "10"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/anna-harris_female_master",
+    "capturedAt": "2026-09-19T18:22:27.910Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Anna HARRIS\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Master\n  - generic: Total Points\n  - strong: \"22\"\n  - generic: Races Completed\n  - strong: \"3\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Joy DEKKER\n  - paragraph: This athlete is 4 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 10km\":\n    - generic: 10 km\n    - strong: 00:56:12\n    - generic: Intercare run 10km\n  - generic \"Linton run 21km\":\n    - generic: 21 km\n    - strong: 01:59:13\n    - generic: Linton run 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace run 21km: 7 points\"':\n      - generic: \"7\"\n      - generic: Ace run 21km\n    - 'generic \"Intercare run 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: Intercare run 10km\n    - 'generic \"Linton run 21km: 8 points\"':\n      - generic: \"8\"\n      - generic: Linton run 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace run 21km 02:04:09 7\":\n        - cell \"Ace run 21km\"\n        - cell \"02:04:09\"\n        - cell \"7\"\n      - row \"Intercare run 10km 00:56:12 7\":\n        - cell \"Intercare run 10km\"\n        - cell \"00:56:12\"\n        - cell \"7\"\n      - row \"Linton run 21km 01:59:13 8\":\n        - cell \"Linton run 21km\"\n        - cell \"01:59:13\"\n        - cell \"8\"",
+    "rows": [
+      [
+        "Ace run 21km",
+        "02:04:09",
+        "7"
+      ],
+      [
+        "Intercare run 10km",
+        "00:56:12",
+        "7"
+      ],
+      [
+        "Linton run 21km",
+        "01:59:13",
+        "8"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/karen-neil_female_grand%20master",
+    "capturedAt": "2026-09-19T18:22:30.053Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Karen NEIL\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Grand Master\n  - generic: Total Points\n  - strong: \"15\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Lynette GOUGH\n  - paragraph: This athlete is 2 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Jackie Mekler run 10km\":\n    - generic: 10 km\n    - strong: 01:02:02\n    - generic: Jackie Mekler run 10km\n  - generic \"Green Mile run 13km\":\n    - generic: 13 km\n    - strong: 01:24:37\n    - generic: Green Mile run 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Green Mile run 13km: 7 points\"':\n      - generic: \"7\"\n      - generic: Green Mile run 13km\n    - 'generic \"Jackie Mekler run 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Jackie Mekler run 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Green Mile run 13km 01:24:37 7\":\n        - cell \"Green Mile run 13km\"\n        - cell \"01:24:37\"\n        - cell \"7\"\n      - row \"Jackie Mekler run 10km 01:02:02 8\":\n        - cell \"Jackie Mekler run 10km\"\n        - cell \"01:02:02\"\n        - cell \"8\"",
+    "rows": [
+      [
+        "Green Mile run 13km",
+        "01:24:37",
+        "7"
+      ],
+      [
+        "Jackie Mekler run 10km",
+        "01:02:02",
+        "8"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/karla-zietsman_female_senior",
+    "capturedAt": "2026-09-19T18:22:32.179Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Karla ZIETSMAN\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"11\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Annatjie GREYVENSTEIN\n  - paragraph: This athlete is 1 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 10km\":\n    - generic: 10 km\n    - strong: 01:00:20\n    - generic: Intercare run 10km\n  - generic \"Jackie Mekler run 26km\":\n    - generic: 26 km\n    - strong: 02:24:51\n    - generic: Jackie Mekler run 26km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Intercare run 10km: 5 points\"':\n      - generic: \"5\"\n      - generic: Intercare run 10km\n    - 'generic \"Jackie Mekler run 26km: 6 points\"':\n      - generic: \"6\"\n      - generic: Jackie Mekler run 26km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Intercare run 10km 01:00:20 5\":\n        - cell \"Intercare run 10km\"\n        - cell \"01:00:20\"\n        - cell \"5\"\n      - row \"Jackie Mekler run 26km 02:24:51 6\":\n        - cell \"Jackie Mekler run 26km\"\n        - cell \"02:24:51\"\n        - cell \"6\"",
+    "rows": [
+      [
+        "Intercare run 10km",
+        "01:00:20",
+        "5"
+      ],
+      [
+        "Jackie Mekler run 26km",
+        "02:24:51",
+        "6"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/krysten-smithers_female_senior",
+    "capturedAt": "2026-09-19T18:22:34.185Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Krysten SMITHERS\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"9\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Aloise BOSHOFF\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 21km\":\n    - generic: 21 km\n    - strong: 01:39:01\n    - generic: Intercare run 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Intercare run 21km: 9 points\"':\n      - generic: \"9\"\n      - generic: Intercare run 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Intercare run 21km 01:39:01 9\":\n        - cell \"Intercare run 21km\"\n        - cell \"01:39:01\"\n        - cell \"9\"",
+    "rows": [
+      [
+        "Intercare run 21km",
+        "01:39:01",
+        "9"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/chez%C3%A9lle-cilliers_female_senior",
+    "capturedAt": "2026-09-19T18:22:36.220Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Chezélle CILLIERS\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"6\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Marike JACOBS\n  - paragraph: This athlete is 1 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Linton run 10km\":\n    - generic: 10 km\n    - strong: 00:55:15\n    - generic: Linton run 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Linton run 10km: 6 points\"':\n      - generic: \"6\"\n      - generic: Linton run 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Linton run 10km 00:55:15 6\":\n        - cell \"Linton run 10km\"\n        - cell \"00:55:15\"\n        - cell \"6\"",
+    "rows": [
+      [
+        "Linton run 10km",
+        "00:55:15",
+        "6"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/geertjie-bloem_female_veteran",
+    "capturedAt": "2026-09-19T18:22:38.604Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Geertjie BLOEM\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Veteran\n  - generic: Total Points\n  - strong: \"5\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Tersia ODENDAAL\n  - paragraph: This athlete is 1 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Bobbies 3-in-1 run 10km\":\n    - generic: 10 km\n    - strong: 01:15:14\n    - generic: Bobbies 3-in-1 run 10km\n  - generic \"Green Mile run 13km\":\n    - generic: 13 km\n    - strong: 01:43:17\n    - generic: Green Mile run 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Bobbies 3-in-1 run 10km: 3 points\"':\n      - generic: \"3\"\n      - generic: Bobbies 3-in-1 run 10km\n    - 'generic \"Green Mile run 13km: 2 points\"':\n      - generic: \"2\"\n      - generic: Green Mile run 13km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Bobbies 3-in-1 run 10km 01:15:14 3\":\n        - cell \"Bobbies 3-in-1 run 10km\"\n        - cell \"01:15:14\"\n        - cell \"3\"\n      - row \"Green Mile run 13km 01:43:17 2\":\n        - cell \"Green Mile run 13km\"\n        - cell \"01:43:17\"\n        - cell \"2\"",
+    "rows": [
+      [
+        "Bobbies 3-in-1 run 10km",
+        "01:15:14",
+        "3"
+      ],
+      [
+        "Green Mile run 13km",
+        "01:43:17",
+        "2"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/leandri-de-kock_female_senior",
+    "capturedAt": "2026-09-19T18:22:40.666Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Leandri DE KOCK\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"4\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Annatjie GRUYVENSTEIN\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Jackie Mekler run 10km\":\n    - generic: 10 km\n    - strong: 01:03:33\n    - generic: Jackie Mekler run 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Jackie Mekler run 10km: 4 points\"':\n      - generic: \"4\"\n      - generic: Jackie Mekler run 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Jackie Mekler run 10km 01:03:33 4\":\n        - cell \"Jackie Mekler run 10km\"\n        - cell \"01:03:33\"\n        - cell \"4\"",
+    "rows": [
+      [
+        "Jackie Mekler run 10km",
+        "01:03:33",
+        "4"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/motlanalo-kudumela_female_veteran",
+    "capturedAt": "2026-09-19T18:22:42.678Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Motlanalo KUDUMELA\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Veteran\n  - generic: Total Points\n  - strong: \"3\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Marlene KRUGER\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 10km\":\n    - generic: 10 km\n    - strong: 01:28:10\n    - generic: Intercare run 10km\n  - generic \"Green Mile run 13km\":\n    - generic: 13 km\n    - strong: 01:50:08\n    - generic: Green Mile run 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Green Mile run 13km: 2 points\"':\n      - generic: \"2\"\n      - generic: Green Mile run 13km\n    - 'generic \"Intercare run 10km: 1 points\"':\n      - generic: \"1\"\n      - generic: Intercare run 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Green Mile run 13km 01:50:08 2\":\n        - cell \"Green Mile run 13km\"\n        - cell \"01:50:08\"\n        - cell \"2\"\n      - row \"Intercare run 10km 01:28:10 1\":\n        - cell \"Intercare run 10km\"\n        - cell \"01:28:10\"\n        - cell \"1\"",
+    "rows": [
+      [
+        "Green Mile run 13km",
+        "01:50:08",
+        "2"
+      ],
+      [
+        "Intercare run 10km",
+        "01:28:10",
+        "1"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/zodwa-xaba_female_veteran",
+    "capturedAt": "2026-09-19T18:22:55.752Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Zodwa XABA\" [level=1]\n  - generic: Gender\n  - strong: Female\n  - generic: Category\n  - strong: Veteran\n  - generic: Total Points\n  - strong: \"2\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Paulina RAMMABI\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 10km\":\n    - generic: 10 km\n    - strong: 01:42:06\n    - generic: Intercare run 10km\n  - generic \"Green Mile run 13km\":\n    - generic: 13 km\n    - strong: 01:58:02\n    - generic: Green Mile run 13km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Green Mile run 13km: 1 points\"':\n      - generic: \"1\"\n      - generic: Green Mile run 13km\n    - 'generic \"Intercare run 10km: 1 points\"':\n      - generic: \"1\"\n      - generic: Intercare run 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Green Mile run 13km 01:58:02 1\":\n        - cell \"Green Mile run 13km\"\n        - cell \"01:58:02\"\n        - cell \"1\"\n      - row \"Intercare run 10km 01:42:06 1\":\n        - cell \"Intercare run 10km\"\n        - cell \"01:42:06\"\n        - cell \"1\"",
+    "rows": [
+      [
+        "Green Mile run 13km",
+        "01:58:02",
+        "1"
+      ],
+      [
+        "Intercare run 10km",
+        "01:42:06",
+        "1"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/rykie-kruger_male_veteran",
+    "capturedAt": "2026-09-19T18:22:58.053Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Rykie KRUGER\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Veteran\n  - generic: Total Points\n  - strong: \"37\"\n  - generic: Races Completed\n  - strong: \"7\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Riaan VAN STADEN\n  - paragraph: This athlete is 7 points ahead of them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"TUT run 10km\":\n    - generic: 10 km\n    - strong: 00:48:06\n    - generic: TUT run 10km\n  - generic \"Intercare run 21km\":\n    - generic: 21 km\n    - strong: 01:49:56\n    - generic: Intercare run 21km\n  - generic \"Green Mile run 26km\":\n    - generic: 26 km\n    - strong: 02:44:26\n    - generic: Green Mile run 26km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace run 21km: 6 points\"':\n      - generic: \"6\"\n      - generic: Ace run 21km\n    - 'generic \"Bobbies 3-in-1 run 21km: 5 points\"':\n      - generic: \"5\"\n      - generic: Bobbies 3-in-1 run 21km\n    - 'generic \"Green Mile run 26km: 4 points\"':\n      - generic: \"4\"\n      - generic: Green Mile run 26km\n    - 'generic \"Intercare run 21km: 6 points\"':\n      - generic: \"6\"\n      - generic: Intercare run 21km\n    - 'generic \"Jackie Mekler run 10km: 5 points\"':\n      - generic: \"5\"\n      - generic: Jackie Mekler run 10km\n    - 'generic \"Linton run 21km: 4 points\"':\n      - generic: \"4\"\n      - generic: Linton run 21km\n    - 'generic \"TUT run 10km: 7 points\"':\n      - generic: \"7\"\n      - generic: TUT run 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace run 21km 01:50:40 6\":\n        - cell \"Ace run 21km\"\n        - cell \"01:50:40\"\n        - cell \"6\"\n      - row \"Bobbies 3-in-1 run 21km 01:56:14 5\":\n        - cell \"Bobbies 3-in-1 run 21km\"\n        - cell \"01:56:14\"\n        - cell \"5\"\n      - row \"Green Mile run 26km 02:44:26 4\":\n        - cell \"Green Mile run 26km\"\n        - cell \"02:44:26\"\n        - cell \"4\"\n      - row \"Intercare run 21km 01:49:56 6\":\n        - cell \"Intercare run 21km\"\n        - cell \"01:49:56\"\n        - cell \"6\"\n      - row \"Jackie Mekler run 10km 00:56:38 5\":\n        - cell \"Jackie Mekler run 10km\"\n        - cell \"00:56:38\"\n        - cell \"5\"\n      - row \"Linton run 21km 02:08:01 4\":\n        - cell \"Linton run 21km\"\n        - cell \"02:08:01\"\n        - cell \"4\"\n      - row \"TUT run 10km 00:48:06 7\":\n        - cell \"TUT run 10km\"\n        - cell \"00:48:06\"\n        - cell \"7\"",
+    "rows": [
+      [
+        "Ace run 21km",
+        "01:50:40",
+        "6"
+      ],
+      [
+        "Bobbies 3-in-1 run 21km",
+        "01:56:14",
+        "5"
+      ],
+      [
+        "Green Mile run 26km",
+        "02:44:26",
+        "4"
+      ],
+      [
+        "Intercare run 21km",
+        "01:49:56",
+        "6"
+      ],
+      [
+        "Jackie Mekler run 10km",
+        "00:56:38",
+        "5"
+      ],
+      [
+        "Linton run 21km",
+        "02:08:01",
+        "4"
+      ],
+      [
+        "TUT run 10km",
+        "00:48:06",
+        "7"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/michael-gibbons_male_great%20grand%20master",
+    "capturedAt": "2026-09-19T18:23:00.282Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Michael GIBBONS\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Great Grand Master\n  - generic: Total Points\n  - strong: \"26\"\n  - generic: Races Completed\n  - strong: \"3\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Louwrens SMIT\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 10km\":\n    - generic: 10 km\n    - strong: 00:52:27\n    - generic: Intercare run 10km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Ace run 10km: 9 points\"':\n      - generic: \"9\"\n      - generic: Ace run 10km\n    - 'generic \"Intercare run 10km: 9 points\"':\n      - generic: \"9\"\n      - generic: Intercare run 10km\n    - 'generic \"Linton run 10km: 8 points\"':\n      - generic: \"8\"\n      - generic: Linton run 10km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Ace run 10km 00:54:26 9\":\n        - cell \"Ace run 10km\"\n        - cell \"00:54:26\"\n        - cell \"9\"\n      - row \"Intercare run 10km 00:52:27 9\":\n        - cell \"Intercare run 10km\"\n        - cell \"00:52:27\"\n        - cell \"9\"\n      - row \"Linton run 10km 00:57:09 8\":\n        - cell \"Linton run 10km\"\n        - cell \"00:57:09\"\n        - cell \"8\"",
+    "rows": [
+      [
+        "Ace run 10km",
+        "00:54:26",
+        "9"
+      ],
+      [
+        "Intercare run 10km",
+        "00:52:27",
+        "9"
+      ],
+      [
+        "Linton run 10km",
+        "00:57:09",
+        "8"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/mikael-alberts_male_senior",
+    "capturedAt": "2026-09-19T18:23:02.273Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Mikael ALBERTS\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"14\"\n  - generic: Races Completed\n  - strong: \"4\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Shaltah DIKOLOBE\n  - paragraph: This athlete is 1 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 10km\":\n    - generic: 10 km\n    - strong: 01:02:38\n    - generic: Intercare run 10km\n  - generic \"TUT run 21km\":\n    - generic: 21 km\n    - strong: 02:08:17\n    - generic: TUT run 21km\n  - generic \"Jackie Mekler run 26km\":\n    - generic: 26 km\n    - strong: 02:37:41\n    - generic: Jackie Mekler run 26km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Green Mile run 26km: 3 points\"':\n      - generic: \"3\"\n      - generic: Green Mile run 26km\n    - 'generic \"Intercare run 10km: 3 points\"':\n      - generic: \"3\"\n      - generic: Intercare run 10km\n    - 'generic \"Jackie Mekler run 26km: 4 points\"':\n      - generic: \"4\"\n      - generic: Jackie Mekler run 26km\n    - 'generic \"TUT run 21km: 4 points\"':\n      - generic: \"4\"\n      - generic: TUT run 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Green Mile run 26km 02:44:50 3\":\n        - cell \"Green Mile run 26km\"\n        - cell \"02:44:50\"\n        - cell \"3\"\n      - row \"Intercare run 10km 01:02:38 3\":\n        - cell \"Intercare run 10km\"\n        - cell \"01:02:38\"\n        - cell \"3\"\n      - row \"Jackie Mekler run 26km 02:37:41 4\":\n        - cell \"Jackie Mekler run 26km\"\n        - cell \"02:37:41\"\n        - cell \"4\"\n      - row \"TUT run 21km 02:08:17 4\":\n        - cell \"TUT run 21km\"\n        - cell \"02:08:17\"\n        - cell \"4\"",
+    "rows": [
+      [
+        "Green Mile run 26km",
+        "02:44:50",
+        "3"
+      ],
+      [
+        "Intercare run 10km",
+        "01:02:38",
+        "3"
+      ],
+      [
+        "Jackie Mekler run 26km",
+        "02:37:41",
+        "4"
+      ],
+      [
+        "TUT run 21km",
+        "02:08:17",
+        "4"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/gustav-jansen-van-rensburg_male_senior",
+    "capturedAt": "2026-09-19T18:23:04.434Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Gustav JANSEN VAN RENSBURG\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"9\"\n  - generic: Races Completed\n  - strong: \"2\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Neel SWANEPOEL\n  - paragraph: This athlete is 1 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 21km\":\n    - generic: 21 km\n    - strong: 01:59:24\n    - generic: Intercare run 21km\n  - generic \"Jackie Mekler run 26km\":\n    - generic: 26 km\n    - strong: 02:37:41\n    - generic: Jackie Mekler run 26km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Intercare run 21km: 5 points\"':\n      - generic: \"5\"\n      - generic: Intercare run 21km\n    - 'generic \"Jackie Mekler run 26km: 4 points\"':\n      - generic: \"4\"\n      - generic: Jackie Mekler run 26km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Intercare run 21km 01:59:24 5\":\n        - cell \"Intercare run 21km\"\n        - cell \"01:59:24\"\n        - cell \"5\"\n      - row \"Jackie Mekler run 26km 02:37:41 4\":\n        - cell \"Jackie Mekler run 26km\"\n        - cell \"02:37:41\"\n        - cell \"4\"",
+    "rows": [
+      [
+        "Intercare run 21km",
+        "01:59:24",
+        "5"
+      ],
+      [
+        "Jackie Mekler run 26km",
+        "02:37:41",
+        "4"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/rhenier-de-beer_male_veteran",
+    "capturedAt": "2026-09-19T18:23:07.152Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Rhenier DE BEER\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Veteran\n  - generic: Total Points\n  - strong: \"7\"\n  - generic: Races Completed\n  - strong: \"3\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Lance VAN DER SCHOLTZ\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Intercare run 10km\":\n    - generic: 10 km\n    - strong: 01:11:23\n    - generic: Intercare run 10km\n  - generic \"Bobbies 3-in-1 run 21km\":\n    - generic: 21 km\n    - strong: 02:34:23\n    - generic: Bobbies 3-in-1 run 21km\n  - generic \"Jackie Mekler run 26km\":\n    - generic: 26 km\n    - strong: 02:45:00\n    - generic: Jackie Mekler run 26km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Bobbies 3-in-1 run 21km: 2 points\"':\n      - generic: \"2\"\n      - generic: Bobbies 3-in-1 run 21km\n    - 'generic \"Intercare run 10km: 2 points\"':\n      - generic: \"2\"\n      - generic: Intercare run 10km\n    - 'generic \"Jackie Mekler run 26km: 3 points\"':\n      - generic: \"3\"\n      - generic: Jackie Mekler run 26km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Bobbies 3-in-1 run 21km 02:34:23 2\":\n        - cell \"Bobbies 3-in-1 run 21km\"\n        - cell \"02:34:23\"\n        - cell \"2\"\n      - row \"Intercare run 10km 01:11:23 2\":\n        - cell \"Intercare run 10km\"\n        - cell \"01:11:23\"\n        - cell \"2\"\n      - row \"Jackie Mekler run 26km 02:45:00 3\":\n        - cell \"Jackie Mekler run 26km\"\n        - cell \"02:45:00\"\n        - cell \"3\"",
+    "rows": [
+      [
+        "Bobbies 3-in-1 run 21km",
+        "02:34:23",
+        "2"
+      ],
+      [
+        "Intercare run 10km",
+        "01:11:23",
+        "2"
+      ],
+      [
+        "Jackie Mekler run 26km",
+        "02:45:00",
+        "3"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/darno-vd-merwe_male_senior",
+    "capturedAt": "2026-09-19T18:23:29.160Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Darno VD MERWE\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"5\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Clayton BEZUIDENHOUT\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"Linton run 21km\":\n    - generic: 21 km\n    - strong: 01:56:13\n    - generic: Linton run 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"Linton run 21km: 5 points\"':\n      - generic: \"5\"\n      - generic: Linton run 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"Linton run 21km 01:56:13 5\":\n        - cell \"Linton run 21km\"\n        - cell \"01:56:13\"\n        - cell \"5\"",
+    "rows": [
+      [
+        "Linton run 21km",
+        "01:56:13",
+        "5"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/marchel-dippenaar_male_senior",
+    "capturedAt": "2026-09-19T18:23:31.343Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Marchel DIPPENAAR\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Senior\n  - generic: Total Points\n  - strong: \"4\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Jared HEFER\n  - paragraph: This athlete is 0 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"TUT run 21km\":\n    - generic: 21 km\n    - strong: 02:03:38\n    - generic: TUT run 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"TUT run 21km: 4 points\"':\n      - generic: \"4\"\n      - generic: TUT run 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"TUT run 21km 02:03:38 4\":\n        - cell \"TUT run 21km\"\n        - cell \"02:03:38\"\n        - cell \"4\"",
+    "rows": [
+      [
+        "TUT run 21km",
+        "02:03:38",
+        "4"
+      ]
+    ]
+  },
+  {
+    "url": "/athlete/run/eben-pfeifer_male_veteran",
+    "capturedAt": "2026-09-19T18:23:33.612Z",
+    "text": "- main:\n  - img \"Irene Athletics Club logo\"\n  - paragraph: Irene Athletics Club\n  - paragraph: Athlete Profile\n  - paragraph: League performance at a glance.\n  - link \"Back to Run leaderboard\":\n    - /url: /\n  - heading \"Eben PFEIFER\" [level=1]\n  - generic: Gender\n  - strong: Male\n  - generic: Category\n  - strong: Veteran\n  - generic: Total Points\n  - strong: \"3\"\n  - generic: Races Completed\n  - strong: \"1\"\n  - separator\n  - heading \"Rival\" [level=3]\n  - paragraph:\n    - strong: Pieter SAAYMAN\n  - paragraph: This athlete is 1 points behind them.\n  - heading \"Personal Bests\" [level=2]\n  - paragraph: Fastest recorded finish at each distance.\n  - generic \"TUT run 21km\":\n    - generic: 21 km\n    - strong: 02:18:01\n    - generic: TUT run 21km\n  - heading \"Points by Race\" [level=2]\n  - paragraph: A quick view of where this athlete earned their league points.\n  - generic \"Points by race chart\":\n    - 'generic \"TUT run 21km: 3 points\"':\n      - generic: \"3\"\n      - generic: TUT run 21km\n  - heading \"Race History\" [level=2]\n  - table:\n    - rowgroup:\n      - row \"Race Time Points\":\n        - columnheader \"Race\"\n        - columnheader \"Time\"\n        - columnheader \"Points\"\n      - row \"TUT run 21km 02:18:01 3\":\n        - cell \"TUT run 21km\"\n        - cell \"02:18:01\"\n        - cell \"3\"",
+    "rows": [
+      [
+        "TUT run 21km",
+        "02:18:01",
+        "3"
+      ]
+    ]
+  }
+]

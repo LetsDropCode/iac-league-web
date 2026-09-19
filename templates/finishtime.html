@@ -9,7 +9,8 @@
         .panel { max-width: 760px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,.08); margin: 16px 0; }
         input, select, button { box-sizing: border-box; padding: 10px; border-radius: 6px; font-size: 15px; }
         input, select { border: 1px solid #ccd3df; width: 100%; margin: 6px 0 12px; background: #fff; }
-        button { border: 0; background: #0047AB; color: white; font-weight: bold; cursor: pointer; }
+        button { border: 0; background: #0047AB; color: white; font-weight: bold; cursor: pointer; margin-right: 8px; }
+        button.secondary { background: #475569; }
         .race { border-top: 1px solid #dbe3f0; padding: 16px 0; }
         .race:first-of-type { border-top: 0; }
         .race h3 { margin: 0 0 4px; }
@@ -17,6 +18,9 @@
         .fields { display: grid; grid-template-columns: 1fr 120px 120px; gap: 10px; align-items: end; }
         .fields label { font-size: 13px; font-weight: bold; }
         .error { color: #b42318; font-weight: bold; }
+        .preview { overflow-x: auto; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border-bottom: 1px solid #e2e8f0; padding: 8px; text-align: left; }
         @media (max-width: 640px) { .fields { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -46,8 +50,8 @@
 
         {% if races %}
         <section class="panel">
-            <h2>2. Import a result set</h2>
-            <p>Select the correct event date, enter its distance, and choose whether these are running or walking results. The import is filtered to Irene Athletics Club and saved in the league format automatically.</p>
+            <h2>2. Preview a result set</h2>
+            <p>Select the correct event date, distance and discipline. FinishTime pages are combined and then filtered to an exact club match before anything can be imported.</p>
             {% for race in races %}
             <article class="race">
                 <h3>{{ race.name }}</h3>
@@ -72,10 +76,26 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit">Import results</button>
+                    <button type="submit" name="action" value="preview">Fetch preview</button>
                 </form>
             </article>
             {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if preview %}
+        <section class="panel preview">
+            <h2>3. Confirm import</h2>
+            <p><strong>{{ preview.rows }}</strong> usable club finishers found across all FinishTime pages.</p>
+            {{ preview.table|safe }}
+            <form method="post" action="{{ url_for('import_finishtime_results') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="race_url" value="{{ preview.race_url }}">
+                <input type="hidden" name="club" value="{{ preview.club }}">
+                <input type="hidden" name="distance" value="{{ preview.distance }}">
+                <input type="hidden" name="discipline" value="{{ preview.discipline }}">
+                <button type="submit" name="action" value="import">Import these results</button>
+            </form>
         </section>
         {% endif %}
     </main>

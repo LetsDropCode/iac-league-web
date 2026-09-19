@@ -21,8 +21,12 @@ from flask_seasurf import SeaSurf
 from flask_talisman import Talisman
 
 # Your engine
-from update_engine import process_league, read_result_file, clean_distance, race_event_count
+from update_engine import (
+    process_league, read_result_file, clean_distance, race_event_count,
+    normalize_category_value,
+)
 from finishtime import FinishTimeClient, FinishTimeError
+from ultimatelive import UltimateLiveClient, UltimateLiveError
 
 from storage import get_storage, StorageError, storage_read
 
@@ -388,16 +392,26 @@ def preview_results_file(file):
     duplicate_subset = [c for c in ["Name", "Distance"] if c in columns]
     duplicates = int(df.duplicated(subset=duplicate_subset).sum()) if duplicate_subset else 0
     blank_names = int(df["Name"].isna().sum()) if "Name" in columns else 0
-    invalid_times = int(pd.to_timedelta(df[time_col], errors="coerce").isna().sum()) if time_col else len(df)
+    parsed_times = pd.to_timedelta(df[time_col], errors="coerce") if time_col else pd.Series(pd.NaT, index=df.index)
+    invalid_times = int(parsed_times.isna().sum())
+    valid_names = df["Name"].notna() & df["Name"].astype(str).str.strip().ne("") if "Name" in columns else False
+    usable_rows = int((valid_names & parsed_times.notna()).sum()) if len(df) else 0
+    error = None
+    if missing:
+        error = "Missing required fields: " + ", ".join(missing)
+    elif usable_rows == 0:
+        error = "No usable finisher rows were found in this file."
 
     return {
-        "ok": not missing,
+        "ok": not missing and usable_rows > 0,
         "rows": len(df),
+        "usable_rows": usable_rows,
         "columns": len(df.columns),
         "missing": missing,
         "duplicates": duplicates,
         "blank_names": blank_names,
         "invalid_times": invalid_times,
+        "error": error,
     }
 
 # -----------------------------------
@@ -431,6 +445,21 @@ def _pasted_column(columns, *terms):
         label = re.sub(r"[^a-z0-9]+", "", str(column).lower())
         if any(term in label for term in terms):
             return column
+    return None
+
+
+def _pasted_name(table):
+    keyed = {re.sub(r"[^a-z0-9]+", "", str(column).lower()): column for column in table.columns}
+    name_col = next(
+        (keyed[key] for key in ("name", "participant", "participantname", "athlete", "athletename", "fullname") if key in keyed),
+        None,
+    )
+    if name_col is not None:
+        return table[name_col]
+    first_col = _pasted_column(table.columns, "firstname")
+    last_col = _pasted_column(table.columns, "lastname", "surname")
+    if first_col is not None and last_col is not None:
+        return table[first_col].fillna("").astype(str) + " " + table[last_col].fillna("").astype(str)
     return None
 
 
@@ -487,7 +516,7 @@ def _parse_finish_time_cards(raw_results, distance):
         ), None)
         if name and category:
             records.append({
-                "Name": name,
+                "Name": re.sub(r"\s*#\S+.*$", "", name).strip(),
                 "Gender": lines[gender_index].title(),
                 "Category": re.sub(r"\D+", "-", category),
                 "Distance": int(distance),
@@ -505,36 +534,51 @@ def _parse_finish_time_cards(raw_results, distance):
 
 
 def parse_pasted_results(raw_results, distance):
-    """Turn an HTML or tab-delimited copied result table into league columns."""
+    """Turn a copied timing-provider table into league columns."""
     raw_results = raw_results.strip()
     if not raw_results:
-        raise ValueError("Paste the copied FinishTime result table before importing.")
+        raise ValueError("Paste a copied race-result table before importing.")
 
     try:
         if "<table" in raw_results.lower():
             tables = pd.read_html(StringIO(raw_results))
             if not tables:
                 raise ValueError
-            table = tables[0]
+            table = max(tables, key=lambda item: sum(
+                _pasted_column(item.columns, term) is not None
+                for term in ("name", "participant", "category", "time", "finish")
+            ))
         else:
             table = pd.read_csv(StringIO(raw_results), sep="\t", dtype=str)
     except (ValueError, pd.errors.ParserError) as exc:
-        raise ValueError("The pasted data could not be read as a FinishTime table.") from exc
+        raise ValueError("The pasted data could not be read as a race-result table.") from exc
 
     table.columns = [str(column).replace("", "").strip() for column in table.columns]
     if len(table.columns) == 1:
         return _parse_finish_time_cards(raw_results, distance)
-    name_col = _pasted_column(table.columns, "name")
+    names = _pasted_name(table)
     gender_col = _pasted_column(table.columns, "gender", "sex")
-    category_col = _pasted_column(table.columns, "category", "cat")
-    time_col = _pasted_column(table.columns, "time", "finish")
-    if not all((name_col, gender_col, category_col, time_col)):
+    category_col = _pasted_column(table.columns, "category", "agegroup", "division", "cat")
+    time_col = _pasted_column(table.columns, "finishtime", "chiptime", "guntime", "nettime", "time", "finish")
+    if names is None or category_col is None or time_col is None:
         return _parse_finish_time_cards(raw_results, distance)
 
+    categories = table[category_col].astype(str).str.strip()
+    if gender_col is not None:
+        genders = table[gender_col].astype(str).str.strip()
+    else:
+        genders = categories.str.extract(
+            r"^\s*([MFW])(?=\d|U\d|Open|Junior|Senior)", expand=False
+        )
+    genders = genders.str.lower().map({
+        "m": "Male", "male": "Male", "man": "Male",
+        "f": "Female", "w": "Female", "female": "Female", "woman": "Female",
+    })
+
     output = pd.DataFrame({
-        "Name": table[name_col].astype(str).str.replace(r"\s*#\S+.*$", "", regex=True).str.strip(),
-        "Gender": table[gender_col].astype(str).str.extract(r"(Male|Female)", expand=False),
-        "Category": table[category_col].astype(str).str.strip(),
+        "Name": names.astype(str).str.replace(r"\s*#\S+.*$", "", regex=True).str.strip(),
+        "Gender": genders,
+        "Category": categories.map(normalize_category_value),
         "Distance": int(distance),
         "Time": table[time_col].astype(str).str.strip(),
     })
@@ -659,6 +703,12 @@ def upload():
             if action == "preview":
                 return render_template("admin.html", preview=preview)
 
+            if not preview.get("ok"):
+                preview["error"] = preview.get("error") or (
+                    "This file is not usable yet. Fix the missing fields before uploading."
+                )
+                return render_template("admin.html", preview=preview), 400
+
             filename = secure_filename(file.filename)
             try:
                 storage.publish(f"results/{filename}", file.read())
@@ -773,12 +823,29 @@ def import_finishtime_results():
     race_url = request.form.get("race_url", "")
     club = request.form.get("club", "").strip()
     discipline = request.form.get("discipline", "run").lower()
+    action = request.form.get("action", "preview")
     try:
         distance = int(request.form.get("distance", ""))
         if discipline not in {"run", "walk"}:
             raise FinishTimeError("Choose Run or Walk before importing.")
 
-        results = FinishTimeClient().results_for_club(race_url, club, distance)
+        results = FinishTimeClient().results_for_club(race_url, club, distance, discipline)
+        if action == "preview":
+            return render_template(
+                "finishtime.html",
+                query="",
+                races=[],
+                error=None,
+                preview={
+                    "rows": len(results),
+                    "table": results.head(100).to_html(index=False, border=0),
+                    "race_url": race_url,
+                    "club": club,
+                    "distance": distance,
+                    "discipline": discipline,
+                },
+            )
+
         filename = finishtime_import_filename(race_url, discipline, distance)
         storage.publish(f"results/{filename}", results.to_csv(sep=";", index=False).encode())
         clear_cache()
@@ -794,6 +861,62 @@ def import_finishtime_results():
         flash("FinishTime could not be imported. Check publication records before retrying.", "error")
 
     return redirect(url_for("finishtime_import"))
+
+
+@app.route("/ultimatelive", methods=["GET", "POST"])
+@limiter.limit("10 per hour")
+def ultimatelive_import():
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    error = None
+    preview = None
+    form = request.form if request.method == "POST" else {}
+    if request.method == "POST":
+        discipline = request.form.get("discipline", "run").lower()
+        action = request.form.get("action", "preview")
+        try:
+            distance = int(request.form.get("distance", ""))
+            event_name, results = UltimateLiveClient().results_for_club(
+                request.form.get("event_url", ""),
+                request.form.get("club", ""),
+                distance,
+                discipline,
+            )
+            race_name = request.form.get("race_name", "").strip() or event_name
+            if action == "import":
+                filename = pasted_results_filename(race_name, discipline, distance)
+                storage.publish(
+                    f"results/{filename}",
+                    results.to_csv(sep=";", index=False).encode(),
+                )
+                clear_cache()
+                flash(
+                    f"Imported {len(results)} Ultimate Live result(s) as {filename} and recalculated the league.",
+                    "success",
+                )
+                return redirect("/")
+
+            preview = {
+                "event_name": event_name,
+                "rows": len(results),
+                "table": results.head(100).to_html(index=False, border=0),
+            }
+        except (UltimateLiveError, StorageError, TypeError, ValueError) as exc:
+            error = str(exc)
+        except requests.RequestException as exc:
+            logging.warning("Ultimate Live request failed: %s", exc)
+            error = "Ultimate Live rejected or timed out the request. Please try again shortly."
+        except Exception:
+            logging.exception("Ultimate Live import failed")
+            error = "Ultimate Live results could not be imported. No league results were changed."
+
+    return render_template(
+        "ultimatelive.html",
+        error=error,
+        preview=preview,
+        form=form,
+    )
 
 # -----------------------------------
 # LOGOUT

@@ -1,0 +1,78 @@
+{
+  "standings": {
+    "run": {
+      "local_count": 211,
+      "public_count": 211,
+      "unique_public_count": 211,
+      "missing_public": [],
+      "differences": [],
+      "columns_checked": [
+        "Name",
+        "Gender",
+        "Rank",
+        "Category Rank",
+        "Races Completed",
+        "Total Points",
+        "Ace run 10km",
+        "Ace run 21km",
+        "Bobbies 3-in-1 run 10km",
+        "Bobbies 3-in-1 run 21km",
+        "Green Mile run 13km",
+        "Green Mile run 26km",
+        "Intercare run 10km",
+        "Intercare run 21km",
+        "Jackie Mekler run 10km",
+        "Jackie Mekler run 26km",
+        "Linton run 10km",
+        "Linton run 21km",
+        "Soshanguve run 10km",
+        "TUT run 10km",
+        "TUT run 21km"
+      ],
+      "rank_change_excluded": "Derived from filesystem mtime, not stable source data."
+    },
+    "walk": {
+      "local_count": 22,
+      "public_count": 22,
+      "unique_public_count": 22,
+      "missing_public": [],
+      "differences": [],
+      "columns_checked": [
+        "Name",
+        "Gender",
+        "Rank",
+        "Category Rank",
+        "Races Completed",
+        "Total Points",
+        "Ace walk 10km",
+        "Ace walk 21km",
+        "Bobbies 3-in-1 walk 10km",
+        "Green Mile walk 13km",
+        "Intercare walk 10km",
+        "Intercare walk 21km",
+        "JackieMekler walk 10km",
+        "Linton walk 10km",
+        "Linton walk 21km",
+        "Soshanguve walk 10km",
+        "TUT walk 10km",
+        "TUT walk 21km"
+      ],
+      "rank_change_excluded": "Derived from filesystem mtime, not stable source data."
+    }
+  },
+  "rules": {
+    "local_count": 1898,
+    "public_count": 1898,
+    "only_local": [],
+    "only_public": []
+  },
+  "history": {
+    "status": "partial; bounded to 40 profiles to respect production request limits",
+    "profiles_checked": 40,
+    "walk_profiles_checked": 22,
+    "run_profiles_checked": 18,
+    "race_history_rows_checked": 118,
+    "differences": [],
+    "profiles_remaining": 193
+  }
+}

@@ -370,16 +370,18 @@ def read_result_file(path):
         source.seek(0)
 
     if ext == ".csv":
-        df = pd.read_csv(source, sep=";")
+        # Timing providers do not agree on a delimiter. Let pandas detect
+        # comma, semicolon or tab exports instead of producing one bad column.
+        df = pd.read_csv(source, sep=None, engine="python")
     elif ext == ".xlsx":
         df = pd.read_excel(source)
     else:
         raise ValueError("Unsupported result file type")
 
-    return normalize_result_columns(df)
+    return normalize_result_columns(df, filename=filename)
 
 
-def normalize_result_columns(df):
+def normalize_result_columns(df, filename=""):
     df = df.dropna(how="all").copy()
 
     if not has_result_headers(df.columns):
@@ -392,12 +394,44 @@ def normalize_result_columns(df):
         df.columns = header
 
     df.columns = [normalize_header(c) for c in df.columns]
-    df = df.rename(columns={
-        "Participant": "Name",
-        "Bibno": "Race No",
-        "Bib No": "Race No",
-        "Pos": "Pos",
-    })
+    aliases = {
+        "participant": "Name", "participantname": "Name",
+        "athlete": "Name", "athletename": "Name", "fullname": "Name",
+        "bibno": "Race No", "bibnumber": "Race No", "raceno": "Race No",
+        "sex": "Gender", "agecategory": "Category", "agegroup": "Category",
+        "division": "Category", "finishtime": "Time", "guntime": "Time",
+        "chiptime": "Time", "nettime": "Time",
+    }
+    df = df.rename(columns={column: aliases.get(header_key(column), column) for column in df.columns})
+
+    if "Name" not in df.columns:
+        first = next((c for c in df.columns if header_key(c) in {"firstname", "first"}), None)
+        last = next((c for c in df.columns if header_key(c) in {"lastname", "surname", "last"}), None)
+        if first and last:
+            df["Name"] = (
+                df[first].fillna("").astype(str).str.strip() + " " +
+                df[last].fillna("").astype(str).str.strip()
+            ).str.strip()
+
+    if "Gender" not in df.columns and "Category" in df.columns:
+        prefixes = df["Category"].astype(str).str.extract(
+            r"^\s*([MFW])(?=\d|U\d|Open|Junior|Senior)", expand=False
+        )
+        df["Gender"] = prefixes.map({"M": "Male", "F": "Female", "W": "Female"})
+
+    if "Gender" in df.columns:
+        df["Gender"] = df["Gender"].map(normalize_gender_value)
+
+    if "Category" in df.columns:
+        df["Category"] = df["Category"].map(normalize_category_value)
+
+    if "Distance" not in df.columns:
+        match = re.search(
+            r"(?:^|[^0-9])(\d+(?:\.\d+)?)\s*[kK](?:m)?(?:[^a-zA-Z]|$)",
+            os.path.basename(str(filename)),
+        )
+        if match:
+            df["Distance"] = float(match.group(1))
 
     df = df.dropna(how="all").copy()
 
@@ -421,6 +455,37 @@ def normalize_header(value):
     value = value.replace("\ufeff", "")
     value = value.rstrip(".")
     return value
+
+
+def normalize_category_value(value):
+    """Convert provider age/sex labels to the league's source categories."""
+    if pd.isna(value):
+        return value
+    text = str(value).strip()
+    unprefixed = re.sub(r"^[MFW](?=\d|U\d|Open|Junior|Senior)", "", text, flags=re.IGNORECASE)
+    ages = re.search(r"(\d{1,2})\s*(?:-|to)\s*(\d{1,2})", unprefixed, flags=re.IGNORECASE)
+    if ages:
+        low = int(ages.group(1))
+        if low < 20:
+            return "Junior"
+        if low < 40:
+            return "Senior"
+        decade = min((low // 10) * 10, 90)
+        return "90+" if decade >= 90 else f"{decade}-{decade + 9}"
+    under = re.search(r"(?:U|under\s*)(\d{1,2})", unprefixed, flags=re.IGNORECASE)
+    if under:
+        return "Junior" if int(under.group(1)) <= 20 else "Senior"
+    return unprefixed or text
+
+
+def normalize_gender_value(value):
+    if pd.isna(value):
+        return value
+    text = str(value).strip()
+    return {
+        "m": "Male", "male": "Male", "man": "Male",
+        "f": "Female", "w": "Female", "female": "Female", "woman": "Female",
+    }.get(text.lower(), text)
 
 
 def normalize_time_value(value):
@@ -458,11 +523,10 @@ def header_key(value):
 def has_result_headers(columns):
     keys = {header_key(c) for c in columns}
     return (
-        ("name" in keys or "participant" in keys) and
-        "gender" in keys and
-        "category" in keys and
-        "distance" in keys and
-        ("time" in keys or "finish" in keys)
+        bool(keys & {"name", "participant", "participantname", "athlete", "athletename", "fullname"}
+             or ({"firstname", "lastname"} <= keys)) and
+        bool(keys & {"gender", "sex", "category", "agecategory", "agegroup"}) and
+        bool(keys & {"time", "finish", "finishtime", "guntime", "chiptime", "nettime"})
     )
 
 
@@ -478,7 +542,7 @@ def clean_rules(rules):
         return
 
     rules["Distance"] = pd.to_numeric(rules["Distance"], errors="coerce").round().astype("Int64")
-    rules["Gender"] = rules["Gender"].astype(str).str.strip()
+    rules["Gender"] = rules["Gender"].map(normalize_gender_value)
     rules["Category"] = rules["Category"].astype(str).str.strip()
     rules["TimeFrom"] = pd.to_timedelta(rules["TimeFrom"], errors="coerce")
     rules["TimeTo"] = pd.to_timedelta(rules["TimeTo"], errors="coerce")

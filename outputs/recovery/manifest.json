@@ -1,0 +1,157 @@
+{
+  "created_utc": "2026-09-19T18:17:04.146342+00:00",
+  "status": "candidate local recovery source; not a live filesystem backup",
+  "files": [
+    {
+      "path": "results/10K_Ace_run.csv",
+      "bytes": 2334,
+      "sha256": "3f31d8990fad8838b5492ac03c135d840d0c67164643964915b3c22b9c98c1d8"
+    },
+    {
+      "path": "results/10K_Ace_walk.csv",
+      "bytes": 1103,
+      "sha256": "d2ed528bb823a44b1c0885b9aa3e0a1aa5ec731a1d9fa390da66e4658728b174"
+    },
+    {
+      "path": "results/10K_Bobbies_3-in-1_run.csv",
+      "bytes": 3382,
+      "sha256": "3fed595fb0165f703574dbbb6710f16842bf7075fa854b825ece1f484d8063d7"
+    },
+    {
+      "path": "results/10K_Bobbies_3-in-1_walk.csv",
+      "bytes": 1268,
+      "sha256": "358884fa3621d669af7b701b39535cbd796e77e58a5b9727f8bdfdf598bc0f40"
+    },
+    {
+      "path": "results/10K_Intercare_run.csv",
+      "bytes": 9435,
+      "sha256": "203a582a262ac31656d32b239f6a5942a887113a2fe5cc08214abba46f17b05f"
+    },
+    {
+      "path": "results/10K_Intercare_walk.csv",
+      "bytes": 1086,
+      "sha256": "03f08ea3cf941c13a3aedbbe07adae398c1e9744b811152030a689af486b9c4f"
+    },
+    {
+      "path": "results/10K_JackieMekler_walk.csv",
+      "bytes": 717,
+      "sha256": "968896634549f0e04895cb28d71e6dc7f240fa5c2765c39e2a2d26fe49a6cc7f"
+    },
+    {
+      "path": "results/10K_Jackie_Mekler_run.csv",
+      "bytes": 3699,
+      "sha256": "2e1b52a78b90b10f5c43cbae25898401f9c6e51b76e34dd1baf71e937028b23d"
+    },
+    {
+      "path": "results/10K_Linton_run.csv",
+      "bytes": 2588,
+      "sha256": "2b2b5050683ad4740442a97b39cc314371074d9f7ebb6b29dbcabb93ee4795e3"
+    },
+    {
+      "path": "results/10K_Linton_walk.csv",
+      "bytes": 755,
+      "sha256": "77e5992901c0b58415fdfecbdda3559fc10961f6bd88fd0cc2c7594922a46c3d"
+    },
+    {
+      "path": "results/10K_Soshanguve_run.csv",
+      "bytes": 900,
+      "sha256": "288d25cec896f84af9cd4c60d721c9b138788052d5000bc22138dfc6ea25d1d7"
+    },
+    {
+      "path": "results/10K_Soshanguve_walk.csv",
+      "bytes": 462,
+      "sha256": "7ea668a45935834220319eb9985203107fb60892db4dea228d37c9bc7e8ed171"
+    },
+    {
+      "path": "results/10K_TUT_run.csv",
+      "bytes": 2257,
+      "sha256": "849de5b46901140c302a72e9d7ed76cba7dbe56d22743aa12199148a9010979f"
+    },
+    {
+      "path": "results/10K_TUT_walk.csv",
+      "bytes": 743,
+      "sha256": "9ed1230cd5874252a5d4feb755e7420060b46e6ba3112c2c54150d672151848d"
+    },
+    {
+      "path": "results/13K_Green_Mile_run.csv",
+      "bytes": 3712,
+      "sha256": "b412c1cd42c32c1fa58fa38f81b66b928b2da7ef0bf083d568e05ec8c2b12b5e"
+    },
+    {
+      "path": "results/13K_Green_Mile_walk.csv",
+      "bytes": 681,
+      "sha256": "cc754c3eade188345b2dd4244193c3ffbe322a8a3783679b663fb4cc3147eda3"
+    },
+    {
+      "path": "results/21K_Ace_run.csv",
+      "bytes": 2568,
+      "sha256": "7cf8201c7cf3dc48d123bd505990c6f0484fb6c100e0c9325d7759f09d7601b4"
+    },
+    {
+      "path": "results/21K_Ace_walk.csv",
+      "bytes": 390,
+      "sha256": "a649a18a012f8388af8a28bae9ed9e5eafd2f74e613d6978683c7092bf100fef"
+    },
+    {
+      "path": "results/21K_Bobbies_3-in-1_run.csv",
+      "bytes": 5188,
+      "sha256": "e400a11d6fdc09f3f5dd7f1ace2708cf688eed98d0f9451e631bd07a2915975c"
+    },
+    {
+      "path": "results/21K_Intercare_run.csv",
+      "bytes": 6974,
+      "sha256": "0e4172dead5fb813a6d0b3616328b026cc243a9208279e797d42ee6a0f7910b4"
+    },
+    {
+      "path": "results/21K_Intercare_walk.csv",
+      "bytes": 487,
+      "sha256": "2eebe3953e5cb61df95220895af6013a19a77b47719d7b4d1926980bf2dca582"
+    },
+    {
+      "path": "results/21K_Linton_run.csv",
+      "bytes": 2473,
+      "sha256": "1d483fbb37533f5fc87b3f8961feea7c9759e283b153bdaccef66886f3ccdbcf"
+    },
+    {
+      "path": "results/21K_Linton_walk.csv",
+      "bytes": 151,
+      "sha256": "645bf501b04f705f8607d972475b32532e7fd29582a2f71235f496fc1f2bad3e"
+    },
+    {
+      "path": "results/21K_TUT_run.csv",
+      "bytes": 2817,
+      "sha256": "577bd1d8508f544c86dfc3dbabed4664daa6a68eb1ee863bfe1c7f69233a3f92"
+    },
+    {
+      "path": "results/21K_TUT_walk.csv",
+      "bytes": 371,
+      "sha256": "87ccf2cbfeefe4739cbd8113f223df88261c78a024ee1b218780408da0c3ebc2"
+    },
+    {
+      "path": "results/26K_Green_Mile_run.csv",
+      "bytes": 3157,
+      "sha256": "69380e1fe19d5e192721a98b312866035f328f52302a31e7de3d9c2819881055"
+    },
+    {
+      "path": "results/26K_Jackie_Mekler_run.csv",
+      "bytes": 4502,
+      "sha256": "b0ac931e68912a7d15141b20eb7fa3326bda544fef7f06f2e9533eb7c558520d"
+    },
+    {
+      "path": "points_rules.csv",
+      "bytes": 58688,
+      "sha256": "2d8abe9f81c47de277ef96c1eb71304262fa54993eeb93bb028ea7ed9f37a859"
+    },
+    {
+      "path": "points_rules_walk.csv",
+      "bytes": 33585,
+      "sha256": "97119b08a8062a22d3e733aa44d4e71e6dec0ca98ea252969927df60df139a03"
+    },
+    {
+      "path": "category_map.csv",
+      "bytes": 180,
+      "sha256": "c422df10ab8169ec0d449c912ba0b61d5432a06127566f217bff58b568b7f4d3"
+    }
+  ],
+  "archive_sha256": "95b2d0836e5158ee999c9ed8eedda5843ad5c27f0aa51ffd959baaa23f610221"
+}

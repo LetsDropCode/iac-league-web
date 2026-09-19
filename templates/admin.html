@@ -107,12 +107,13 @@
         <div class="brand-copy">
             <p class="brand-kicker">Irene Athletics Club</p>
             <h1 class="brand-heading">League Admin</h1>
-            <p class="brand-subtitle">Upload and review new race results.</p>
+            <p class="brand-subtitle">Import, validate and review race results from any timing provider.</p>
         </div>
     </header>
     <a href="/">Back to leaderboard</a>
     <div class="panel">
-    <h2>Upload Finishtime Results</h2>
+    <h2>Upload a result file</h2>
+    <p>CSV and Excel exports are checked and normalised before they can affect the league. Common provider headings are supported.</p>
     <form method="POST" enctype="multipart/form-data">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
         <input type="file" name="file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
@@ -122,9 +123,11 @@
     </div>
 
     <div class="panel">
-        <h2>Paste FinishTime Results</h2>
-        <p>Copy a club-filtered result table from FinishTime and paste it here. The portal cleans it and saves the league CSV for you.</p>
-        <a href="{{ url_for('paste_results') }}">Paste and save race results</a>
+        <h2>Paste results from a webpage</h2>
+        <p>Copy a club-filtered table from FinishTime, Ultimate Live or another results page. The portal derives provider-specific fields and reports anything it cannot use.</p>
+        <a href="{{ url_for('paste_results') }}">Paste and import webpage results</a><br>
+        <a href="{{ url_for('ultimatelive_import') }}">Fetch an Ultimate Live event by club</a><br>
+        <a href="{{ url_for('finishtime_import') }}">Or use the direct FinishTime importer</a>
     </div>
 
     {% if preview %}
@@ -138,6 +141,10 @@
                 <div class="metric">
                     <span>Rows</span>
                     <strong>{{ preview.rows }}</strong>
+                </div>
+                <div class="metric">
+                    <span>Usable finishers</span>
+                    <strong>{{ preview.usable_rows }}</strong>
                 </div>
                 <div class="metric">
                     <span>Columns</span>

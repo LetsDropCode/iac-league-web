@@ -94,28 +94,21 @@ class FinishTimeClient:
             raise FinishTimeError("No FinishTime races matched that search.")
         return races
 
-    def club_names(self, race_url: str) -> list[str]:
-        """Return the source's exact club labels, needed for its advanced filter."""
-        page = self._get(_advanced_url(_race_url(race_url)))
-        soup = BeautifulSoup(page.text, "html.parser")
-        club_select = soup.select_one("select[id$='cbClub']")
-        if club_select is None:
-            raise FinishTimeError("FinishTime did not provide a club filter for this race.")
-        return [option.get("value", "").strip() for option in club_select.select("option") if option.get("value") not in (None, "All clubs")]
-
-    def results_for_club(self, race_url: str, club: str, distance: int) -> pd.DataFrame:
+    def results_for_club(
+        self, race_url: str, club: str, distance: int, discipline: str = "run"
+    ) -> pd.DataFrame:
         if distance <= 0:
             raise FinishTimeError("Distance must be a positive number of kilometres.")
         club = club.strip()
         if not club:
             raise FinishTimeError("Choose the club to import.")
+        if discipline not in {"run", "walk"}:
+            raise FinishTimeError("Choose Run or Walk before importing.")
 
-        url = _advanced_url(_race_url(race_url))
+        race_page = self._get(_race_url(race_url))
+        url = _event_result_url(race_page.text, race_page.url, distance, discipline)
         initial = self._get(url)
         soup = BeautifulSoup(initial.text, "html.parser")
-        form = soup.select_one("form")
-        if form is None:
-            raise FinishTimeError("FinishTime returned an unexpected results page.")
         category_select = soup.select_one("select[id$='cbCateg']")
         categories = [
             option.get_text(" ", strip=True)
@@ -123,29 +116,21 @@ class FinishTimeClient:
             if option.get("value") not in (None, "0")
         ] if category_select else []
 
-        payload = {
-            field["name"]: field.get("value", "")
-            for field in form.select("input[name]")
-            if field.get("type") not in {"button", "submit"}
-        }
-        payload.update({
-            select["name"]: select.select_one("option[selected]").get("value", "")
-            if select.select_one("option[selected]") else ""
-            for select in form.select("select[name]")
-        })
-        payload.update({
-            "__EVENTTARGET": "ctl00$Content_Main$btn3rdRowSearch",
-            "ctl00$Content_Main$cbClub": club,
-            "ctl00$Content_Main$cbGender": "0",
-            "ctl00$Content_Main$cbCateg": "0",
-        })
-        response = self.session.post(url, data=payload, headers={"Referer": initial.url}, timeout=30)
-        response.raise_for_status()
-
-        table = _results_table(response.text)
+        pages = _page_count(soup)
+        tables = [_results_table(initial.text)]
+        for page_number in range(2, pages + 1):
+            response = self._get(_page_url(initial.url, page_number))
+            tables.append(_results_table(response.text))
+        table = pd.concat(tables, ignore_index=True)
         required = {"Name", "Time", "Category", "Gender"}
         if not required.issubset(table.columns):
             raise FinishTimeError("FinishTime's result columns have changed; no rows were imported.")
+        if "Club" not in table.columns:
+            raise FinishTimeError("FinishTime did not return club names; no rows were imported.")
+
+        table = table[
+            table["Club"].astype(str).str.strip().str.casefold() == club.casefold()
+        ].copy()
 
         output = table[["Name", "Gender", "Category", "Time"]].copy()
         output["Distance"] = distance
@@ -153,9 +138,12 @@ class FinishTimeClient:
         output["Gender"] = output["Gender"].astype(str).str.extract(r"(Male|Female)", expand=False)
         output["Category"] = output["Category"].map(lambda value: _category_label(value, categories))
         output = output.dropna(subset=["Name", "Gender", "Category", "Time"])
+        output = output[pd.to_timedelta(output["Time"], errors="coerce").notna()]
         output = output.dropna(subset=["Name"]).query("Name != ''")
         if output.empty:
-            raise FinishTimeError(f"No FinishTime results were found for {club}.")
+            raise FinishTimeError(
+                f"No {distance} km {discipline} FinishTime results were found for {club}."
+            )
         return output[["Name", "Gender", "Category", "Distance", "Time"]]
 
 
@@ -167,11 +155,51 @@ def _advanced_url(race_url: str) -> str:
     return parsed._replace(query=urlencode(params, doseq=True)).geturl()
 
 
+def _event_result_url(html: str, page_url: str, distance: int, discipline: str) -> str:
+    soup = BeautifulSoup(html, "html.parser")
+    matches = []
+    for link in soup.select("a[href*='EId=']"):
+        label = link.get_text(" ", strip=True)
+        distance_match = re.search(r"(\d+(?:\.\d+)?)\s*km\b", label, re.IGNORECASE)
+        if not distance_match or round(float(distance_match.group(1))) != int(distance):
+            continue
+        is_walk = "walk" in label.casefold()
+        if is_walk == (discipline == "walk"):
+            matches.append(urljoin(page_url, link.get("href")))
+    if not matches:
+        raise FinishTimeError(
+            f"FinishTime has no {distance} km {discipline} result set for this race."
+        )
+    return _advanced_url(matches[0])
+
+
+def _page_count(soup: BeautifulSoup) -> int:
+    jump = soup.select_one("input.page-jump[max]")
+    if jump is None:
+        return 1
+    try:
+        pages = int(jump.get("max", "1"))
+    except ValueError:
+        return 1
+    if pages < 1 or pages > 100:
+        raise FinishTimeError("FinishTime returned an unsafe result-page count.")
+    return pages
+
+
+def _page_url(result_url: str, page_number: int) -> str:
+    parsed = urlparse(result_url)
+    params = parse_qs(parsed.query)
+    params["PageNo"] = [str(page_number)]
+    return parsed._replace(query=urlencode(params, doseq=True)).geturl()
+
+
 def _results_table(html: str) -> pd.DataFrame:
     soup = BeautifulSoup(html, "html.parser")
-    table = soup.select_one("table[id$='grdResults']")
+    table = soup.select_one("table[id$='tblResults']")
     if table is None:
-        # FinishTime uses this id today; this fallback makes a benign markup change recoverable.
+        # Keep compatibility with the former grid id and benign markup changes.
+        table = soup.select_one("table[id$='grdResults']")
+    if table is None:
         table = next((item for item in soup.select("table") if "Name" in item.get_text(" ")), None)
     if table is None:
         raise FinishTimeError("FinishTime did not return a result table.")

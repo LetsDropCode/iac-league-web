@@ -1,0 +1,15 @@
+{
+  "batch": 2,
+  "status": "complete for 10 successful profiles; stopped immediately on HTTP 429",
+  "successful_profiles": 10,
+  "attempted_requests": 11,
+  "history_rows_checked": 27,
+  "differences": [],
+  "previous_profiles_checked": 40,
+  "cumulative_profiles_checked": 50,
+  "remaining_profiles": 183,
+  "first_capture_utc": "2026-09-19T18:30:32.885Z",
+  "last_capture_utc": "2026-09-19T18:30:53.835Z",
+  "rate_limit_response": "50 per 1 hour",
+  "production_changes": false
+}
