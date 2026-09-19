@@ -24,7 +24,9 @@ from flask_talisman import Talisman
 from update_engine import process_league, read_result_file, clean_distance, race_event_count
 from finishtime import FinishTimeClient, FinishTimeError
 
-from functools import lru_cache
+from storage import get_storage, StorageError, storage_read
+
+storage = get_storage()
 
 
 app = Flask(__name__)
@@ -136,10 +138,11 @@ def numeric_rank(value):
     match = re.search(r"\d+", str(value))
     return int(match.group()) if match else None
 
+@storage_read
 def latest_result_file():
     files = [
-        os.path.join("results", f)
-        for f in os.listdir("results")
+        storage.path(f"results/{f}")
+        for f in os.listdir(storage.results)
         if f.lower().endswith((".csv", ".xlsx"))
     ]
     if not files:
@@ -267,19 +270,20 @@ def format_duration(value):
     secs = seconds % 60
     return f"{hours:02d}:{minutes:02d}:{secs:02d}"
 
+@storage_read
 def load_result_details():
     try:
-        category_map = pd.read_csv("category_map.csv")
+        category_map = pd.read_csv(storage.path("category_map.csv"))
     except Exception:
         category_map = pd.DataFrame(columns=["FinishtimeCategory", "PointsCategory"])
     frames = []
 
-    for file in os.listdir("results"):
+    for file in os.listdir(storage.results):
         if not file.lower().endswith((".csv", ".xlsx")):
             continue
 
         try:
-            df = read_result_file(os.path.join("results", file))
+            df = read_result_file(storage.path(f"results/{file}"))
         except Exception:
             continue
 
@@ -550,12 +554,11 @@ def parse_pasted_results(raw_results, distance):
 # CACHE
 # -----------------------------------
 
-@lru_cache(maxsize=1)
 def get_tables():
     return process_league()
 
 def clear_cache():
-    get_tables.cache_clear()
+    pass  # Tables are read from shared storage on every request, across all workers.
 
 # -----------------------------------
 # HOME (RUN)
@@ -657,9 +660,15 @@ def upload():
                 return render_template("admin.html", preview=preview)
 
             filename = secure_filename(file.filename)
-            filepath = os.path.join("results", filename)
-
-            file.save(filepath)
+            try:
+                storage.publish(f"results/{filename}", file.read())
+            except StorageError as exc:
+                flash(str(exc), "error")
+                return redirect("/upload")
+            except Exception:
+                logging.exception("Result publication failed")
+                flash("Publication interrupted. Check storage publication records before retrying.", "error")
+                return redirect("/upload")
 
             # 🔥 Recalculate
             clear_cache()
@@ -694,20 +703,9 @@ def paste_results():
 
             results = parse_pasted_results(request.form.get("results", ""), distance)
             filename = pasted_results_filename(race_name, discipline, distance)
-            filepath = os.path.join("results", filename)
-            is_new_race = not os.path.exists(filepath)
-            results.to_csv(filepath, sep=";", index=False)
-            if is_new_race:
-                clear_cache()
-                message = (
-                    f"Saved {len(results)} {discipline} result(s) to results/{filename} "
-                    "and recalculated the league."
-                )
-            else:
-                message = (
-                    f"Updated results/{filename} with {len(results)} {discipline} result(s). "
-                    "The league was not recalculated because this race is already in the results folder."
-                )
+            storage.publish(f"results/{filename}", results.to_csv(sep=";", index=False).encode())
+            clear_cache()
+            message = f"Imported {filename} and recalculated the league."
             flash(message, "success")
             return redirect("/")
         except (TypeError, ValueError) as exc:
@@ -720,7 +718,7 @@ def paste_results():
             logging.exception("Pasted result import failed")
             return render_template(
                 "paste_results.html",
-                error="The pasted results could not be saved. No league results were changed.",
+                error="The pasted results could not be saved. Check publication records before retrying.",
                 form=request.form,
             )
 
@@ -782,29 +780,18 @@ def import_finishtime_results():
 
         results = FinishTimeClient().results_for_club(race_url, club, distance)
         filename = finishtime_import_filename(race_url, discipline, distance)
-        filepath = os.path.join("results", filename)
-        is_new_race = not os.path.exists(filepath)
-        results.to_csv(filepath, sep=";", index=False)
-        if is_new_race:
-            clear_cache()
-            message = (
-                f"Saved {len(results)} {discipline} result(s) to results/{filename} "
-                "and recalculated the league."
-            )
-        else:
-            message = (
-                f"Updated results/{filename} with {len(results)} {discipline} result(s). "
-                "The league was not recalculated because this race is already in the results folder."
-            )
+        storage.publish(f"results/{filename}", results.to_csv(sep=";", index=False).encode())
+        clear_cache()
+        message = f"Imported {filename} and recalculated the league."
         flash(message, "success")
         return redirect("/")
-    except FinishTimeError as exc:
+    except (FinishTimeError, StorageError) as exc:
         flash(str(exc), "error")
     except (TypeError, ValueError):
         flash("Distance must be a whole number of kilometres.", "error")
     except Exception:
         logging.exception("FinishTime import failed")
-        flash("FinishTime could not be imported. No league results were changed.", "error")
+        flash("FinishTime could not be imported. Check publication records before retrying.", "error")
 
     return redirect(url_for("finishtime_import"))
 
@@ -869,11 +856,12 @@ def athlete_profile(league, athlete_id):
 # -----------------------------------
 
 @app.route("/points")
+@storage_read
 def points():
 
     def read_points_rules(filename, discipline):
         try:
-            df = pd.read_csv(filename)
+            df = pd.read_csv(storage.path(filename))
         except:
             return pd.DataFrame(columns=["Discipline", "Distance", "Gender", "Category", "TimeFrom", "TimeTo", "Points"])
 

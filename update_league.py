@@ -4,6 +4,10 @@ from openpyxl.styles import Font, Alignment
 from openpyxl.utils import get_column_letter
 
 from update_engine import process_league
+from storage import get_storage, atomic_write
+from io import BytesIO
+
+export_buffer = BytesIO()
 
 # -----------------------------------
 # RUN ENGINE
@@ -37,7 +41,7 @@ walk_table_clean = clean_table(walk_table)
 # -----------------------------------
 # CREATE EXCEL OUTPUT
 # -----------------------------------
-with pd.ExcelWriter("league_tables.xlsx", engine="openpyxl") as writer:
+with pd.ExcelWriter(export_buffer, engine="openpyxl") as writer:
 
     def format_sheet(ws):
         ws.freeze_panes = "A2"
@@ -141,4 +145,6 @@ with pd.ExcelWriter("league_tables.xlsx", engine="openpyxl") as writer:
             format_sheet(writer.sheets[sheet_name])
 
 
+with get_storage().lock():
+    atomic_write(get_storage().path("exports/league_tables.xlsx"), export_buffer.getvalue())
 print("✅ Excel generated (clean + category split)")

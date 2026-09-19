@@ -1,0 +1,74 @@
+{
+  "verified_at": "2026-09-19T07:53:11.243974+00:00",
+  "region": "us-east-1",
+  "currency": "USD",
+  "sources": {
+    "AmazonS3": {
+      "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3/current/us-east-1/index.json",
+      "publication_date": "2026-09-18T17:47:47Z",
+      "rates": [
+        {
+          "usage": "Requests-Tier2",
+          "description": "$0.004 per 10,000 GET and all other requests",
+          "unit": "Requests",
+          "usd": "0.0000004000",
+          "end_range": "Inf"
+        },
+        {
+          "usage": "Requests-Tier1",
+          "description": "$0.005 per 1,000 PUT, COPY, POST, or LIST requests",
+          "unit": "Requests",
+          "usd": "0.0000050000",
+          "end_range": "Inf"
+        },
+        {
+          "usage": "TimedStorage-ByteHrs",
+          "description": "$0.023 per GB - first 50 TB / month of storage used",
+          "unit": "GB-Mo",
+          "usd": "0.0230000000",
+          "end_range": "51200"
+        }
+      ]
+    },
+    "AmazonCloudWatch": {
+      "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonCloudWatch/current/us-east-1/index.json",
+      "publication_date": "2026-09-18T14:21:58Z",
+      "rates": [
+        {
+          "usage": "CW:MetricMonitorUsage",
+          "description": "$0.30 per metric-month for the first 10,000 metrics - US East (Northern Virginia)",
+          "unit": "Metrics",
+          "usd": "0.3000000000",
+          "end_range": "10000"
+        },
+        {
+          "usage": "CW:Requests",
+          "description": "$0.01 per 1,000 requests",
+          "unit": "Requests",
+          "usd": "0.0000100000",
+          "end_range": "Inf"
+        },
+        {
+          "usage": "CW:AlarmMonitorUsage",
+          "description": "$0.10 per alarm metric month (standard resolution) - US East (Northern Virginia)",
+          "unit": "Alarms",
+          "usd": "0.1000000000",
+          "end_range": "Inf"
+        }
+      ]
+    },
+    "AWSDataTransfer": {
+      "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSDataTransfer/current/us-east-1/index.json",
+      "publication_date": "2026-09-16T13:22:08Z",
+      "rates": [
+        {
+          "usage": "DataTransfer-Out-Bytes",
+          "description": "$0.090 per GB - first 10 TB / month data transfer out beyond the global free tier",
+          "unit": "GB",
+          "usd": "0.0900000000",
+          "end_range": "10240"
+        }
+      ]
+    }
+  }
+}

@@ -1,5 +1,11 @@
 import pandas as pd
 import os
+import argparse
+from storage import get_storage
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--expected-sha256", help="Required to replace existing rules")
+args = parser.parse_args()
 
 # -------------------------------
 # FIND EXCEL FILE
@@ -102,6 +108,7 @@ print(f"🧹 Cleaned {before - after} invalid rows")
 # -------------------------------
 # SAVE
 # -------------------------------
-rules.to_csv("points_rules.csv", index=False)
+get_storage().publish("points_rules.csv", rules.to_csv(index=False).encode(),
+                      expected=args.expected_sha256)
 
 print("✅ Rules successfully converted!")

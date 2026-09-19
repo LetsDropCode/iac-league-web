@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: python backup_runner.py

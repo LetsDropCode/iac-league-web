@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import re
+from storage import get_storage
 
 
 RESULT_EXTENSIONS = (".csv", ".xlsx")
@@ -14,8 +15,9 @@ def race_event_key(race):
     return re.sub(r"[^a-z0-9]+", "", name.lower())
 
 
-def race_event_count(results_dir="results"):
+def race_event_count(results_dir=None):
     """Count imported race events once, even where each has multiple files."""
+    results_dir = results_dir or get_storage().results
     if not os.path.isdir(results_dir):
         return 0
 
@@ -31,12 +33,17 @@ def race_event_count(results_dir="results"):
 # -----------------------------------
 
 def process_league():
+    with get_storage().lock(shared=True):
+        return _process_league()
 
-    os.makedirs("results", exist_ok=True)
 
-    category_map = safe_read("category_map.csv", ["FinishtimeCategory", "PointsCategory"])
-    rules_run = safe_read("points_rules.csv")
-    rules_walk = safe_read("points_rules_walk.csv")
+def _process_league():
+
+    storage = get_storage()
+
+    category_map = safe_read(storage.path("category_map.csv"), ["FinishtimeCategory", "PointsCategory"])
+    rules_run = safe_read(storage.path("points_rules.csv"))
+    rules_walk = safe_read(storage.path("points_rules_walk.csv"))
 
     if rules_walk.empty:
         print("⚠️ Walk rules missing — using run rules")
@@ -53,11 +60,11 @@ def process_league():
     # -----------------------------------
     all_results = []
 
-    for file in os.listdir("results"):
+    for file in os.listdir(storage.results):
         if file.lower().endswith(RESULT_EXTENSIONS):
 
             try:
-                df = read_result_file(os.path.join("results", file))
+                df = read_result_file(storage.path(f"results/{file}"))
             except Exception as e:
                 print(f"❌ Skipping {file}: {e}")
                 continue

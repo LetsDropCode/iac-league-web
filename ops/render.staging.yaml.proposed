@@ -1,0 +1,51 @@
+# PROPOSAL ONLY. Cost approval required. Synthetic data only; never use production credentials.
+# Separate service, disk, AWS bucket/principal, identity, admin password, and monitor dimension.
+services:
+  - type: web
+    name: iac-league-storage-staging
+    runtime: python
+    region: oregon
+    repo: https://github.com/LetsDropCode/iac-league-web
+    branch: main
+    plan: starter
+    numInstances: 1
+    autoDeployTrigger: "off"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python backup_runner.py
+    disk:
+      name: staging-league-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: LEAGUE_DEPLOYMENT_STAGE
+        value: staging
+      - key: WEB_CONCURRENCY
+        value: "2"
+      - key: LEAGUE_MONITOR_SERVICE
+        value: iac-league-staging
+      - key: LEAGUE_ENV
+        value: production
+      - key: LEAGUE_DATA_DIR
+        value: /var/data/staging-league
+      - key: LEAGUE_DISK_MOUNT
+        value: /var/data
+      - key: LEAGUE_VOLUME_ID
+        sync: false
+      - key: LEAGUE_BACKUP_BUCKET
+        sync: false
+      - key: LEAGUE_BACKUP_PREFIX
+        value: iac-league/
+      - key: LEAGUE_BACKUP_INTERVAL_SECONDS
+        value: 3600
+      - key: LEAGUE_BACKUP_RETAIN
+        value: 168
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_DEFAULT_REGION
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
