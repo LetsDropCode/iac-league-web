@@ -1,6 +1,6 @@
 # Proposed incremental costs and single approval scope
 
-**Not approved. No paid resources have been created or changed.** Rates checked 2026-09-19, USD excluding tax, card fees and currency conversion. AWS assumption: US East (N. Virginia), `us-east-1`, pending account/region selection. No free-tier credits or unused account allowances are assumed in estimates. Authenticated dashboard inspection verified production is currently Free in Oregon with no disk. Live snapshot size remains unknown because Free provides no shell/SSH access.
+**Approved by the owner on 21 September 2026, subject to the limits and gates below. No paid resources have yet been created or changed.** Rates checked 2026-09-19, USD excluding tax, card fees and currency conversion. AWS assumption: US East (N. Virginia), `us-east-1`, pending account/region confirmation. No free-tier credits or unused account allowances are assumed in estimates. Authenticated dashboard inspection verified production is currently Free in Oregon with no disk. Live snapshot size remains unknown because Free provides no shell/SSH access.
 
 ## Fixed rates
 
@@ -46,10 +46,10 @@ The 41,482-byte archive measured locally is **repository data, not live data**; 
 
 One isolated Starter instance plus 1 GB disk is another **$7.25/month equivalent**. Metric/alarm is another $0.40/month and minute reporting up to $0.432/month before allowances, plus its own S3/request/transfer costs. Seven days of this fixed baseline is approximately **$1.89** assuming 30-day proration. Synthetic fixtures are tiny; proposed **one-time staging budget: $3 excluding tax**, with no runtime extension beyond seven days without approval. Additional builds and retained S3 evidence can outlive the service. CloudFormation retains the S3 bucket on teardown; arrange explicit finite staging evidence retention/deletion. A budget is not an automatic hard billing cap.
 
-## One specific approval, to be requested after preparation
+## Approved scope
 
-Prepared approval scope (not granted):
+The owner approved the following scope on 21 September 2026:
 
 > Approve one isolated seven-day synthetic staging service/disk and separate AWS staging backup/alert resources, budget US$3 excluding tax; approve the existing production service's one-instance Starter-equivalent configuration with a 1 GB `/var/data` disk, private versioned S3 backups (168 current snapshots, 30-day noncurrent recovery), one CloudWatch metric/alarm and SNS notifications, targeting no more than US$15/month **incremental** excluding tax. Authorize the runbook's maintenance-window production cutover only after authenticated settings inspection, safe current-live-data access, an independently verified live backup/restore, staging acceptance, and review of the final checksum migration plan. Authorize sending the staging failure/recovery tests and subsequent operational alerts only to the operator destination I supply. Do not proceed if costs/capacity exceed this envelope or current tier would be downgraded; return with a revised estimate. Do not restart, redeploy, attach a disk, change production environment/start commands, or otherwise endanger ephemeral live files before the live backup gate passes.
 
-This is a conditional approval scope, not permission to bypass any failed gate. Approval of cloud resources is also required before creating the independent backup bucket needed for the live backup. Configure billing alerts in the existing billing system; usage charges cannot be hard-capped by this proposal. Confirm a maintenance window and import-freeze owner; actual interruption duration will be measured in staging, not promised before testing. No resource creation or cutover occurs from merely saving these files.
+This is conditional authorization, not permission to bypass any failed gate. Configure billing alerts in the existing billing system; usage charges cannot be hard-capped by this proposal. AWS account/region, Render billing readiness, operator alert destination, maintenance window and import-freeze owner still require confirmation. Actual interruption duration will be measured in staging, not promised before testing.
