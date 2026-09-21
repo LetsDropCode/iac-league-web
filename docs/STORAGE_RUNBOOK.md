@@ -2,6 +2,10 @@
 
 **P0 remains open until the live restart/redeploy persistence test and independent restore drill below are demonstrated.** This branch is implementation and a proposed cutover, not evidence that live data is durable.
 
+## Accepted migration baseline
+
+On 21 September 2026, the owner accepted `outputs/recovery/local-recovery-candidate.zip` (SHA-256 `95b2d0836e5158ee999c9ed8eedda5843ad5c27f0aa51ffd959baaa23f610221`) as the authoritative production migration baseline. See `outputs/recovery/BASELINE-ACCEPTANCE.md` for scope and limitations. This resolves the owner-acceptance decision only; it does not claim byte-for-byte equivalence with the inaccessible live filesystem and does not waive staging, independent-backup, restore, persistence, monitoring, cost, access, or maintenance-window gates.
+
 ## Verified facts and remaining hosting unknowns (2026-09-19)
 
 - Repository baseline: `main`; implementation branch: `codex/storage-durability`. No AGENTS.md was found in the repository or ancestor directories. The baseline has a Gunicorn Procfile, relative `results/`, and root-level `points_rules.csv`, `points_rules_walk.csv`, `category_map.csv`; no Render Blueprint/disk configuration.

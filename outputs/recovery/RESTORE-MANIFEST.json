@@ -1,7 +1,13 @@
 {
   "created_utc": "2026-09-19T18:39:29.696002+00:00",
+  "baseline_accepted_date": "2026-09-21",
   "target": "/Users/lindsaybull/iac-league/outputs/recovery",
   "files": [
+    {
+      "path": "BASELINE-ACCEPTANCE.md",
+      "bytes": 1366,
+      "sha256": "cca40caef61c15fe14bba0eee1e9233e31464fa377d5c30e077e97e355f45a82"
+    },
     {
       "path": "RECONCILIATION-BATCH-02.md",
       "bytes": 1012,
@@ -9,8 +15,8 @@
     },
     {
       "path": "RECONCILIATION.md",
-      "bytes": 3925,
-      "sha256": "99f8913577bfb7f2e21fcf6c088fefe1b916a7c0294660c0695d47289dcf2612"
+      "bytes": 4519,
+      "sha256": "257cc2903c716a01ba6b8de4e58ebf1eb73a3383d82cbe8a4b2921bc6ec96b6d"
     },
     {
       "path": "comparison-batch-02.json",

@@ -1,6 +1,6 @@
 # Recovery reconciliation — 19 September 2026
 
-**All captured standings and displayed rules match. Full finish-time reconciliation is incomplete. P0 remains open.**
+**All captured standings and displayed rules match. On 21 September 2026, the owner accepted the committed local recovery candidate as the authoritative production migration baseline. Full finish-time reconciliation remains incomplete, and P0 remains open until persistent storage and independent recovery are proven.**
 
 | Check | Result |
 |---|---|
@@ -36,6 +36,8 @@ The previous 31-file restore report used a different inventory. This archive del
 
 ## Next step
 
-Resume the remaining finish-time checks in permitted request windows if full public-history reconciliation is required. Do not describe that step as completed. The owner has not yet accepted the candidate as authoritative. Any eventual acceptance must acknowledge that full public equivalence still cannot prove every original source byte.
+Use `local-recovery-candidate.zip`, SHA-256 `95b2d0836e5158ee999c9ed8eedda5843ad5c27f0aa51ffd959baaa23f610221`, as the authoritative production migration baseline under the owner's recorded acceptance in `BASELINE-ACCEPTANCE.md`. This acceptance does not establish byte-for-byte equivalence with the inaccessible live filesystem and does not prove preservation of unknown rejected, overwritten or intermediate files.
 
-No repository files, production settings, uploads, deployments or paid resources were changed. The existing storage branch and its uncommitted documentation changes were left untouched. P0 closure still requires proven persistent storage and independent restoration.
+Resume the remaining finish-time checks in permitted request windows only if full public-history reconciliation is required. Do not describe that step as completed. Before production cutover, copy the accepted archive to independent recovery storage, verify it by hash, complete the isolated staging acceptance sequence, and prove restoration onto persistent storage.
+
+No production settings, uploads, deployments or paid resources were changed while collecting this evidence or recording acceptance. P0 closure still requires proven persistent storage and independent restoration.
