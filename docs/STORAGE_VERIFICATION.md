@@ -1,6 +1,6 @@
 # Storage durability evidence — P0 OPEN
 
-Updated **2026-09-19 18:14 UTC**. Branch `codex/storage-durability`; storage implementation commit `365e31bd35cbb3c5ddbd6d23a15c0b22dff93c17` is present on `origin/codex/storage-durability`. Production remains at baseline commit `d285886d4347e11578a5667ff4870f7c035b95fe`; the storage implementation has **not** been deployed to production. Staging deployed commit: **NOT RUN**. No paid resources, production deployment, restart, disk attachment or live migration was performed.
+Updated **2026-09-21 19:13 UTC**. Branch `codex/storage-durability`; the combined implementation and recovery-evidence commit `9ecedef` is present on `origin/codex/storage-durability`. Production remains at baseline commit `d285886d4347e11578a5667ff4870f7c035b95fe`; the storage implementation has **not** been deployed to production. Render staging deployed commit: **NOT RUN**. Isolated AWS staging resources were provisioned; no Render resource, production deployment, restart, disk attachment or live migration was performed.
 
 PASS means the stated scope was observed. NOT RUN is not a pass. Local fake-S3 and mount-fixture tests cannot demonstrate real AWS/Render durability. No athlete identities or credential values are included here.
 
@@ -28,13 +28,13 @@ Reproduce suite: `PYTHONDONTWRITEBYTECODE=1 venv/bin/python -m unittest discover
 
 ## Actual staging infrastructure evidence
 
-No staging resources have been approved or provisioned. Follow `STORAGE_STAGING.md`, `ops/render.staging.yaml.proposed`, and `ops/aws-storage.yaml.proposed`.
+The AWS stack `iac-league-staging-storage` reached `CREATE_COMPLETE` in `eu-north-1` at 19:13:08 UTC on 21 September 2026. Its reviewed change set contained exactly six additions: private encrypted/versioned S3 storage, TLS-only bucket policy, SNS topic/policy, CloudWatch missing/failure alarm, and restricted runtime IAM policy. All six resources reached `CREATE_COMPLETE`; expected bucket, alarm, and policy outputs exist. No keys were generated and the runtime policy is not attached. Repository-safe evidence is in `outputs/staging/AWS-PROVISIONING.md`; physical identifiers and operator contact data are omitted.
 
-Preparation evidence is separate from infrastructure acceptance: the proposed staging service targets `codex/storage-durability`, starts in maintenance mode for explicit empty-disk seeding, uses one 1 GB `/var/data` disk and one in-service backup supervisor with two Gunicorn workers. The independent AWS proposal contains a private encrypted/versioned S3 bucket, restricted runtime policy, CloudWatch missing/failure alarm and SNS notifications. The labelled synthetic fixture SHA-256 is `e8df6d47b2dc6b27c6ffef62188102324b7aae166b2f5a91bf7a21f5ef287c00`. These are reviewed configuration facts, not deployed evidence.
+Render staging has not been provisioned. Its proposal targets `codex/storage-durability`, starts in maintenance mode for explicit empty-disk seeding, uses one 1 GB `/var/data` disk and one in-service backup supervisor with two Gunicorn workers. The labelled synthetic fixture SHA-256 is `e8df6d47b2dc6b27c6ffef62188102324b7aae166b2f5a91bf7a21f5ef287c00`.
 
 | Check | Status | Verified time / deployed commit | Missing evidence |
 | --- | --- | --- | --- |
-| Reviewed staging deployment inputs | PASS (preparation only) | 2026-09-19 14:14 UTC / proposed `365e31bd35cbb3c5ddbd6d23a15c0b22dff93c17` | Paid-resource approval, AWS account/region and runtime principal, confirmed operator recipient, Render paid-resource permission, provider-side secrets |
+| Reviewed staging deployment inputs | PASS (AWS deployed; Render prepared) | 2026-09-21 19:13 UTC / AWS template SHA-256 `a45a0f53e8fba7183e09fd73cee09d3a5bbf05f7861d60ba60f7d97ad5b2ac37` | Confirmed SNS subscription, staging runtime principal, Render billing permission and provider-side secrets |
 | Staging tier, disk ID/mount, one supervisor, two workers | NOT RUN | — / unknown | Resource approval, AWS account/region, Render access |
 | Scheduled hourly backup reads same mounted disk as app | NOT RUN | — / unknown | Mount/device evidence and an actual scheduled S3 manifest containing the UI import |
 | UI-imported synthetic results survive Render restart | NOT RUN | — / unknown | Actual restart and before/after checkpoint |
@@ -63,7 +63,7 @@ Preparation evidence is separate from infrastructure acceptance: the proposed st
 | Render dashboard support response | FAIL (no extraction path) | 18:14 | Screenshot supplied by the owner shows Render's dashboard support response: no supported filesystem access for a running Free service without restart/replacement; `render ssh` requires paid service; ephemeral writes are lost on restart, redeploy or spin-down. It recommends an in-application copy/archive before disruption. No case ID or human-escalation evidence is visible |
 | Cold-start behavior | PASS (risk evidence) | 08:25 | Logs show repeated master/worker termination and fresh starts on 2026-09-19, consistent with Free spin-down. This demonstrates exposure to ephemeral reset; it does not inventory live files |
 | Other hosting access | NOT RUN | 07:54 | No Render connector/CLI, AWS CLI/config directory or relevant credential/config environment variable names available. No secret values printed |
-| Resource/cutover cost approval | NOT RUN | — | Explicitly not granted; conditional single approval scope in `STORAGE_COSTS.md` |
+| Resource/cutover cost approval | PASS (conditional) | 2026-09-21 | Owner approved the scope and limits in `STORAGE_COSTS.md`; AWS staging is provisioned, Render and production gates remain |
 | CURRENT LIVE inventory | NOT RUN | — | No safe access to the running instance. Do not substitute repository files |
 | Independent current-live backup/read-back/restore | NOT RUN | — | Safe live extraction, approved S3 account/resources and independent recovery access required |
 | Coordinated import freeze/final backup/checksum migration | NOT RUN | — | Must pass live backup and staging gates before any disruptive production change |
@@ -72,7 +72,7 @@ Preparation evidence is separate from infrastructure acceptance: the proposed st
 | Independent production restoration and standings comparison | NOT RUN | — / commit unknown | Requires actual live S3 backup restored independently |
 | Imports reopened / P0 closed | NOT RUN | — | **P0 OPEN** until production persistence, independent restoration and alerts are demonstrated |
 
-**Exact current blocker:** authenticated inspection confirms the live service is Free and has no shell/SSH or disk. The Render dashboard support response says there is no supported non-restarting filesystem-access route on Free. The only safe remaining recovery route is a complete, provenance-confirmed set of owner-retained source files, or a byte-preserving export already exposed by the currently deployed application and proven to cover every managed file. No such application export has been demonstrated; adding one would require a deployment and could erase the files it is intended to recover. Do not upgrade, change environment/start commands, restart/redeploy, attach a disk or deploy an export endpoint to obtain access. Repository files and matching public standings are supporting evidence, not substitutes for verified live uploads.
+**Exact current gate:** the owner accepted the committed local recovery candidate as the authoritative production migration baseline on 21 September 2026, with the limitations recorded in `outputs/recovery/BASELINE-ACCEPTANCE.md`. AWS staging storage and monitoring are provisioned, but the SNS subscription is not yet confirmed and Render staging has not been created or tested. Do not upgrade, change environment/start commands, restart/redeploy, or attach a production disk until the isolated Render staging sequence and independent backup/restore evidence pass.
 
 ## Preparation completed in this continuation
 

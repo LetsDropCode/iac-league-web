@@ -1,16 +1,15 @@
-# Isolated staging verification plan — prepared, not yet authorized or run on infrastructure
+# Isolated staging verification plan — AWS provisioned; Render pending
 
-Use `ops/render.staging.yaml.proposed` and a separate `ops/aws-storage.yaml.proposed` stack with `Service=iac-league-staging`. No production data or credentials. This is a real Render disk and independent AWS S3 test, not a local-directory substitute. Approve costs in STORAGE_COSTS.md first. Maximum planned lifetime is seven days. Keep all resources isolated from production.
+Use `ops/render.staging.yaml.proposed` and the deployed `ops/aws-storage.json` stack with `Service=iac-league-staging`. No production data or credentials. This is a real Render disk and independent AWS S3 test, not a local-directory substitute. The owner approved the costs in STORAGE_COSTS.md. Maximum planned lifetime is seven days. Keep all resources isolated from production.
 
 ## Missing prerequisites
 
-The implementation is committed and available on `codex/storage-durability` at `365e31bd35cbb3c5ddbd6d23a15c0b22dff93c17`. The staging fixture is `tests/fixtures/synthetic.csv`, SHA-256 `e8df6d47b2dc6b27c6ffef62188102324b7aae166b2f5a91bf7a21f5ef287c00`. It is a labelled synthetic baseline and is not a production recovery source.
+The implementation and recovery evidence are committed and available on `codex/storage-durability` at `9ecedef`; later documentation-only commits record approvals and provisioning. The staging fixture is `tests/fixtures/synthetic.csv`, SHA-256 `e8df6d47b2dc6b27c6ffef62188102324b7aae166b2f5a91bf7a21f5ef287c00`. It is a labelled synthetic baseline and is not a production recovery source.
 
-Only these external prerequisites remain before provisioning:
+AWS provisioning completed in `eu-north-1` on 21 September 2026; see `outputs/staging/AWS-PROVISIONING.md`. These external prerequisites remain before Render provisioning and end-to-end testing:
 
-- Explicit approval for one isolated Render Starter service, one 1 GB disk and the staging AWS resources for no more than seven days and US$3 excluding tax.
-- An AWS account and chosen region. The operator needs permission to create/review the CloudFormation change set and create or select a staging-only runtime principal. Put its credentials into Render's secret environment settings; do not send them in chat or commit them.
-- An approved operator email address entered directly as the CloudFormation `OperatorEmail` parameter, followed by confirmation of the SNS subscription. Record only confirmation state in repository evidence.
+- Confirm the pending SNS email subscription. Record only confirmation state in repository evidence.
+- Create or select a staging-only AWS runtime principal and attach only the stack's restricted runtime policy. Put its credentials into Render's secret environment settings; do not send them in chat or commit them.
 - Render account permission and billing configuration to create the isolated paid service/disk. The authenticated production inspection does not itself prove this permission or authorize charges.
 - A staging-only volume UUID, admin password and application secret generated outside Git and entered directly in Render's secret settings.
 - Independent recovery access to the staging S3 bucket on a separate machine, configured through an AWS profile/SSO or another approved secure credential mechanism.

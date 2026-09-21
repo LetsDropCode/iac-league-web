@@ -1,6 +1,6 @@
 # Proposed incremental costs and single approval scope
 
-**Approved by the owner on 21 September 2026, subject to the limits and gates below. No paid resources have yet been created or changed.** Rates checked 2026-09-19, USD excluding tax, card fees and currency conversion. AWS assumption: US East (N. Virginia), `us-east-1`, pending account/region confirmation. No free-tier credits or unused account allowances are assumed in estimates. Authenticated dashboard inspection verified production is currently Free in Oregon with no disk. Live snapshot size remains unknown because Free provides no shell/SSH access.
+**Approved by the owner on 21 September 2026, subject to the limits and gates below. Isolated AWS staging resources were provisioned in Europe (Stockholm), `eu-north-1`, on 21 September; no Render staging or production resources have yet been changed.** Rates checked 2026-09-19, USD excluding tax, card fees and currency conversion. The detailed estimate used US East pricing and therefore remains conservative preparation rather than verified Stockholm billing. The new AWS account reports promotional credits; the approval does not rely on them. Authenticated dashboard inspection verified production is currently Free in Oregon with no disk. Live snapshot size remains unknown because Free provides no shell/SSH access.
 
 ## Fixed rates
 
