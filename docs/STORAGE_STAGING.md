@@ -8,7 +8,7 @@ The implementation and recovery evidence are committed and available on `codex/s
 
 AWS provisioning completed in `eu-north-1` on 21 September 2026; see `outputs/staging/AWS-PROVISIONING.md`. These external prerequisites remain before Render provisioning and end-to-end testing:
 
-- Confirm the pending SNS email subscription. Record only confirmation state in repository evidence.
+- The SNS email subscription is confirmed; alarm delivery testing remains outstanding.
 - Create or select a staging-only AWS runtime principal and attach only the stack's restricted runtime policy. Put its credentials into Render's secret environment settings; do not send them in chat or commit them.
 - Render account permission and billing configuration to create the isolated paid service/disk. The authenticated production inspection does not itself prove this permission or authorize charges.
 - A staging-only volume UUID, admin password and application secret generated outside Git and entered directly in Render's secret settings.

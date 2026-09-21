@@ -12,4 +12,4 @@ All six expected resources reported `CREATE_COMPLETE`: an encrypted/versioned S3
 
 The runtime policy is not attached to a principal, no access keys were generated, and no Render resources or production resources were changed. The AWS console also stored the uploaded deployment template in its account-managed `cf-templates` bucket; it contains no parameter values or credentials.
 
-SNS subscription confirmation is pending. The operator must confirm the AWS email before alert-delivery testing. The alarm is expected to enter `ALARM` while staging emits no `BackupHealthy` metric; this is intentional missing-monitor coverage, not proof of a working backup.
+The AWS SNS console showed the operator email subscription as `Confirmed` on 21 September 2026. The address is intentionally omitted. Confirmation proves the subscription is active, but not yet that alarm notifications are delivered. The alarm is expected to enter `ALARM` while staging emits no `BackupHealthy` metric; this is intentional missing-monitor coverage, not proof of a working backup.

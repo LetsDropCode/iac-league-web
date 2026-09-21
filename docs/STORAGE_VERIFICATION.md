@@ -28,13 +28,13 @@ Reproduce suite: `PYTHONDONTWRITEBYTECODE=1 venv/bin/python -m unittest discover
 
 ## Actual staging infrastructure evidence
 
-The AWS stack `iac-league-staging-storage` reached `CREATE_COMPLETE` in `eu-north-1` at 19:13:08 UTC on 21 September 2026. Its reviewed change set contained exactly six additions: private encrypted/versioned S3 storage, TLS-only bucket policy, SNS topic/policy, CloudWatch missing/failure alarm, and restricted runtime IAM policy. All six resources reached `CREATE_COMPLETE`; expected bucket, alarm, and policy outputs exist. No keys were generated and the runtime policy is not attached. Repository-safe evidence is in `outputs/staging/AWS-PROVISIONING.md`; physical identifiers and operator contact data are omitted.
+The AWS stack `iac-league-staging-storage` reached `CREATE_COMPLETE` in `eu-north-1` at 19:13:08 UTC on 21 September 2026. Its reviewed change set contained exactly six additions: private encrypted/versioned S3 storage, TLS-only bucket policy, SNS topic/policy, CloudWatch missing/failure alarm, and restricted runtime IAM policy. All six resources reached `CREATE_COMPLETE`; expected bucket, alarm, and policy outputs exist. The SNS console subsequently showed the operator email subscription as `Confirmed`. No keys were generated and the runtime policy is not attached. Repository-safe evidence is in `outputs/staging/AWS-PROVISIONING.md`; physical identifiers and operator contact data are omitted.
 
 Render staging has not been provisioned. Its proposal targets `codex/storage-durability`, starts in maintenance mode for explicit empty-disk seeding, uses one 1 GB `/var/data` disk and one in-service backup supervisor with two Gunicorn workers. The labelled synthetic fixture SHA-256 is `e8df6d47b2dc6b27c6ffef62188102324b7aae166b2f5a91bf7a21f5ef287c00`.
 
 | Check | Status | Verified time / deployed commit | Missing evidence |
 | --- | --- | --- | --- |
-| Reviewed staging deployment inputs | PASS (AWS deployed; Render prepared) | 2026-09-21 19:13 UTC / AWS template SHA-256 `a45a0f53e8fba7183e09fd73cee09d3a5bbf05f7861d60ba60f7d97ad5b2ac37` | Confirmed SNS subscription, staging runtime principal, Render billing permission and provider-side secrets |
+| Reviewed staging deployment inputs | PASS (AWS deployed; Render prepared) | 2026-09-21 19:13 UTC / AWS template SHA-256 `a45a0f53e8fba7183e09fd73cee09d3a5bbf05f7861d60ba60f7d97ad5b2ac37` | Staging runtime principal, Render billing permission and provider-side secrets |
 | Staging tier, disk ID/mount, one supervisor, two workers | NOT RUN | — / unknown | Resource approval, AWS account/region, Render access |
 | Scheduled hourly backup reads same mounted disk as app | NOT RUN | — / unknown | Mount/device evidence and an actual scheduled S3 manifest containing the UI import |
 | UI-imported synthetic results survive Render restart | NOT RUN | — / unknown | Actual restart and before/after checkpoint |
@@ -43,7 +43,7 @@ Render staging has not been provisioned. Its proposal targets `codex/storage-dur
 | Restored rules/mappings/checksums/standings match | NOT RUN | — / unknown | Real restore evidence |
 | Invalid/interrupted import preserves last good staging data | NOT RUN | — / unknown | Run disposable fault tests on staging |
 | Both actual serving workers see corrections and rollback | NOT RUN | — / unknown | Two staging worker PID/HTTP observations and rollback |
-| Backup failure reaches operator | NOT RUN | — / unknown | Confirmed SNS subscription, failure alarm and received email |
+| Backup failure reaches operator | NOT RUN (subscription confirmed) | 2026-09-21 / AWS staging stack | Failure state transition and received alarm email |
 | Stale backup and stopped-service alerts reach operator | NOT RUN | — / unknown | Independent CloudWatch missing-data evaluation, recorded latency and operator receipt |
 | Resource capacity and rollback time | NOT RUN | — / unknown | Staging peak memory, disk capacity and timed restore; local archive size is not a live sizing input |
 
@@ -72,7 +72,7 @@ Render staging has not been provisioned. Its proposal targets `codex/storage-dur
 | Independent production restoration and standings comparison | NOT RUN | — / commit unknown | Requires actual live S3 backup restored independently |
 | Imports reopened / P0 closed | NOT RUN | — | **P0 OPEN** until production persistence, independent restoration and alerts are demonstrated |
 
-**Exact current gate:** the owner accepted the committed local recovery candidate as the authoritative production migration baseline on 21 September 2026, with the limitations recorded in `outputs/recovery/BASELINE-ACCEPTANCE.md`. AWS staging storage and monitoring are provisioned, but the SNS subscription is not yet confirmed and Render staging has not been created or tested. Do not upgrade, change environment/start commands, restart/redeploy, or attach a production disk until the isolated Render staging sequence and independent backup/restore evidence pass.
+**Exact current gate:** the owner accepted the committed local recovery candidate as the authoritative production migration baseline on 21 September 2026, with the limitations recorded in `outputs/recovery/BASELINE-ACCEPTANCE.md`. AWS staging storage and monitoring are provisioned and the SNS subscription is confirmed, but the runtime principal and Render staging have not been created or tested. Do not upgrade, change environment/start commands, restart/redeploy, or attach a production disk until the isolated Render staging sequence and independent backup/restore evidence pass.
 
 ## Preparation completed in this continuation
 
