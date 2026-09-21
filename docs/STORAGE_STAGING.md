@@ -9,7 +9,7 @@ The implementation and recovery evidence are committed and available on `codex/s
 AWS provisioning completed in `eu-north-1` on 21 September 2026; see `outputs/staging/AWS-PROVISIONING.md`. These external prerequisites remain before Render provisioning and end-to-end testing:
 
 - The SNS email subscription is confirmed; alarm delivery testing remains outstanding.
-- Create or select a staging-only AWS runtime principal and attach only the stack's restricted runtime policy. Put its credentials into Render's secret environment settings; do not send them in chat or commit them.
+- The staging-only IAM user `iac-league-staging-runtime` exists with console access disabled and only the stack's restricted runtime policy attached. No access key exists yet. Put any subsequently generated credentials directly into Render's secret environment settings; do not send them in chat or commit them.
 - Render account permission and billing configuration to create the isolated paid service/disk. The authenticated production inspection does not itself prove this permission or authorize charges.
 - A staging-only volume UUID, admin password and application secret generated outside Git and entered directly in Render's secret settings.
 - Independent recovery access to the staging S3 bucket on a separate machine, configured through an AWS profile/SSO or another approved secure credential mechanism.
