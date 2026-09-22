@@ -1,6 +1,6 @@
 # Storage durability evidence — P0 OPEN
 
-Updated **2026-09-22**. Branch `codex/storage-durability`; the combined implementation and recovery-evidence commit `9ecedef` is present on `origin/codex/storage-durability`. Production remains at baseline commit `d285886d4347e11578a5667ff4870f7c035b95fe`; the storage implementation has **not** been deployed to production. Isolated Render staging now runs the fail-closed backup supervisor on commit `dc810793e4c2fd6ca8f3c0e295969b42a522b23f`, a documentation-only successor to the reviewed implementation commit. No production deployment, restart, disk attachment or live migration was performed.
+Updated **2026-09-22**. Branch `codex/storage-durability`; the current staging application commit `df99fbdd33ce6b2a48a90483093c57c90ed223e0` is present on `origin/codex/storage-durability`. Production remains at baseline commit `d285886d4347e11578a5667ff4870f7c035b95fe`; the storage implementation has **not** been deployed to production. Isolated Render staging runs the fail-closed backup supervisor with the verified FinishTime provider-block fallback. No production deployment, restart, disk attachment or live migration was performed.
 
 PASS means the stated scope was observed. NOT RUN is not a pass. Local fake-S3 and mount-fixture tests cannot demonstrate real AWS/Render durability. No athlete identities or credential values are included here.
 
@@ -45,7 +45,7 @@ Render staging service `srv-dap9at8473hc73dh0gn0` was provisioned on 22 Septembe
 | Invalid/interrupted import preserves last good staging data | NOT RUN | — / unknown | Run disposable fault tests on staging |
 | Both actual serving workers see corrections and rollback | NOT RUN | — / unknown | Two staging worker PID/HTTP observations and rollback |
 | Live paste-table provider formats | PASS | 2026-09-22 19:50–19:51 UTC / `ecf0a4a` | FinishTime-style row persisted/recalculated; Ultimate Live `W20-39` derived Female/Senior; all data explicitly synthetic |
-| Direct FinishTime provider fetch | BLOCKED EXTERNALLY; FALLBACK FIXED LOCALLY | 2026-09-22 19:52–19:58 UTC | FinishTime returned HTTP 403 specifically to Render egress; same client worked outside Render. Explicit 403/429 browser/paste fallback added; full 50-test suite passed; staging redeploy pending |
+| Direct FinishTime provider fetch | BLOCKED EXTERNALLY; FALLBACK LIVE AND PASS | 2026-09-22 19:52–20:01 UTC / `dep-dapdsd0473hc7394u66g`, `df99fbd` | FinishTime returned HTTP 403 specifically to Render egress; same client worked outside Render. Deploy succeeded in 1m11s. Live `Irene` search displayed the explicit provider-block message, an external search link and the verified paste-import link; full 50-test suite passed |
 | Backup failure reaches operator | NOT RUN (subscription confirmed) | 2026-09-21 / AWS staging stack | Failure state transition and received alarm email |
 | Stale backup and stopped-service alerts reach operator | NOT RUN | — / unknown | Independent CloudWatch missing-data evaluation, recorded latency and operator receipt |
 | Resource capacity and rollback time | NOT RUN | — / unknown | Staging peak memory, disk capacity and timed restore; local archive size is not a live sizing input |
