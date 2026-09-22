@@ -45,6 +45,7 @@ Render staging service `srv-dap9at8473hc73dh0gn0` was provisioned on 22 Septembe
 | Invalid/interrupted import preserves last good staging data | NOT RUN | — / unknown | Run disposable fault tests on staging |
 | Both actual serving workers see corrections and rollback | NOT RUN | — / unknown | Two staging worker PID/HTTP observations and rollback |
 | Live paste-table provider formats | PASS | 2026-09-22 19:50–19:51 UTC / `ecf0a4a` | FinishTime-style row persisted/recalculated; Ultimate Live `W20-39` derived Female/Senior; all data explicitly synthetic |
+| Direct FinishTime provider fetch | BLOCKED EXTERNALLY; FALLBACK FIXED LOCALLY | 2026-09-22 19:52–19:58 UTC | FinishTime returned HTTP 403 specifically to Render egress; same client worked outside Render. Explicit 403/429 browser/paste fallback added; full 50-test suite passed; staging redeploy pending |
 | Backup failure reaches operator | NOT RUN (subscription confirmed) | 2026-09-21 / AWS staging stack | Failure state transition and received alarm email |
 | Stale backup and stopped-service alerts reach operator | NOT RUN | — / unknown | Independent CloudWatch missing-data evaluation, recorded latency and operator receipt |
 | Resource capacity and rollback time | NOT RUN | — / unknown | Staging peak memory, disk capacity and timed restore; local archive size is not a live sizing input |

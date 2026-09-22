@@ -33,6 +33,20 @@ class FinishTimeError(ValueError):
     """A source page could not be read or did not contain usable results."""
 
 
+def _raise_for_status(response: requests.Response) -> None:
+    """Turn provider-side automation blocks into an actionable admin error."""
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as exc:
+        if response.status_code in {403, 429}:
+            raise FinishTimeError(
+                "FinishTime blocked the direct request from this server. "
+                "Open FinishTime in your browser, filter the required results, "
+                "then use Paste results from a webpage."
+            ) from exc
+        raise
+
+
 def _race_url(value: str) -> str:
     """Accept only a FinishTime result URL with a concrete race identifier."""
     parsed = urlparse(value)
@@ -57,7 +71,7 @@ class FinishTimeClient:
 
     def _get(self, url: str) -> requests.Response:
         response = self.session.get(url, timeout=30)
-        response.raise_for_status()
+        _raise_for_status(response)
         return response
 
     def search_races(self, query: str) -> list[Race]:
@@ -70,7 +84,7 @@ class FinishTimeClient:
             urljoin(BASE_URL, "data.aspx?" + urlencode({"data": 1, "srch": query})),
             timeout=30,
         )
-        response.raise_for_status()
+        _raise_for_status(response)
         try:
             records = response.json()
         except ValueError as exc:

@@ -3,16 +3,45 @@ import unittest
 from unittest.mock import patch
 
 import pandas as pd
+import requests
 
 import app as app_module
 from app import parse_pasted_results, preview_results_file
-from finishtime import _event_result_url, _page_count, _page_url
+from finishtime import FinishTimeClient, FinishTimeError, _event_result_url, _page_count, _page_url
 from update_engine import read_result_file
 from ultimatelive import UltimateLiveError, _distance_id, _search_table, event_id_from_url
 from bs4 import BeautifulSoup
 
 
 class ResultImportTests(unittest.TestCase):
+    def test_finishtime_cloudflare_block_has_paste_fallback(self):
+        response = requests.Response()
+        response.status_code = 403
+        response.url = "https://results.finishtime.co.za/data.aspx?data=1&srch=Irene"
+        client = FinishTimeClient()
+        with patch.object(client.session, "post", return_value=response):
+            with self.assertRaisesRegex(FinishTimeError, "Paste results from a webpage"):
+                client.search_races("Irene")
+
+    def test_finishtime_page_links_to_browser_fallback(self):
+        with patch.object(app_module.csrf, "_csrf_disable", True), patch.object(
+            app_module.FinishTimeClient,
+            "search_races",
+            side_effect=FinishTimeError("FinishTime blocked the direct request from this server."),
+        ):
+            client = app_module.app.test_client()
+            with client.session_transaction() as session:
+                session["admin"] = True
+            response = client.post(
+                "/finishtime",
+                base_url="https://localhost",
+                data={"query": "Irene"},
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"FinishTime blocked the direct request", response.data)
+        self.assertIn(b"Open this search on FinishTime", response.data)
+        self.assertIn(b"Paste and import webpage results", response.data)
+
     def test_finishtime_tabular_paste(self):
         raw = (
             "Pos\tRace No\tName\tClub\tCategory\tGender\tTime\tFinish\n"

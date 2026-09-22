@@ -44,8 +44,15 @@
                 <input id="query" name="query" value="{{ query }}" placeholder="e.g. Jackie Mekler" minlength="2" required autofocus>
                 <button type="submit">Search FinishTime</button>
             </form>
-            <p>Search happens here — there is no copying, table conversion, or CSV cleanup.</p>
+            <p>Direct search is quickest when FinishTime permits automated access from this server.</p>
             {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        </section>
+
+        <section class="panel">
+            <h2>Browser fallback</h2>
+            <p>FinishTime may challenge or block requests from cloud-hosting networks. If direct search is unavailable, open FinishTime in your browser, filter the event to the correct club and distance, copy the visible results table, and use the same validated importer that also supports Ultimate Live.</p>
+            {% if query|length >= 2 %}<a href="{{ url_for('finishtime_source', query=query) }}" target="_blank" rel="noopener">Open this search on FinishTime</a><br>{% endif %}
+            <a href="{{ url_for('paste_results') }}">Paste and import webpage results</a>
         </section>
 
         {% if races %}
