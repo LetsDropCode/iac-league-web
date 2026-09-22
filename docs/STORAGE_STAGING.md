@@ -1,20 +1,20 @@
-# Isolated staging verification plan — AWS provisioned; Render pending
+# Isolated staging verification plan — AWS and Render provisioned; tests pending
 
 Use `ops/render.staging.yaml.proposed` and the deployed `ops/aws-storage.json` stack with `Service=iac-league-staging`. No production data or credentials. This is a real Render disk and independent AWS S3 test, not a local-directory substitute. The owner approved the costs in STORAGE_COSTS.md. Maximum planned lifetime is seven days. Keep all resources isolated from production.
 
-## Missing prerequisites
+## Current state and remaining prerequisites
 
 The implementation and recovery evidence are committed and available on `codex/storage-durability` at `9ecedef`; later documentation-only commits record approvals and provisioning. The staging fixture is `tests/fixtures/synthetic.csv`, SHA-256 `e8df6d47b2dc6b27c6ffef62188102324b7aae166b2f5a91bf7a21f5ef287c00`. It is a labelled synthetic baseline and is not a production recovery source.
 
-AWS provisioning completed in `eu-north-1` on 21 September 2026; see `outputs/staging/AWS-PROVISIONING.md`. These external prerequisites remain before Render provisioning and end-to-end testing:
+AWS provisioning completed in `eu-north-1` on 21 September 2026; see `outputs/staging/AWS-PROVISIONING.md`. The isolated Render service and 1 GB disk were created on 22 September 2026, and the first maintenance-only deploy succeeded; see `outputs/staging/RENDER-PROVISIONING.md`. These prerequisites remain before end-to-end testing:
 
 - The SNS email subscription is confirmed; alarm delivery testing remains outstanding.
-- The staging-only IAM user `iac-league-staging-runtime` exists with console access disabled and only the stack's restricted runtime policy attached. One access key has been generated, but not yet placed in Render. Its one-time secret must be retained securely and entered directly into Render's secret environment settings; do not send it in chat or commit it.
-- Render account permission and billing configuration to create the isolated paid service/disk. The authenticated production inspection does not itself prove this permission or authorize charges.
-- A staging-only volume UUID, admin password and application secret generated outside Git and entered directly in Render's secret settings.
+- The staging-only IAM user `iac-league-staging-runtime` exists with console access disabled and only the stack's restricted runtime policy attached. One access key has been generated and the owner says its secret was saved, but it has not yet been placed in Render. Enter it directly into Render's secret environment settings; do not send it in chat or commit it.
+- The staging volume UUID and non-secret configuration are set in Render. A separate staging admin password and application secret remain to be generated and entered directly in Render's secret settings.
+- The mounted disk has not been seeded. The Render web shell displayed a blank terminal in Safari despite a successful first deployment; mount-device and seed commands have not been verified or run.
 - Independent recovery access to the staging S3 bucket on a separate machine, configured through an AWS profile/SSO or another approved secure credential mechanism.
 
-The staging Blueprint now targets the implementation branch and intentionally starts in maintenance mode. Verify its first deployed commit is the exact hash above, seed the mounted disk, configure secrets, then change only the staging start command to `python backup_runner.py` and deploy that same commit. Do not point this Blueprint at `main` or production.
+The staging proposal targets the implementation branch and intentionally starts in maintenance mode. The actual first Render deploy used commit `43f469090585afe678536df70556f3785e12cee4`; seed the mounted disk, configure secrets, then change only the staging start command to `python backup_runner.py` and deploy that same commit. Do not point this staging service at `main` or production.
 
 ## Provision after approval
 
