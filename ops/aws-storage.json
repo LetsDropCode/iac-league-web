@@ -104,7 +104,7 @@
         "MetricName": "BackupHealthy",
         "Dimensions": [{"Name": "Service", "Value": {"Ref": "Service"}}],
         "Statistic": "Minimum",
-        "Period": 60,
+        "Period": 30,
         "EvaluationPeriods": 3,
         "DatapointsToAlarm": 3,
         "Threshold": 1,

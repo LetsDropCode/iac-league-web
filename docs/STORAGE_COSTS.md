@@ -9,12 +9,12 @@
 | Render Starter (`0.5c-512mb`) | One service instance; two processes inside it | 7.00 |
 | Render persistent disk | 1 GB at `/var/data` | 0.25 |
 | AWS CloudWatch custom metric | One `BackupHealthy` series per environment | 0.30 |
-| AWS CloudWatch standard alarm | One alarm per environment | 0.10 |
-| CloudWatch PutMetricData | 43,200 calls/30-day month at $0.01/1,000 | 0.432 |
+| AWS CloudWatch high-resolution alarm | One alarm per environment | 0.30 |
+| CloudWatch PutMetricData | 86,400 calls/30-day month at $0.01/1,000 | 0.864 |
 
 Render's current [pricing](https://render.com/pricing) also lists marginal outbound bandwidth at $0.15/GB and Hobby build overage at $5/1,000 minutes. Workspace fees remain unchanged; no Pro workspace upgrade is proposed. The [compute-plan reference](https://render.com/docs/compute-plans) confirms legacy `starter` remains valid. Check actual account allowances and proration before provisioning.
 
-AWS's current published price-list extracts, dates and source URLs are saved in [STORAGE_PRICING_EVIDENCE.json](STORAGE_PRICING_EVIDENCE.json). The [CloudWatch pricing page](https://aws.amazon.com/cloudwatch/pricing/) has inconsistent API-request wording between its summary and examples; this estimate uses the public regional price list's $0.01/1,000 rate, before free allowances. At one report per minute, the estimate includes $0.432 even if the account's free request allowance ultimately covers it.
+AWS's current published price-list extracts, dates and source URLs are saved in [STORAGE_PRICING_EVIDENCE.json](STORAGE_PRICING_EVIDENCE.json). The [CloudWatch pricing page](https://aws.amazon.com/cloudwatch/pricing/) has inconsistent API-request wording between its summary and examples; this estimate uses the public regional price list's $0.01/1,000 rate, before free allowances. At one high-resolution report every 30 seconds, the estimate includes $0.864 even if the account's free request allowance ultimately covers it.
 
 ## Variable backup costs
 
@@ -30,13 +30,13 @@ The scheduler uploads about `720 × A` GiB/month from Render and reads the same 
 
 Approximate 30-day incremental total from the **verified existing Free service**, with one production environment and before any allowances:
 
-`$8.089488 + $201.188 × A + extra requests/alerts/builds/web traffic/taxes`
+`$8.721488 + $201.188 × A + extra requests/alerts/builds/web traffic/taxes`
 
 | Compressed full snapshot | Approximate incremental USD/month |
 | --- | ---: |
-| 1 MiB | 8.29 |
-| 10 MiB | 10.05 |
-| 100 MiB | 27.74 |
+| 1 MiB | 8.92 |
+| 10 MiB | 10.69 |
+| 100 MiB | 28.37 |
 
 There is no existing paid compute or disk charge to subtract. Exact variable backup cost still requires the current live archive size and selected AWS account/region. The proposed 512 MB Starter plan preserves current RAM while increasing CPU; staging must establish peak memory because complete archives are assembled in memory.
 
@@ -44,7 +44,7 @@ The 41,482-byte archive measured locally is **repository data, not live data**; 
 
 ## Staging costs, separately
 
-One isolated Starter instance plus 1 GB disk is another **$7.25/month equivalent**. Metric/alarm is another $0.40/month and minute reporting up to $0.432/month before allowances, plus its own S3/request/transfer costs. Seven days of this fixed baseline is approximately **$1.89** assuming 30-day proration. Synthetic fixtures are tiny; proposed **one-time staging budget: $3 excluding tax**, with no runtime extension beyond seven days without approval. Additional builds and retained S3 evidence can outlive the service. CloudFormation retains the S3 bucket on teardown; arrange explicit finite staging evidence retention/deletion. A budget is not an automatic hard billing cap.
+One isolated Starter instance plus 1 GB disk is another **$7.25/month equivalent**. The high-resolution metric/alarm is another $0.60/month and 30-second reporting up to $0.864/month before allowances, plus its own S3/request/transfer costs. Seven days of this fixed baseline is approximately **$2.03** assuming 30-day proration. Synthetic fixtures are tiny; the approved **one-time staging budget remains $3 excluding tax**, with no runtime extension beyond seven days without approval. Additional builds and retained S3 evidence can outlive the service. CloudFormation retains the S3 bucket on teardown; arrange explicit finite staging evidence retention/deletion. A budget is not an automatic hard billing cap.
 
 ## Approved scope
 

@@ -19,7 +19,7 @@ def emit_health(store, client, service):
     client.put_metric_data(Namespace='IACLeague/Storage', MetricData=[{
         'MetricName': 'BackupHealthy',
         'Dimensions': [{'Name': 'Service', 'Value': service}],
-        'Value': int(healthy), 'Unit': 'Count',
+        'Value': int(healthy), 'Unit': 'Count', 'StorageResolution': 1,
     }])
     return healthy
 
@@ -33,4 +33,4 @@ def monitor_loop(store, client, service, stopped):
         except Exception as exc:
             # Do not log SDK exception details that could contain endpoints/credentials.
             logging.error('BACKUP_MONITOR_FAILED type=%s; CloudWatch must alarm on missing data', type(exc).__name__)
-        stopped.wait(60)
+        stopped.wait(30)

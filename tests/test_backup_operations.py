@@ -85,6 +85,7 @@ class OperationsTests(unittest.TestCase):
                 calls.append(kwargs)
         emit_health(self.store, CloudWatch(), 'iac-league-staging')
         self.assertEqual(calls[0]['MetricData'][0]['Value'], 0)
+        self.assertEqual(calls[0]['MetricData'][0]['StorageResolution'], 1)
         atomic_write(self.store.path('.backup-status.json'), json.dumps({'verified': True, 'last_success': time.time()}).encode())
         emit_health(self.store, CloudWatch(), 'iac-league-staging')
         self.assertEqual(calls[1]['MetricData'][0]['Value'], 1)

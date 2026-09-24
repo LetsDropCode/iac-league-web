@@ -81,7 +81,10 @@ Resources:
         - Name: Service
           Value: !Ref Service
       Statistic: Minimum
-      Period: 60
+      # High-resolution evaluation is required: live staging showed that a
+      # standard-resolution missing-data alarm transitioned too slowly even
+      # after its evaluation periods were reduced.
+      Period: 30
       EvaluationPeriods: 3
       DatapointsToAlarm: 3
       Threshold: 1
