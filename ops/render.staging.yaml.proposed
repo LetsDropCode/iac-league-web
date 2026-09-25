@@ -10,7 +10,7 @@ services:
     plan: starter
     numInstances: 1
     autoDeployTrigger: "off"
-    buildCommand: pip install -r requirements.txt
+    buildCommand: python -m pip install -r requirements.lock
     # First boot is maintenance-only so the empty disk can be seeded explicitly.
     # After seeding and secure environment configuration, change this to
     # `python backup_runner.py` and deploy the same recorded commit.
