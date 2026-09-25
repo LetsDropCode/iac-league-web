@@ -46,7 +46,7 @@ Stop review if the change set includes any replacement, removal, broad IAM princ
 - [x] S3 bucket and object ARNs in the runtime policy resolve only to the new production bucket and `iac-league/*` prefix.
 - [x] Alarm dimension is production, not staging.
 - [x] SNS destination is the approved production operator.
-- [ ] Independent recovery access will use a separate operator identity, not the application runtime credentials.
+- [x] Independent recovery access uses the authenticated operator identity, separate from the application runtime identity; accepted baseline upload and read-back passed.
 - [ ] Reviewer records GO in the private operational change record.
 
 Review evidence at **2026-09-25 06:32 UTC**: change-set status `CREATE_COMPLETE`, execution status `AVAILABLE`; actions were Add-only for `AlertPolicy`, `Alerts`, `BackupAlarm`, `Backups`, `RuntimePolicy` and `TLSOnly`. The placeholder stack status was `REVIEW_IN_PROGRESS` and its resource count was zero.
@@ -56,12 +56,12 @@ Review evidence at **2026-09-25 06:32 UTC**: change-set status `CREATE_COMPLETE`
 - [x] Stack reached `CREATE_COMPLETE` with no unexpected resources.
 - [x] Bucket is private, encrypted with AES256 and versioned.
 - [x] Bucket lifecycle has 30-day noncurrent-version retention and 1-day incomplete-multipart cleanup; CloudFormation retain policies match the reviewed template.
-- [x] SNS subscription is confirmed; test publication was accepted by SNS. Delivery confirmation remains with the operator.
+- [x] SNS subscription is confirmed; test publication was accepted by SNS and the operator confirmed receipt.
 - [x] Alarm is present with 30-second, 3-of-3 and missing-data-breaching settings; it is correctly `ALARM` before production emits a healthy metric.
-- [ ] Runtime policy is attached only to the approved production runtime principal.
-- [ ] Runtime principal has console access disabled and no unrelated policies.
+- [x] Runtime policy is attached only to the approved production runtime principal.
+- [x] Runtime principal has no console login, groups, inline policies or unrelated managed policies; access-key count was zero at identity verification.
 - [ ] One production access key is transferred directly to the approved secret store; values are never printed or recorded.
-- [ ] Independent operator access can list/read backup evidence without using runtime credentials.
+- [x] Independent operator access uploaded and read back the accepted recovery baseline without using runtime credentials; SHA-256 matched exactly.
 - [ ] Render secret variable names are prepared, but values are not saved until the approved cutover sequence calls for them.
 - [ ] Safe output labels—bucket, runtime-policy ARN and alarm name—are recorded in the private change record.
 
@@ -70,3 +70,5 @@ Review evidence at **2026-09-25 06:32 UTC**: change-set status `CREATE_COMPLETE`
 If review fails before execution, delete the unexecuted change set and leave production unchanged. If stack creation fails, preserve events for diagnosis and do not weaken controls to make it pass. Because the bucket uses `DeletionPolicy: Retain`, stack deletion is not full data deletion; retained storage requires a separate, explicit retention/deletion decision.
 
 Execution evidence at **2026-09-25 06:36–06:40 UTC**: all six expected resources reached `CREATE_COMPLETE`; all four S3 public-access-block controls were true; encryption was `AES256`; versioning was enabled; lifecycle values were 30 and 1 days; the alarm used namespace `IACLeague/Storage`, metric `BackupHealthy`, service `iac-league-production`, period 30, evaluation 3/3, threshold below 1 and missing-data breaching. No credentials, account number, email address, bucket name, topic ARN or access-key value are recorded here.
+
+Identity/recovery evidence at **2026-09-25 06:43–06:48 UTC**: `iac-league-production-runtime` was created with exactly the stack-generated runtime policy, no console login, zero groups, zero inline policies and zero keys. The authenticated operator independently uploaded the accepted archive, manifest and acceptance record under the recovery-baseline area, downloaded the archive again, and verified SHA-256 `95b2d0836e5158ee999c9ed8eedda5843ad5c27f0aa51ffd959baaa23f610221`. The operator also confirmed receipt of the labelled SNS delivery test.

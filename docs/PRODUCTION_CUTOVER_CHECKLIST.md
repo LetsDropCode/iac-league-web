@@ -43,8 +43,8 @@ The cutover is GO only when every item is checked and evidence is recorded in `S
 - [ ] Owner reviewed the final staging evidence and explicitly approved production cutover.
 - [ ] Maintenance start and maximum-duration window are recorded below.
 - [ ] Import-freeze owner and cutover operator are present and reachable.
-- [ ] Accepted recovery archive exists in at least one independent recovery location and its SHA-256 matches the accepted value above.
-- [ ] Production AWS bucket, runtime policy, alarm, SNS subscription and independent recovery access are provisioned and verified without exposing secret values.
+- [x] Accepted recovery archive exists in the production recovery bucket and independent operator read-back matched the accepted SHA-256.
+- [x] Production AWS bucket, runtime policy, alarm, SNS subscription and independent recovery access are provisioned and verified without exposing secret values.
 - [x] Production dependencies are reproducible from the tested staging package set in `requirements.lock`; staging deploy `dep-dar151h42hec73cjuddg` installed it and matched it exactly.
 - [x] Exact release commit and configuration hashes were regenerated and reviewed after the pinned staging deployment.
 - [x] No unreviewed application changes are included in the production release candidate.
@@ -108,11 +108,11 @@ These steps are safe before the window because they do not modify staging or pro
 - [x] Verify the candidate branch and remote point to the recorded commit.
 - [x] Run the complete local test suite.
 - [x] Validate Python syntax, YAML syntax and whitespace.
-- [ ] Copy the accepted archive to the approved independent recovery location and verify its hash there.
+- [x] Copied the accepted archive, manifest and acceptance record to the approved production recovery location; independent read-back matched the accepted SHA-256.
 - [x] Prepare the production AWS stack parameters and change-set review worksheet locally; see `PRODUCTION_AWS_CHANGESET_WORKSHEET.md`. Create or execute the real change set only after the final staging gate and explicit GO; do not reuse staging credentials or identifiers.
 - [x] Captured the deployed staging package versions without secret/environment values, committed `requirements.lock`, rebuilt staging from it, and verified exact equality plus `pip check` PASS.
-- [ ] Confirm independent recovery credentials work against production backup storage.
-- [ ] Confirm the SNS subscription and alert recipient.
+- [x] Confirmed the separate operator identity can write/read production recovery evidence without runtime credentials.
+- [x] Confirmed the SNS subscription and alert recipient; the operator received the labelled production delivery test.
 - [ ] Confirm no admin has an import, rule edit or correction in progress.
 - [ ] Export or print this checklist for the cutover operator and independent verifier.
 
@@ -188,7 +188,7 @@ Record identifiers, hashes, counts, status and UTC timestamps only. Never record
 | --- | --- | --- | --- | --- |
 | `2026-09-25 06:21–06:22` | Final staging dependency gate | `PASS` | `dep-dar151h42hec73cjuddg`; lock match exit 0; verified 23-file backup | Owner/operator |
 | `TBD` | Production freeze | `TBD` | `TBD` | `TBD` |
-| `TBD` | Archive verification | `TBD` | `TBD` | `TBD` |
+| `2026-09-25 06:43–06:48` | AWS stack, identity and archive verification | `PASS` | Six-resource stack; confirmed SNS test; independent accepted-archive read-back hash matched | Owner/operator |
 | `TBD` | Disk/mount/identity | `TBD` | `TBD` | `TBD` |
 | `TBD` | Migration | `TBD` | `TBD` | `TBD` |
 | `TBD` | Startup backup | `TBD` | `TBD` | `TBD` |
