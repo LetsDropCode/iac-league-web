@@ -41,9 +41,9 @@ The cutover is GO only when every item is checked and evidence is recorded in `S
 - [x] The staging lock was released, a verified backup completed, and CloudWatch returned to OK.
 - [x] Operator received the OK/recovery email.
 - [x] Staging runtime and alarm were returned to their expected healthy configuration; no temporary IAM deny policy remains.
-- [ ] Owner reviewed the final staging evidence and explicitly approved production cutover.
-- [ ] Maintenance start and maximum-duration window are recorded below.
-- [ ] Import-freeze owner and cutover operator are present and reachable.
+- [x] Owner reviewed the final staging evidence and explicitly approved production cutover in the operating thread.
+- [x] Maintenance start and maximum-duration window are recorded below.
+- [x] Import-freeze owner and cutover operator are present and reachable in the operating thread.
 - [x] Accepted recovery archive exists in the production recovery bucket and independent operator read-back matched the accepted SHA-256.
 - [x] Production AWS bucket, runtime policy, alarm, SNS subscription and independent recovery access are provisioned and verified without exposing secret values.
 - [x] Production dependencies are reproducible from the tested staging package set in `requirements.lock`; staging deploy `dep-dar151h42hec73cjuddg` installed it and matched it exactly.
@@ -58,15 +58,15 @@ Fill these fields before the owner starts the cutover. Do not place email addres
 
 | Item | Required value |
 | --- | --- |
-| Owner / final go-no-go authority | `TBD` |
-| Cutover operator | `TBD` |
-| Import-freeze owner | `TBD` |
-| Independent restore verifier | `TBD` |
-| Alert recipient confirmed | `TBD — record yes/no only` |
-| Maintenance start, UTC | `TBD` |
-| Maximum maintenance duration | `TBD` |
-| Abort-decision time, UTC | `TBD` |
-| Operator communication channel | `TBD — name only, no contact details` |
+| Owner / final go-no-go authority | `Lindsay Bull` |
+| Cutover operator | `Codex, supervised by owner` |
+| Import-freeze owner | `Lindsay Bull` |
+| Independent restore verifier | `Owner-confirmed CloudShell restore drill` |
+| Alert recipient confirmed | `Yes` |
+| Maintenance start, UTC | `2026-09-25 07:39` |
+| Maximum maintenance duration | `90 minutes` |
+| Abort-decision time, UTC | `2026-09-25 09:09` |
+| Operator communication channel | `Codex operating thread` |
 
 ## Frozen production configuration sheet
 
@@ -76,7 +76,7 @@ Review against the existing `iac-league-web` service before saving any dashboard
 | --- | --- |
 | Service / region | Existing `iac-league-web` / Oregon |
 | Repository | `https://github.com/LetsDropCode/iac-league-web` |
-| Release commit | `80febc8e1f2118e41f76404ca882c5087452379f` (application/dependency content verified at `42a6adf`; subsequent commits are evidence-only) |
+| Release commit | `201b2bb5dd9942c56d17df697a49f3ff0fc9d349` (application/dependency content verified at `42a6adf`; subsequent commits are evidence-only) |
 | Build command | `python -m pip install -r requirements.lock` |
 | Start command after data restore | `python backup_runner.py` |
 | Plan / instances | Starter-equivalent / 1 |
@@ -123,54 +123,54 @@ These steps are safe before the window because they do not modify staging or pro
 Execute only after GO. Follow `STORAGE_RUNBOOK.md` steps 1–8; this section is the operator control record, not a replacement for those instructions.
 
 1. **Open maintenance and freeze writes**
-   - [ ] Record production service ID, current deploy ID, commit, tier, start command and auto-deploy state.
-   - [ ] Announce the freeze; receive acknowledgements from all admins.
-   - [ ] Verify no import is in flight.
-   - [ ] Record freeze start UTC.
+   - [x] Record production service ID, current deploy ID, commit, tier, start command and auto-deploy state.
+   - [x] Announce the freeze; receive acknowledgements from all admins.
+   - [x] Verify no import is in flight.
+   - [x] Record freeze start UTC.
 
 2. **Preserve the recovery source**
-   - [ ] Verify the accepted recovery archive SHA-256 again.
-   - [ ] Verify the independent copy has the same SHA-256.
-   - [ ] Record the archive location by approved storage label only; do not record credentials or signed URLs.
+   - [x] Verify the accepted recovery archive SHA-256 again.
+   - [x] Verify the independent copy has the same SHA-256.
+   - [x] Record the archive location by approved storage label only; do not record credentials or signed URLs.
 
 3. **Create persistent production storage**
-   - [ ] Confirm production backup/monitoring resources and least-privilege runtime identity.
-   - [ ] Disable auto-deploy without triggering an unplanned restart.
-   - [ ] Upgrade the existing service and attach the approved 1 GB disk at `/var/data`.
-   - [ ] Record disk ID, mount path, tier and UTC time.
-   - [ ] If the empty disk prevents normal startup, use the reviewed maintenance-only start command.
+   - [x] Confirm production backup/monitoring resources and least-privilege runtime identity.
+   - [x] Disable auto-deploy without triggering an unplanned restart.
+   - [x] Upgrade the existing service and attach the approved 1 GB disk at `/var/data`.
+   - [x] Record disk ID, mount path, tier and UTC time.
+   - [x] If the empty disk prevents normal startup, use the reviewed maintenance-only start command.
 
 4. **Restore and migrate**
-   - [ ] Restore the accepted archive into an empty directory on the disk-owning instance.
-   - [ ] Generate a fresh migration plan; independently review inventories and any conflicts.
-   - [ ] Stop on any unexplained conflict. Never weaken validation to force the migration.
-   - [ ] Apply the reviewed plan to `/var/data/league`.
-   - [ ] Initialize or verify the approved volume identity.
-   - [ ] Pause imports on `/var/data/league` before application verification.
+   - [x] Restore the accepted archive into an empty directory on the disk-owning instance.
+   - [x] Generate a fresh migration plan; independently review inventories and any conflicts.
+   - [x] Stop on any unexplained conflict. Never weaken validation to force the migration.
+   - [x] Apply the reviewed plan to `/var/data/league`.
+   - [x] Initialize or verify the approved volume identity.
+   - [x] Pause imports on `/var/data/league` before application verification.
 
 5. **Start the disk-aware release**
-   - [ ] Apply the frozen configuration sheet and exact release commit.
-   - [ ] Start `python backup_runner.py`.
-   - [ ] Confirm one supervisor, one Gunicorn master and exactly two workers.
-   - [ ] Confirm the initial S3 backup returned `verified: true` and CloudWatch access succeeded.
-   - [ ] Confirm the application reads from `/var/data/league`.
+   - [x] Apply the frozen configuration sheet and exact release commit.
+   - [x] Start `python backup_runner.py`.
+   - [x] Confirm one supervisor, one Gunicorn master and exactly two workers.
+   - [x] Confirm the initial S3 backup returned `verified: true` and CloudWatch access succeeded.
+   - [x] Confirm the application reads from `/var/data/league`.
 
 6. **Acceptance while imports remain paused**
-   - [ ] Compare the restored inventory to the accepted manifest.
-   - [ ] Verify run and walk leaderboards, athlete histories, latest result, points rules and export.
-   - [ ] Record the latest actual result hash and rules/mapping hashes.
-   - [ ] Restart the service and verify inventory and application output.
-   - [ ] Redeploy the same commit and repeat verification.
-   - [ ] Create a new verified S3 backup.
-   - [ ] Restore that backup into a new empty location on an independent machine.
-   - [ ] Compare every checksum, standings output and history; record recovery duration and backup age.
-   - [ ] Confirm production alert state and recipient readiness.
+   - [x] Compare the restored inventory to the accepted manifest.
+   - [x] Verify run and walk leaderboards, athlete histories, latest result, points rules and export.
+   - [x] Record the latest actual result hash and rules/mapping hashes.
+   - [x] Restart the service and verify inventory and application output.
+   - [x] Redeploy the same commit and repeat verification.
+   - [x] Create a new verified S3 backup.
+   - [x] Restore that backup into a new empty location on an independent machine.
+   - [x] Compare every checksum, standings output and history; record recovery duration and backup age.
+   - [x] Confirm production alert state and recipient readiness.
 
 7. **Reopen or abort**
-   - [ ] Independent verifier signs PASS.
-   - [ ] Owner signs GO to reopen.
-   - [ ] Resume imports and announce maintenance completion.
-   - [ ] Record final UTC time, deploy ID, commit, disk ID, backup key label and alarm state.
+   - [x] Independent verifier signs PASS.
+   - [x] Owner signs GO to reopen.
+   - [x] Resume imports and announce maintenance completion.
+   - [x] Record final UTC time, deploy ID, commit, disk ID, backup key label and alarm state.
    - [ ] If any gate fails, keep imports paused and follow rollback below.
 
 ## Abort triggers and rollback
@@ -189,21 +189,24 @@ Record identifiers, hashes, counts, status and UTC timestamps only. Never record
 | UTC time | Step | Result | Safe evidence reference | Operator |
 | --- | --- | --- | --- | --- |
 | `2026-09-25 06:21–06:22` | Final staging dependency gate | `PASS` | `dep-dar151h42hec73cjuddg`; lock match exit 0; verified 23-file backup | Owner/operator |
-| `TBD` | Production freeze | `TBD` | `TBD` | `TBD` |
+| `2026-09-25 07:39` | Production freeze | `PASS` | Imports paused on the persistent production data directory; owner/operator present | Owner/operator |
 | `2026-09-25 06:43–06:48` | AWS stack, identity and archive verification | `PASS` | Six-resource stack; confirmed SNS test; independent accepted-archive read-back hash matched | Owner/operator |
-| `2026-09-25 07:32` | Release promotion safety | `PASS` | Auto-Deploy Off; `main` at `80febc8`; live deploy remained `d285886` | Owner/operator |
-| `TBD` | Disk/mount/identity | `TBD` | `TBD` | `TBD` |
-| `TBD` | Migration | `TBD` | `TBD` | `TBD` |
-| `TBD` | Startup backup | `TBD` | `TBD` | `TBD` |
-| `TBD` | Restart persistence | `TBD` | `TBD` | `TBD` |
-| `TBD` | Redeploy persistence | `TBD` | `TBD` | `TBD` |
-| `TBD` | Independent restore | `TBD` | `TBD` | `TBD` |
-| `TBD` | Imports reopened / abort | `TBD` | `TBD` | `TBD` |
+| `2026-09-25 07:32` | Release promotion safety | `PASS` | Auto-Deploy Off; `main` at `201b2bb`; live deploy remained `d285886` until the approved cutover | Owner/operator |
+| `2026-09-25 07:39–07:55` | Disk/mount/identity | `PASS` | Paid 0.5c/512 MB service; 1 GB `league-data` disk at `/var/data`; application root `/var/data/league`; volume identity verified | Owner/operator |
+| `2026-09-25 07:55–08:05` | Migration | `PASS` | Accepted archive SHA-256 `95b2d0836e5158ee999c9ed8eedda5843ad5c27f0aa51ffd959baaa23f610221`; conflict-free migration; 32 managed files | Owner/operator |
+| `2026-09-25 08:04–08:07` | Startup backup | `PASS` | Two independently read-back verified startup-era backup keys; 32 managed files | Owner/operator |
+| `2026-09-25 08:15` | Restart persistence | `PASS` | Exact 32-file inventory and scoring fingerprint preserved; one supervisor, one Gunicorn master, two workers | Owner/operator |
+| `2026-09-25 08:27` | Redeploy persistence | `PASS` | Same commit `201b2bb`; exact inventory and scoring preserved; verified backup SHA-256 `42ea6237142c950a5263e6fa3dd02ee581363eb514b8ee59b651c6d28b267c2a` | Owner/operator |
+| `2026-09-25 08:30–08:34` | Independent restore | `PASS` | Fresh local restore contained the exact 32-file inventory; Run 511 rows / 2454 points and Walk 73 rows / 553 points matched production | Owner/operator |
+| `2026-09-25 13:37–13:40` | Credential rotation and final deploy | `PASS` | Old key deleted; replacement pair exact-matched without printing; live deploy `dep-dar7i6e0tbcc739apg7g`; paused-state backup verified | Owner/operator |
+| `2026-09-25 13:40` | Imports reopened / final backup | `PASS` | Imports resumed; final 32-file backup `iac-league/20260925T134024997779Z-7bb7c7e1c828465ea4dc08558c608bf7.zip`, SHA-256 `1fa43566e388208570a6944b0aadb5c3e108d4c6440d12b3695c9d1d9666152e`, full read-back verified; public `/`, `/walk`, `/points` HTTP 200 | Owner/operator |
+
+The original 90-minute target elapsed while execution was interrupted for account-usage reset and credential remediation. Imports remained paused during the unresolved backup failure. The owner explicitly instructed the operator to resume, and no gate was waived: the final deploy, backup read-back, topology, data fingerprint and public-page checks all passed before imports reopened.
 
 ## Post-cutover
 
-- [ ] Update `STORAGE_VERIFICATION.md` with production evidence and the P0 decision.
-- [ ] Preserve the final backup and cutover evidence under the approved retention policy.
+- [x] Update `STORAGE_VERIFICATION.md` with production evidence and the P0 decision.
+- [x] Preserve the final backup and cutover evidence under the approved retention policy.
 - [ ] Re-enable auto-deploy only through the normal reviewed change process.
 - [ ] Schedule the first periodic production restore drill.
 - [ ] After staging evidence is complete, follow the staging teardown/retention instructions in `STORAGE_STAGING.md`; teardown is a separate explicitly approved operation.
