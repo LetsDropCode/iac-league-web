@@ -1,6 +1,8 @@
 # Storage durability and recovery
 
-**P0 remains open until the live restart/redeploy persistence test and independent restore drill below are demonstrated.** This branch is implementation and a proposed cutover, not evidence that live data is durable.
+**P0 remains open until the controlled production cutover, production restart/redeploy persistence tests, and independent production restore drill below are demonstrated.** The isolated staging durability gates have passed, but this branch remains implementation and a proposed cutover—not evidence that production data is durable.
+
+Use `PRODUCTION_CUTOVER_CHECKLIST.md` as the operator control record. It does not replace this runbook or authorize a cutover; every mandatory gate in that checklist must be PASS first.
 
 ## Accepted migration baseline
 
@@ -132,7 +134,7 @@ While still in the approved maintenance/test window:
 ## Local verification
 
 ```
-python -m pip install -r requirements.txt
+python -m pip install -r requirements.lock
 PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v
 ```
 
