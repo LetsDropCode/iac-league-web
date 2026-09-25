@@ -2,7 +2,7 @@
 
 Prepared locally on **24 September 2026** from `ops/aws-storage.yaml.proposed` at SHA-256 `1e57fca32f52655d7264842420693aa0d4d6c44dbd9b86ba56ff222f519816de`. Updated on **25 September 2026** after creating and reviewing the unexecuted change set `production-initial-review-20260925` in `eu-north-1`.
 
-**NO-GO:** the reviewed change set is available but has not been executed. The placeholder stack remains `REVIEW_IN_PROGRESS` with zero resources, so no production S3, SNS, CloudWatch or IAM resources exist yet. Execution requires a separate explicit approval and must not be inferred from change-set creation.
+**NO-GO:** the owner explicitly approved execution and the stack reached `CREATE_COMPLETE` on 25 September 2026. AWS storage and monitoring controls passed the checks below, but the runtime identity, independent recovery access, Render secret transfer and production cutover remain incomplete. Stack completion alone does not authorize changing Render production.
 
 ## Stack inputs
 
@@ -53,11 +53,11 @@ Review evidence at **2026-09-25 06:32 UTC**: change-set status `CREATE_COMPLETE`
 
 ## Post-execution verification
 
-- [ ] Stack reached `CREATE_COMPLETE` with no unexpected resources.
-- [ ] Bucket is private, encrypted and versioned.
-- [ ] Bucket lifecycle and retain policies match the template.
-- [ ] SNS subscription is confirmed; record yes/no only.
-- [ ] Alarm is present with 30-second, 3-of-3 and missing-data-breaching settings.
+- [x] Stack reached `CREATE_COMPLETE` with no unexpected resources.
+- [x] Bucket is private, encrypted with AES256 and versioned.
+- [x] Bucket lifecycle has 30-day noncurrent-version retention and 1-day incomplete-multipart cleanup; CloudFormation retain policies match the reviewed template.
+- [x] SNS subscription is confirmed; test publication was accepted by SNS. Delivery confirmation remains with the operator.
+- [x] Alarm is present with 30-second, 3-of-3 and missing-data-breaching settings; it is correctly `ALARM` before production emits a healthy metric.
 - [ ] Runtime policy is attached only to the approved production runtime principal.
 - [ ] Runtime principal has console access disabled and no unrelated policies.
 - [ ] One production access key is transferred directly to the approved secret store; values are never printed or recorded.
@@ -68,3 +68,5 @@ Review evidence at **2026-09-25 06:32 UTC**: change-set status `CREATE_COMPLETE`
 ## Abort and cleanup
 
 If review fails before execution, delete the unexecuted change set and leave production unchanged. If stack creation fails, preserve events for diagnosis and do not weaken controls to make it pass. Because the bucket uses `DeletionPolicy: Retain`, stack deletion is not full data deletion; retained storage requires a separate, explicit retention/deletion decision.
+
+Execution evidence at **2026-09-25 06:36–06:40 UTC**: all six expected resources reached `CREATE_COMPLETE`; all four S3 public-access-block controls were true; encryption was `AES256`; versioning was enabled; lifecycle values were 30 and 1 days; the alarm used namespace `IACLeague/Storage`, metric `BackupHealthy`, service `iac-league-production`, period 30, evaluation 3/3, threshold below 1 and missing-data breaching. No credentials, account number, email address, bucket name, topic ARN or access-key value are recorded here.
