@@ -9,6 +9,7 @@ Prepared on **24 September 2026** and updated on **25 September 2026** after all
 Candidate prepared from branch `codex/storage-durability`:
 
 - Application/dependency candidate commit: `42a6adfe2bd836930302759709dcdab7c70b1f0a`
+- Production release commit on `main`: `80febc8e1f2118e41f76404ca882c5087452379f`
 - Remote candidate branch at dependency verification: `42a6adfe2bd836930302759709dcdab7c70b1f0a`
 - Staging pinned-build deploy: `dep-dar151h42hec73cjuddg`
 - Accepted recovery artifact: `outputs/recovery/local-recovery-candidate.zip`
@@ -75,7 +76,7 @@ Review against the existing `iac-league-web` service before saving any dashboard
 | --- | --- |
 | Service / region | Existing `iac-league-web` / Oregon |
 | Repository | `https://github.com/LetsDropCode/iac-league-web` |
-| Release commit | `42a6adfe2bd836930302759709dcdab7c70b1f0a` |
+| Release commit | `80febc8e1f2118e41f76404ca882c5087452379f` (application/dependency content verified at `42a6adf`; subsequent commits are evidence-only) |
 | Build command | `python -m pip install -r requirements.lock` |
 | Start command after data restore | `python backup_runner.py` |
 | Plan / instances | Starter-equivalent / 1 |
@@ -111,6 +112,7 @@ These steps are safe before the window because they do not modify staging or pro
 - [x] Copied the accepted archive, manifest and acceptance record to the approved production recovery location; independent read-back matched the accepted SHA-256.
 - [x] Prepare the production AWS stack parameters and change-set review worksheet locally; see `PRODUCTION_AWS_CHANGESET_WORKSHEET.md`. Create or execute the real change set only after the final staging gate and explicit GO; do not reuse staging credentials or identifiers.
 - [x] Captured the deployed staging package versions without secret/environment values, committed `requirements.lock`, rebuilt staging from it, and verified exact equality plus `pip check` PASS.
+- [x] Disabled production Render Auto-Deploy and verified the live deploy remained at baseline commit `d285886d4347e11578a5667ff4870f7c035b95fe` after fast-forwarding `main` to the reviewed release.
 - [x] Confirmed the separate operator identity can write/read production recovery evidence without runtime credentials.
 - [x] Confirmed the SNS subscription and alert recipient; the operator received the labelled production delivery test.
 - [ ] Confirm no admin has an import, rule edit or correction in progress.
@@ -189,6 +191,7 @@ Record identifiers, hashes, counts, status and UTC timestamps only. Never record
 | `2026-09-25 06:21–06:22` | Final staging dependency gate | `PASS` | `dep-dar151h42hec73cjuddg`; lock match exit 0; verified 23-file backup | Owner/operator |
 | `TBD` | Production freeze | `TBD` | `TBD` | `TBD` |
 | `2026-09-25 06:43–06:48` | AWS stack, identity and archive verification | `PASS` | Six-resource stack; confirmed SNS test; independent accepted-archive read-back hash matched | Owner/operator |
+| `2026-09-25 07:32` | Release promotion safety | `PASS` | Auto-Deploy Off; `main` at `80febc8`; live deploy remained `d285886` | Owner/operator |
 | `TBD` | Disk/mount/identity | `TBD` | `TBD` | `TBD` |
 | `TBD` | Migration | `TBD` | `TBD` | `TBD` |
 | `TBD` | Startup backup | `TBD` | `TBD` | `TBD` |
