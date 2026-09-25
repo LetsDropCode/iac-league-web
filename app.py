@@ -75,7 +75,14 @@ csp = {
     "font-src": [
         "'self'",
         "data:"
-    ]
+    ],
+    # FinishTime blocks Render's server-side requests but intentionally exposes
+    # its race search as an iframe.  Restrict frames to that single provider so
+    # the admin browser can perform the search without broadening the policy.
+    "frame-src": [
+        "'self'",
+        "https://results.finishtime.co.za"
+    ],
 }
 
 Talisman(app, content_security_policy=csp)
@@ -869,20 +876,21 @@ def finishtime_import():
     query = request.values.get("query", "").strip()
     races = []
     error = None
+    embed_url = None
 
-    if request.method == "POST":
-        try:
-            races = FinishTimeClient().search_races(query)
-        except FinishTimeError as exc:
-            error = str(exc)
-        except requests.RequestException as exc:
-            logging.warning("FinishTime race search request failed: %s", exc)
-            error = "FinishTime rejected or timed out the search request. Please try again shortly."
-        except Exception:
-            logging.exception("FinishTime race search failed")
-            error = "FinishTime could not be reached. Please try again shortly."
+    if query:
+        if len(query) < 2:
+            error = "Enter at least two characters of the race name."
+        else:
+            embed_url = "https://results.finishtime.co.za/spsearch.aspx?" + urlencode({"srch": query})
 
-    return render_template("finishtime.html", query=query, races=races, error=error)
+    return render_template(
+        "finishtime.html",
+        query=query,
+        races=races,
+        error=error,
+        embed_url=embed_url,
+    )
 
 
 @app.route("/finishtime/source")

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/irene-brand.css') }}">
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background: #f5f7fb; color: #1f2937; }
-        .panel { max-width: 760px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,.08); margin: 16px 0; }
+        .panel { max-width: 960px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,.08); margin: 16px 0; }
         input, select, button { box-sizing: border-box; padding: 10px; border-radius: 6px; font-size: 15px; }
         input, select { border: 1px solid #ccd3df; width: 100%; margin: 6px 0 12px; background: #fff; }
         button { border: 0; background: #0047AB; color: white; font-weight: bold; cursor: pointer; margin-right: 8px; }
@@ -18,6 +18,10 @@
         .fields { display: grid; grid-template-columns: 1fr 120px 120px; gap: 10px; align-items: end; }
         .fields label { font-size: 13px; font-weight: bold; }
         .error { color: #b42318; font-weight: bold; }
+        .notice { border-left: 4px solid #16803c; background: #eefaf2; padding: 12px 14px; margin: 14px 0; }
+        .provider-frame { width: 100%; min-height: 520px; border: 1px solid #ccd3df; border-radius: 8px; background: #111827; }
+        .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 14px; }
+        .actions a { font-weight: bold; }
         .preview { overflow-x: auto; }
         table { border-collapse: collapse; width: 100%; }
         th, td { border-bottom: 1px solid #e2e8f0; padding: 8px; text-align: left; }
@@ -31,29 +35,46 @@
             <div class="brand-copy">
                 <p class="brand-kicker">Irene Athletics Club</p>
                 <h1 class="brand-heading">Import FinishTime Results</h1>
-                <p class="brand-subtitle">Search on FinishTime, choose the dated event and distance, then export its results.</p>
+                <p class="brand-subtitle">Search FinishTime inside the portal, then preview the copied club results before importing.</p>
             </div>
         </header>
         <a href="/upload">Back to uploads</a>
 
         <section class="panel">
             <h2>1. Find the race</h2>
-            <form method="post" action="{{ url_for('finishtime_import') }}">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <form method="get" action="{{ url_for('finishtime_import') }}">
                 <label for="query">Race name</label>
                 <input id="query" name="query" value="{{ query }}" placeholder="e.g. Jackie Mekler" minlength="2" required autofocus>
-                <button type="submit">Search FinishTime</button>
+                <button type="submit">Search inside the portal</button>
             </form>
-            <p>Direct search is quickest when FinishTime permits automated access from this server.</p>
+            <p>The embedded search is loaded directly by your browser, so it does not depend on Render's blocked server connection.</p>
             {% if error %}<p class="error">{{ error }}</p>{% endif %}
         </section>
 
+        {% if embed_url %}
         <section class="panel">
-            <h2>Browser fallback</h2>
-            <p>FinishTime may challenge or block requests from cloud-hosting networks. If direct search is unavailable, open FinishTime in your browser, filter the event to the correct club and distance, copy the visible results table, and use the same validated importer that also supports Ultimate Live.</p>
-            {% if query|length >= 2 %}<a href="{{ url_for('finishtime_source', query=query) }}" target="_blank" rel="noopener">Open this search on FinishTime</a><br>{% endif %}
-            <a href="{{ url_for('paste_results') }}">Paste and import webpage results</a>
+            <h2>2. Choose the race on FinishTime</h2>
+            <div class="notice">Selecting a race may open its FinishTime results in this tab. Filter those results to <strong>IRENE ATHLETICS CLUB</strong>, copy the visible table, then return here and use the validated paste importer.</div>
+            <iframe
+                class="provider-frame"
+                title="FinishTime race search"
+                src="{{ embed_url }}"
+                loading="eager"
+                referrerpolicy="strict-origin-when-cross-origin"
+                sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-top-navigation-by-user-activation"
+            ></iframe>
+            <div class="actions">
+                <a href="{{ embed_url }}" target="_blank" rel="noopener noreferrer">Open this FinishTime search in a new tab</a>
+                <a href="{{ url_for('paste_results') }}">Paste and preview copied results</a>
+            </div>
         </section>
+        {% else %}
+        <section class="panel">
+            <h2>2. Preview and import</h2>
+            <p>After choosing and filtering a race, use the validated paste importer. It checks the club, removes duplicates, normalises categories and times, and always previews before saving.</p>
+            <a href="{{ url_for('paste_results') }}">Paste and preview copied results</a>
+        </section>
+        {% endif %}
 
         {% if races %}
         <section class="panel">

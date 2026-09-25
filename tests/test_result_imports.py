@@ -25,24 +25,33 @@ class ResultImportTests(unittest.TestCase):
             with self.assertRaisesRegex(FinishTimeError, "Paste results from a webpage"):
                 client.search_races("Irene")
 
-    def test_finishtime_page_links_to_browser_fallback(self):
-        with patch.object(app_module.csrf, "_csrf_disable", True), patch.object(
-            app_module.FinishTimeClient,
-            "search_races",
-            side_effect=FinishTimeError("FinishTime blocked the direct request from this server."),
-        ):
+    def test_finishtime_search_is_embedded_without_server_fetch(self):
+        with patch.object(app_module.FinishTimeClient, "search_races") as search:
             client = app_module.app.test_client()
             with client.session_transaction() as session:
                 session["admin"] = True
-            response = client.post(
-                "/finishtime",
-                base_url="https://localhost",
-                data={"query": "Irene"},
-            )
+            response = client.get("/finishtime?query=Irene", base_url="https://localhost")
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"FinishTime blocked the direct request", response.data)
-        self.assertIn(b"Open this search on FinishTime", response.data)
-        self.assertIn(b"Paste and import webpage results", response.data)
+        self.assertIn(b"FinishTime race search", response.data)
+        self.assertIn(b"https://results.finishtime.co.za/spsearch.aspx?srch=Irene", response.data)
+        self.assertIn(b"Paste and preview copied results", response.data)
+        search.assert_not_called()
+
+    def test_finishtime_iframe_is_allowed_by_csp(self):
+        client = app_module.app.test_client()
+        with client.session_transaction() as session:
+            session["admin"] = True
+        response = client.get("/finishtime?query=Irene", base_url="https://localhost")
+        policy = response.headers.get("Content-Security-Policy", "")
+        self.assertIn("frame-src 'self' https://results.finishtime.co.za", policy)
+
+    def test_finishtime_short_embedded_search_is_rejected(self):
+        client = app_module.app.test_client()
+        with client.session_transaction() as session:
+            session["admin"] = True
+        response = client.get("/finishtime?query=I", base_url="https://localhost")
+        self.assertIn(b"Enter at least two characters", response.data)
+        self.assertNotIn(b"FinishTime race search", response.data)
 
     def test_finishtime_tabular_paste(self):
         raw = (
