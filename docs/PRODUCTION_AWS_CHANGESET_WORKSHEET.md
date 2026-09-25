@@ -1,8 +1,8 @@
 # Production AWS change-set worksheet
 
-Prepared locally on **24 September 2026** from `ops/aws-storage.yaml.proposed` at SHA-256 `1e57fca32f52655d7264842420693aa0d4d6c44dbd9b86ba56ff222f519816de`.
+Prepared locally on **24 September 2026** from `ops/aws-storage.yaml.proposed` at SHA-256 `1e57fca32f52655d7264842420693aa0d4d6c44dbd9b86ba56ff222f519816de`. Updated on **25 September 2026** after creating and reviewing the unexecuted change set `production-initial-review-20260925` in `eu-north-1`.
 
-**NO-GO:** this worksheet does not authorize creating or executing a change set. No production AWS resources were created or changed during preparation. All isolated staging gates have passed; create the real change set only after the owner explicitly approves production cutover preparation and the destination account, region, operator and maintenance controls are recorded.
+**NO-GO:** the reviewed change set is available but has not been executed. The placeholder stack remains `REVIEW_IN_PROGRESS` with zero resources, so no production S3, SNS, CloudWatch or IAM resources exist yet. Execution requires a separate explicit approval and must not be inferred from change-set creation.
 
 ## Stack inputs
 
@@ -12,7 +12,7 @@ Do not record the operator's email address, credentials, account number or gener
 | --- | --- |
 | Proposed stack label | `iac-league-production-storage` |
 | AWS account | `TBD — verify interactively; do not record account number here` |
-| AWS region | `TBD — must match the approved production configuration and Render variable` |
+| AWS region | `eu-north-1` |
 | Template | `ops/aws-storage.yaml.proposed` |
 | `Service` parameter | `iac-league-production` |
 | `OperatorEmail` parameter | Approved production operator; enter interactively and record confirmed/not-confirmed only |
@@ -36,18 +36,20 @@ Stop review if the change set includes any replacement, removal, broad IAM princ
 ## Pre-execution review
 
 - [x] Final staging stale-backup and recovery evidence is PASS.
-- [ ] Owner authorized creation of the production change set.
-- [ ] Selected AWS account and region match the approved production destination.
-- [ ] Template hash matches the value at the top of this worksheet.
-- [ ] Parameters contain `Service=iac-league-production` and the approved operator email.
-- [ ] Change set contains six additions, zero modifications and zero removals.
-- [ ] Generated S3 bucket name is not the staging bucket.
-- [ ] Runtime policy cannot modify bucket policy, version history, SNS, alarms or IAM.
-- [ ] S3 bucket and object ARNs in the runtime policy resolve only to the new production bucket and `iac-league/*` prefix.
-- [ ] Alarm dimension is production, not staging.
-- [ ] SNS destination is the approved production operator.
+- [x] Owner authorized creation of the production change set.
+- [x] Selected AWS account and `eu-north-1` region match the approved production destination.
+- [x] Template hash matches the value at the top of this worksheet.
+- [x] Parameters contain `Service=iac-league-production` and the approved operator email; the address matched staging without being displayed or recorded.
+- [x] Change set contains six additions, zero modifications and zero removals.
+- [x] The new stack uses a generated bucket with no hard-coded staging name or identifier.
+- [x] Runtime policy cannot modify bucket policy, version history, SNS, alarms or IAM.
+- [x] S3 bucket and object ARNs in the runtime policy resolve only to the new production bucket and `iac-league/*` prefix.
+- [x] Alarm dimension is production, not staging.
+- [x] SNS destination is the approved production operator.
 - [ ] Independent recovery access will use a separate operator identity, not the application runtime credentials.
 - [ ] Reviewer records GO in the private operational change record.
+
+Review evidence at **2026-09-25 06:32 UTC**: change-set status `CREATE_COMPLETE`, execution status `AVAILABLE`; actions were Add-only for `AlertPolicy`, `Alerts`, `BackupAlarm`, `Backups`, `RuntimePolicy` and `TLSOnly`. The placeholder stack status was `REVIEW_IN_PROGRESS` and its resource count was zero.
 
 ## Post-execution verification
 
