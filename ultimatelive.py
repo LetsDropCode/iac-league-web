@@ -44,7 +44,16 @@ class UltimateLiveClient:
 
     def _get(self, url: str, params=None) -> requests.Response:
         response = self.session.get(url, params=params, timeout=30)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            if response.status_code in {403, 429}:
+                raise UltimateLiveError(
+                    "Ultimate Live blocked the direct request from this server. "
+                    "Open the event in your browser, filter it to the required club and distance, "
+                    "then use Paste results from a webpage."
+                ) from exc
+            raise
         return response
 
     def results_for_club(

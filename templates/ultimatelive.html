@@ -33,6 +33,7 @@
     <a href="{{ url_for('upload') }}">Back to uploads</a>
     <section class="panel">
         {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <p>If Ultimate Live blocks the server request, open the event in your browser, filter it by club and distance, then <a href="{{ url_for('paste_results') }}">paste the copied table here</a>.</p>
         <form method="post">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
             <label for="event_url">Ultimate Live event URL</label>

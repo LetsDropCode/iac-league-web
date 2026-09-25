@@ -124,7 +124,7 @@
 
     <div class="panel">
         <h2>Paste results from a webpage</h2>
-        <p>Copy a club-filtered table from FinishTime, Ultimate Live or another results page. The portal derives provider-specific fields and reports anything it cannot use.</p>
+        <p>Copy a table from FinishTime, Ultimate Live or another results page. The portal previews it, filters an available Club column, removes exact duplicates and reports anything it cannot verify before saving.</p>
         <a href="{{ url_for('paste_results') }}">Paste and import webpage results</a><br>
         <a href="{{ url_for('ultimatelive_import') }}">Fetch an Ultimate Live event by club</a><br>
         <a href="{{ url_for('finishtime_import') }}">Or use the direct FinishTime importer</a>

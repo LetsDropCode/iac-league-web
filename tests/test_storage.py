@@ -237,7 +237,9 @@ class StorageTests(unittest.TestCase):
                             data={'file': (io.BytesIO(OTHER), 'upload.csv')})
                 self.assertEqual(self.store.path('results/upload.csv').read_bytes(), RESULT)
                 response = client.post('/paste-results', base_url='https://localhost',
-                                       data={'race_name': 'Test Race', 'discipline': 'run', 'distance': '10',
+                                       data={'race_name': 'Test Race', 'club': 'IRENE ATHLETICS CLUB',
+                                             'discipline': 'run', 'distance': '10', 'action': 'import',
+                                             'confirm_unverified_club': 'yes',
                                              'results': RESULT.decode().replace(';M;', ';Male;').replace(';', '\t')})
                 self.assertEqual(response.status_code, 302)
                 pasted = app.pasted_results_filename('Test Race', 'run', 10)

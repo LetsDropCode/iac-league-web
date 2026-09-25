@@ -9,12 +9,18 @@
         .panel { max-width: 760px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,.08); margin: 16px 0; }
         input, select, textarea, button { box-sizing: border-box; padding: 10px; border-radius: 6px; font-size: 15px; }
         input, select, textarea { border: 1px solid #ccd3df; width: 100%; margin: 6px 0 12px; background: #fff; }
+        input[type="checkbox"] { width: auto; margin-right: 6px; }
         textarea { min-height: 280px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; resize: vertical; }
-        button { border: 0; background: #0047AB; color: white; font-weight: bold; cursor: pointer; }
+        button { border: 0; background: #0047AB; color: white; font-weight: bold; cursor: pointer; margin-right: 8px; }
+        button.secondary { background: #475569; }
         .fields { display: grid; grid-template-columns: 1fr 140px 140px; gap: 10px; }
         .fields label, label { font-size: 13px; font-weight: bold; }
         .error { color: #b42318; font-weight: bold; }
+        .warning { background: #fff7ed; border-left: 4px solid #f97316; padding: 12px; }
         .hint { color: #475569; line-height: 1.5; }
+        .preview { overflow-x: auto; margin: 16px 0; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border-bottom: 1px solid #e2e8f0; padding: 8px; text-align: left; }
         @media (max-width: 640px) { .fields { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -31,10 +37,12 @@
         <a href="{{ url_for('upload') }}">Back to uploads</a>
 
         <section class="panel">
-            <p class="hint">Filter the source page to Irene Athletics Club and the correct distance, then copy its results table. FinishTime and Ultimate Live headings are recognised; sex-prefixed Ultimate Live categories such as M20-39 and W40-49 are converted automatically.</p>
+            <p class="hint">Copy the results table; the portal will filter an available Club column to the exact club below. FinishTime and Ultimate Live headings are recognised, including sex-prefixed categories such as M20-39 and W40-49.</p>
             {% if error %}<p class="error">{{ error }}</p>{% endif %}
             <form method="post">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <label for="club">Running club</label>
+                <input id="club" name="club" value="{{ form.get('club', 'IRENE ATHLETICS CLUB') }}" required>
                 <div class="fields">
                     <div>
                         <label for="race_name">Race name</label>
@@ -54,7 +62,22 @@
                 </div>
                 <label for="results">Copied results table</label>
                 <textarea id="results" name="results" placeholder="Paste the copied results table here" required>{{ form.get('results', '') }}</textarea>
-                <button type="submit">Save results</button>
+                {% if preview %}
+                <div class="preview">
+                    <h2>Import preview</h2>
+                    <p><strong>{{ preview.rows }}</strong> usable row(s) from {{ preview.source_rows }} copied row(s).
+                    {% if preview.duplicates_removed %} {{ preview.duplicates_removed }} duplicate row(s) removed.{% endif %}</p>
+                    {% if preview.club_verified %}
+                    <p>Club column verified and filtered to <strong>{{ preview.club }}</strong>.</p>
+                    {% else %}
+                    <p class="warning">The copied table has no Club column. Confirm that the source page was already filtered to <strong>{{ preview.club }}</strong> before importing.</p>
+                    <label><input type="checkbox" name="confirm_unverified_club" value="yes"> I confirm the copied page was filtered to this club.</label>
+                    {% endif %}
+                    {{ preview.table|safe }}
+                </div>
+                {% endif %}
+                <button type="submit" name="action" value="preview" class="secondary">Preview results</button>
+                <button type="submit" name="action" value="import">Import and recalculate</button>
             </form>
         </section>
     </main>

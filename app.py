@@ -23,7 +23,7 @@ from flask_talisman import Talisman
 # Your engine
 from update_engine import (
     process_league, read_result_file, clean_distance, race_event_count,
-    normalize_category_value,
+    normalize_category_value, normalize_time_value,
 )
 from finishtime import FinishTimeClient, FinishTimeError
 from ultimatelive import UltimateLiveClient, UltimateLiveError
@@ -465,12 +465,20 @@ def _pasted_name(table):
 
 def _pasted_category(value):
     """Recognise FinishTime's age-band and named category labels."""
-    return bool(re.fullmatch(r"\d{1,2}\s*[^\w\s]+\s*\d{1,2}", value)) or bool(
-        re.fullmatch(r"(?:Junior|Senior|Master|Veteran|Grand Master|\d{2,3})", value, re.IGNORECASE)
+    return bool(re.fullmatch(r"[MFW]?\s*\d{1,2}\s*[^\w\s]+\s*\d{1,2}", value, re.IGNORECASE)) or bool(
+        re.fullmatch(
+            r"[MFW]?\s*(?:Junior|Senior|Master|Veteran|Grand Master|\d{2,3})",
+            value,
+            re.IGNORECASE,
+        )
     )
 
 
-def _parse_finish_time_cards(raw_results, distance):
+def _normalised_club(value):
+    return re.sub(r"\s+", " ", str(value)).strip().casefold()
+
+
+def _parse_finish_time_cards(raw_results, distance, club=None):
     """Parse FinishTime's mobile/card clipboard text, where each cell is a line."""
     lines = [line.strip() for line in raw_results.splitlines() if line.strip()]
     header_index = next(
@@ -493,8 +501,10 @@ def _parse_finish_time_cards(raw_results, distance):
         if value.lower() in {"male", "female"}
     ]
     records = []
+    source_rows = len(gender_indexes)
+    club_verified = False
     cursor = 0
-    time_pattern = re.compile(r"\b\d{1,2}:\d{2}:\d{2}\b")
+    time_pattern = re.compile(r"\b(?:\d{1,2}:)?\d{1,2}:\d{2}\b")
     for gender_index in gender_indexes:
         before_gender = lines[cursor:gender_index]
         after_gender = lines[gender_index + 1:]
@@ -506,8 +516,17 @@ def _parse_finish_time_cards(raw_results, distance):
             continue
 
         category = next((value for value in reversed(before_gender) if _pasted_category(value)), None)
-        name = next((
+        card_clubs = [
             value for value in before_gender
+            if "club" in value.casefold() or re.search(r"\bA\.?C\.?\b", value, re.IGNORECASE)
+        ]
+        if club and card_clubs:
+            club_verified = True
+            if not any(_normalised_club(value) == _normalised_club(club) for value in card_clubs):
+                cursor = gender_index + 1 + time_indexes[min(1, len(time_indexes) - 1)] + 1
+                continue
+        name = next((
+            value for value in reversed(before_gender)
             if any(character.isalpha() for character in value)
             and not value.startswith("#")
             and " of " not in value.lower()
@@ -518,9 +537,9 @@ def _parse_finish_time_cards(raw_results, distance):
             records.append({
                 "Name": re.sub(r"\s*#\S+.*$", "", name).strip(),
                 "Gender": lines[gender_index].title(),
-                "Category": re.sub(r"\D+", "-", category),
+                "Category": normalize_category_value(category),
                 "Distance": int(distance),
-                "Time": time_pattern.search(after_gender[time_indexes[0]]).group(),
+                "Time": normalize_time_value(time_pattern.search(after_gender[time_indexes[0]]).group()),
             })
 
         # FinishTime puts Time and Finish directly after Gender. Start the next
@@ -530,10 +549,17 @@ def _parse_finish_time_cards(raw_results, distance):
     output = pd.DataFrame(records, columns=["Name", "Gender", "Category", "Distance", "Time"])
     if output.empty:
         raise ValueError("No usable result rows were found in the pasted table.")
+    duplicates = int(output.duplicated().sum())
+    output = output.drop_duplicates().reset_index(drop=True)
+    output.attrs.update({
+        "source_rows": source_rows,
+        "duplicates_removed": duplicates,
+        "club_verified": club_verified,
+    })
     return output
 
 
-def parse_pasted_results(raw_results, distance):
+def parse_pasted_results(raw_results, distance, club=None):
     """Turn a copied timing-provider table into league columns."""
     raw_results = raw_results.strip()
     if not raw_results:
@@ -549,19 +575,30 @@ def parse_pasted_results(raw_results, distance):
                 for term in ("name", "participant", "category", "time", "finish")
             ))
         else:
-            table = pd.read_csv(StringIO(raw_results), sep="\t", dtype=str)
+            table = pd.read_csv(StringIO(raw_results), sep=None, engine="python", dtype=str)
     except (ValueError, pd.errors.ParserError) as exc:
         raise ValueError("The pasted data could not be read as a race-result table.") from exc
 
     table.columns = [str(column).replace("", "").strip() for column in table.columns]
     if len(table.columns) == 1:
-        return _parse_finish_time_cards(raw_results, distance)
+        return _parse_finish_time_cards(raw_results, distance, club)
+
+    source_rows = len(table)
+    club_col = _pasted_column(table.columns, "club", "team")
+    club_verified = bool(club and club_col is not None)
+    if club_verified:
+        expected_club = _normalised_club(club)
+        table = table[
+            table[club_col].fillna("").map(_normalised_club) == expected_club
+        ].copy()
+        if table.empty:
+            raise ValueError(f"No copied result rows matched the club {club}.")
     names = _pasted_name(table)
     gender_col = _pasted_column(table.columns, "gender", "sex")
     category_col = _pasted_column(table.columns, "category", "agegroup", "division", "cat")
     time_col = _pasted_column(table.columns, "finishtime", "chiptime", "guntime", "nettime", "time", "finish")
     if names is None or category_col is None or time_col is None:
-        return _parse_finish_time_cards(raw_results, distance)
+        return _parse_finish_time_cards(raw_results, distance, club)
 
     categories = table[category_col].astype(str).str.strip()
     if gender_col is not None:
@@ -580,7 +617,7 @@ def parse_pasted_results(raw_results, distance):
         "Gender": genders,
         "Category": categories.map(normalize_category_value),
         "Distance": int(distance),
-        "Time": table[time_col].astype(str).str.strip(),
+        "Time": table[time_col].map(normalize_time_value),
     })
     output = output.dropna(subset=["Name", "Gender", "Category"])
     output = output[
@@ -591,8 +628,17 @@ def parse_pasted_results(raw_results, distance):
     if output.empty:
         # FinishTime can copy a tabular header followed by mobile/card-style
         # rows. In that hybrid case the column names look valid but no row is.
-        return _parse_finish_time_cards(raw_results, distance)
-    return output[["Name", "Gender", "Category", "Distance", "Time"]]
+        return _parse_finish_time_cards(raw_results, distance, club)
+
+    output = output[["Name", "Gender", "Category", "Distance", "Time"]]
+    duplicates = int(output.duplicated().sum())
+    output = output.drop_duplicates().reset_index(drop=True)
+    output.attrs.update({
+        "source_rows": source_rows,
+        "duplicates_removed": duplicates,
+        "club_verified": club_verified,
+    })
+    return output
 
 # -----------------------------------
 # CACHE
@@ -743,7 +789,9 @@ def paste_results():
 
     if request.method == "POST":
         race_name = request.form.get("race_name", "").strip()
+        club = request.form.get("club", "").strip()
         discipline = request.form.get("discipline", "run").lower()
+        action = request.form.get("action", "preview")
         try:
             distance = int(request.form.get("distance", ""))
             if distance <= 0:
@@ -751,7 +799,37 @@ def paste_results():
             if discipline not in {"run", "walk"}:
                 raise ValueError("Choose Run or Walk before importing.")
 
-            results = parse_pasted_results(request.form.get("results", ""), distance)
+            if not club:
+                raise ValueError("Enter the running club to import.")
+
+            results = parse_pasted_results(request.form.get("results", ""), distance, club)
+            preview = {
+                "rows": len(results),
+                "source_rows": results.attrs.get("source_rows", len(results)),
+                "duplicates_removed": results.attrs.get("duplicates_removed", 0),
+                "club_verified": results.attrs.get("club_verified", False),
+                "club": club,
+                "table": results.head(100).to_html(index=False, border=0),
+            }
+            if action == "preview":
+                return render_template(
+                    "paste_results.html",
+                    error=None,
+                    form=request.form,
+                    preview=preview,
+                )
+
+            if not preview["club_verified"] and request.form.get("confirm_unverified_club") != "yes":
+                return render_template(
+                    "paste_results.html",
+                    error=(
+                        "The copied results have no Club column, so the portal cannot verify the club. "
+                        "Review the preview and confirm that the source page was filtered to the requested club."
+                    ),
+                    form=request.form,
+                    preview=preview,
+                )
+
             filename = pasted_results_filename(race_name, discipline, distance)
             storage.publish(f"results/{filename}", results.to_csv(sep=";", index=False).encode())
             clear_cache()
@@ -763,6 +841,7 @@ def paste_results():
                 "paste_results.html",
                 error=str(exc),
                 form=request.form,
+                preview=None,
             )
         except Exception:
             logging.exception("Pasted result import failed")
@@ -770,9 +849,15 @@ def paste_results():
                 "paste_results.html",
                 error="The pasted results could not be saved. Check publication records before retrying.",
                 form=request.form,
+                preview=None,
             )
 
-    return render_template("paste_results.html", error=None, form={})
+    return render_template(
+        "paste_results.html",
+        error=None,
+        preview=None,
+        form={"club": "IRENE ATHLETICS CLUB", "discipline": "run"},
+    )
 
 
 @app.route("/finishtime", methods=["GET", "POST"])

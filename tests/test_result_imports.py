@@ -9,7 +9,9 @@ import app as app_module
 from app import parse_pasted_results, preview_results_file
 from finishtime import FinishTimeClient, FinishTimeError, _event_result_url, _page_count, _page_url
 from update_engine import read_result_file
-from ultimatelive import UltimateLiveError, _distance_id, _search_table, event_id_from_url
+from ultimatelive import (
+    UltimateLiveClient, UltimateLiveError, _distance_id, _search_table, event_id_from_url,
+)
 from bs4 import BeautifulSoup
 
 
@@ -53,6 +55,25 @@ class ResultImportTests(unittest.TestCase):
             "Distance": 10, "Time": "00:48:53",
         })
 
+    def test_paste_filters_exact_club_and_removes_duplicates(self):
+        raw = (
+            "Name;Club;Category;Gender;Time\n"
+            "Ada Runner;IRENE ATHLETICS CLUB;Senior;Female;42:28\n"
+            "Ada Runner;IRENE ATHLETICS CLUB;Senior;Female;42:28\n"
+            "Bob Runner;OTHER CLUB;40-49;Male;48:53\n"
+        )
+        frame = parse_pasted_results(raw, 10, "IRENE ATHLETICS CLUB")
+        self.assertEqual(frame["Name"].tolist(), ["Ada Runner"])
+        self.assertEqual(frame["Time"].tolist(), ["00:42:28"])
+        self.assertTrue(frame.attrs["club_verified"])
+        self.assertEqual(frame.attrs["source_rows"], 3)
+        self.assertEqual(frame.attrs["duplicates_removed"], 1)
+
+    def test_paste_rejects_a_different_club(self):
+        raw = "Name\tClub\tCategory\tGender\tTime\nAda Runner\tOTHER CLUB\tSenior\tFemale\t00:42:28\n"
+        with self.assertRaisesRegex(ValueError, "No copied result rows matched"):
+            parse_pasted_results(raw, 10, "IRENE ATHLETICS CLUB")
+
     def test_finishtime_mobile_card_paste(self):
         raw = """FINISH NAME GENDER TIME
 1
@@ -65,6 +86,81 @@ Female
         frame = parse_pasted_results(raw, 10)
         self.assertEqual(frame.iloc[0]["Name"], "Ada Runner")
         self.assertEqual(frame.iloc[0]["Gender"], "Female")
+
+    def test_finishtime_mobile_named_category_and_short_time(self):
+        raw = """FINISH NAME GENDER TIME
+1
+Ada Runner #101
+IRENE ATHLETICS CLUB
+Senior
+Female
+42:28
+42:28
+"""
+        frame = parse_pasted_results(raw, 10, "IRENE ATHLETICS CLUB")
+        self.assertEqual(frame.iloc[0]["Category"], "Senior")
+        self.assertEqual(frame.iloc[0]["Time"], "00:42:28")
+        self.assertTrue(frame.attrs["club_verified"])
+
+    def test_paste_route_previews_before_publishing(self):
+        raw = (
+            "Name\tClub\tCategory\tGender\tTime\n"
+            "Ada Runner\tIRENE ATHLETICS CLUB\tSenior\tFemale\t00:42:28\n"
+        )
+        with patch.object(app_module.csrf, "_csrf_disable", True), patch.object(
+            app_module.storage, "publish"
+        ) as publish:
+            client = app_module.app.test_client()
+            with client.session_transaction() as session:
+                session["admin"] = True
+            response = client.post(
+                "/paste-results",
+                base_url="https://localhost",
+                data={
+                    "race_name": "Test Race", "club": "IRENE ATHLETICS CLUB",
+                    "distance": "10", "discipline": "run", "results": raw,
+                    "action": "preview",
+                },
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b"Club column verified", response.data)
+            self.assertIn(b"Ada Runner", response.data)
+            publish.assert_not_called()
+
+            response = client.post(
+                "/paste-results",
+                base_url="https://localhost",
+                data={
+                    "race_name": "Test Race", "club": "IRENE ATHLETICS CLUB",
+                    "distance": "10", "discipline": "run", "results": raw,
+                    "action": "import",
+                },
+            )
+            self.assertEqual(response.status_code, 302)
+            publish.assert_called_once()
+
+    def test_paste_route_requires_confirmation_without_club_column(self):
+        raw = "Name\tCategory\tGender\tTime\nAda Runner\tSenior\tFemale\t00:42:28\n"
+        data = {
+            "race_name": "Filtered Race", "club": "IRENE ATHLETICS CLUB",
+            "distance": "10", "discipline": "run", "results": raw,
+            "action": "import",
+        }
+        with patch.object(app_module.csrf, "_csrf_disable", True), patch.object(
+            app_module.storage, "publish"
+        ) as publish:
+            client = app_module.app.test_client()
+            with client.session_transaction() as session:
+                session["admin"] = True
+            response = client.post("/paste-results", base_url="https://localhost", data=data)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b"cannot verify the club", response.data)
+            publish.assert_not_called()
+
+            data["confirm_unverified_club"] = "yes"
+            response = client.post("/paste-results", base_url="https://localhost", data=data)
+            self.assertEqual(response.status_code, 302)
+            publish.assert_called_once()
 
     def test_finishtime_distance_selection_and_paging(self):
         html = """
@@ -167,6 +263,15 @@ Female
         )
         self.assertEqual(_distance_id(soup, 10, "run"), "3")
         self.assertEqual(_distance_id(soup, 10, "walk"), "4")
+
+    def test_ultimate_live_block_has_paste_fallback(self):
+        response = requests.Response()
+        response.status_code = 403
+        response.url = "https://live.ultimate.dk/desktop/front/data.php"
+        client = UltimateLiveClient()
+        with patch.object(client.session, "get", return_value=response):
+            with self.assertRaisesRegex(UltimateLiveError, "Paste results from a webpage"):
+                client._get(response.url)
 
     def test_ultimate_live_search_payload_is_normalised(self):
         payload = """
