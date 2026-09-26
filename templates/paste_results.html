@@ -13,7 +13,7 @@
         textarea { min-height: 280px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; resize: vertical; }
         button { border: 0; background: #0047AB; color: white; font-weight: bold; cursor: pointer; margin-right: 8px; }
         button.secondary { background: #475569; }
-        .fields { display: grid; grid-template-columns: 1fr 140px 140px; gap: 10px; }
+        .fields { display: grid; grid-template-columns: 1fr 120px 170px 120px; gap: 10px; }
         .fields label, label { font-size: 13px; font-weight: bold; }
         .error { color: #b42318; font-weight: bold; }
         .warning { background: #fff7ed; border-left: 4px solid #f97316; padding: 12px; }
@@ -37,7 +37,7 @@
         <a href="{{ url_for('upload') }}">Back to uploads</a>
 
         <section class="panel">
-            <p class="hint">Copy the results table; the portal will filter an available Club column to the exact club below. FinishTime and Ultimate Live headings are recognised, including sex-prefixed categories such as M20-39 and W40-49. If a copied FinishTime search contains several event distances, only rows matching the distance entered below are previewed.</p>
+            <p class="hint">Copy the results table; the portal will filter an available Club column to the exact club below. FinishTime and Ultimate Live headings are recognised, including sex-prefixed categories such as M20-39 and W40-49. Rows are filtered by both the selected distance and any Run/Walk distinction in the event name. For an unusual race distance, keep the actual distance and explicitly choose which configured distance rules should score it.</p>
             {% if error %}<p class="error">{{ error }}</p>{% endif %}
             <form method="post">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
@@ -51,6 +51,15 @@
                     <div>
                         <label for="distance">Distance (km)</label>
                         <input id="distance" name="distance" type="number" min="1" step="1" value="{{ form.get('distance', '') }}" required>
+                    </div>
+                    <div>
+                        <label for="scoring_distance">Score using rules for</label>
+                        <select id="scoring_distance" name="scoring_distance" required>
+                            <option value="">Choose distance</option>
+                            {% for rule_distance in scoring_distances %}
+                            <option value="{{ rule_distance }}" {% if form.get('scoring_distance')|string == rule_distance|string %}selected{% endif %}>{{ rule_distance }} km</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div>
                         <label for="discipline">Discipline</label>
@@ -72,6 +81,10 @@
                     {% else %}
                     <p class="warning">The copied table has no Club column. Confirm that the source page was already filtered to <strong>{{ preview.club }}</strong> before importing.</p>
                     <label><input type="checkbox" name="confirm_unverified_club" value="yes"> I confirm the copied page was filtered to this club.</label>
+                    {% endif %}
+                    <p><strong>{{ preview.discipline|title }}</strong> rows at {{ preview.distance }} km will be scored using the <strong>{{ preview.scoring_distance }} km</strong> league rules.</p>
+                    {% if preview.discipline_verified %}
+                    <p>The Run/Walk distinction in the source event column was detected and applied.</p>
                     {% endif %}
                     {{ preview.table|safe }}
                 </div>

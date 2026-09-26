@@ -220,6 +220,18 @@ class StorageTests(unittest.TestCase):
                 with app.app.test_request_context('/points'):
                     self.assertIn('10', app.points())
 
+    def test_engine_scores_abnormal_distance_with_explicit_rule_distance(self):
+        result = RESULT.replace(b'Distance;Time', b'Distance;ScoringDistance;Time').replace(
+            b';10;00:40:00', b';33;10;00:40:00'
+        )
+        self.store.publish('results/33K_test_run.csv', result)
+        with patch.dict(os.environ, {'LEAGUE_DATA_DIR': str(self.store.root)}, clear=True):
+            get_storage.cache_clear()
+            import update_engine
+            run, _, _, _ = update_engine.process_league()
+        self.assertEqual(int(run.iloc[0]['Total Points']), 10)
+        self.assertTrue(any('33km' in column for column in run.columns))
+
     def test_upload_paste_and_finishtime_routes_use_configured_store(self):
         import pandas as pd
         with patch.dict(os.environ, {'LEAGUE_DATA_DIR': str(self.store.root)}, clear=True):
@@ -239,6 +251,7 @@ class StorageTests(unittest.TestCase):
                 response = client.post('/paste-results', base_url='https://localhost',
                                        data={'race_name': 'Test Race', 'club': 'IRENE ATHLETICS CLUB',
                                              'discipline': 'run', 'distance': '10', 'action': 'import',
+                                             'scoring_distance': '10',
                                              'confirm_unverified_club': 'yes',
                                              'results': RESULT.decode().replace(';M;', ';Male;').replace(';', '\t')})
                 self.assertEqual(response.status_code, 302)

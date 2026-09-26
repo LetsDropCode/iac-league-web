@@ -446,6 +446,14 @@ def pasted_results_filename(race_name, discipline, distance):
     return f"{int(distance)}K_{race_slug}_{discipline.lower()}.csv"
 
 
+def scoring_rule_distances(discipline):
+    """Return the configured rule distances for the selected league."""
+    filename = "points_rules_walk.csv" if discipline == "walk" else "points_rules.csv"
+    rules = pd.read_csv(storage.path(filename))
+    distances = pd.to_numeric(rules.get("Distance"), errors="coerce").dropna()
+    return sorted({int(value) for value in distances})
+
+
 def _pasted_column(columns, *terms):
     """Find a copied-table column by common FinishTime-style headings."""
     for column in columns:
@@ -602,7 +610,7 @@ def _parse_finish_time_cards(raw_results, distance, club=None):
     return output
 
 
-def parse_pasted_results(raw_results, distance, club=None):
+def parse_pasted_results(raw_results, distance, club=None, discipline=None):
     """Turn a copied timing-provider table into league columns."""
     raw_results = raw_results.strip()
     if not raw_results:
@@ -633,12 +641,24 @@ def parse_pasted_results(raw_results, distance, club=None):
 
     source_rows = len(table)
     distance_col = _pasted_column(table.columns, "distance", "event")
+    discipline_verified = False
     if distance_col is not None:
         copied_distances = _pasted_distance(table[distance_col])
         if copied_distances.notna().any():
             table = table[copied_distances == int(distance)].copy()
             if table.empty:
                 raise ValueError(f"No copied result rows matched the {int(distance)} km distance.")
+        if discipline in {"run", "walk"}:
+            walk_rows = table[distance_col].astype(str).str.contains(
+                r"\bwalk(?:er)?s?\b", case=False, regex=True, na=False
+            )
+            if walk_rows.any():
+                discipline_verified = True
+                table = table[walk_rows if discipline == "walk" else ~walk_rows].copy()
+                if table.empty:
+                    raise ValueError(
+                        f"No copied result rows matched the {discipline} discipline at {int(distance)} km."
+                    )
     club_col = _pasted_column(table.columns, "club", "team")
     club_verified = bool(club and club_col is not None)
     if club_verified:
@@ -692,6 +712,7 @@ def parse_pasted_results(raw_results, distance, club=None):
         "source_rows": source_rows,
         "duplicates_removed": duplicates,
         "club_verified": club_verified,
+        "discipline_verified": discipline_verified,
     })
     return output
 
@@ -842,6 +863,10 @@ def paste_results():
     if not session.get("admin"):
         return redirect("/admin")
 
+    scoring_distances = sorted(set(
+        scoring_rule_distances("run") + scoring_rule_distances("walk")
+    ))
+
     if request.method == "POST":
         race_name = request.form.get("race_name", "").strip()
         club = request.form.get("club", "").strip()
@@ -849,21 +874,33 @@ def paste_results():
         action = request.form.get("action", "preview")
         try:
             distance = int(request.form.get("distance", ""))
+            scoring_distance = int(request.form.get("scoring_distance", ""))
             if distance <= 0:
                 raise ValueError("Distance must be a whole number of kilometres.")
             if discipline not in {"run", "walk"}:
                 raise ValueError("Choose Run or Walk before importing.")
+            available_rules = scoring_rule_distances(discipline)
+            if scoring_distance not in available_rules:
+                choices = ", ".join(f"{value} km" for value in available_rules)
+                raise ValueError(f"Choose a configured {discipline} scoring distance: {choices}.")
 
             if not club:
                 raise ValueError("Enter the running club to import.")
 
-            results = parse_pasted_results(request.form.get("results", ""), distance, club)
+            results = parse_pasted_results(
+                request.form.get("results", ""), distance, club, discipline
+            )
+            results["ScoringDistance"] = scoring_distance
             preview = {
                 "rows": len(results),
                 "source_rows": results.attrs.get("source_rows", len(results)),
                 "duplicates_removed": results.attrs.get("duplicates_removed", 0),
                 "club_verified": results.attrs.get("club_verified", False),
+                "discipline_verified": results.attrs.get("discipline_verified", False),
                 "club": club,
+                "discipline": discipline,
+                "distance": distance,
+                "scoring_distance": scoring_distance,
                 "table": results.head(100).to_html(index=False, border=0),
             }
             if action == "preview":
@@ -872,6 +909,7 @@ def paste_results():
                     error=None,
                     form=request.form,
                     preview=preview,
+                    scoring_distances=scoring_distances,
                 )
 
             if not preview["club_verified"] and request.form.get("confirm_unverified_club") != "yes":
@@ -883,6 +921,7 @@ def paste_results():
                     ),
                     form=request.form,
                     preview=preview,
+                    scoring_distances=scoring_distances,
                 )
 
             filename = pasted_results_filename(race_name, discipline, distance)
@@ -897,6 +936,7 @@ def paste_results():
                 error=str(exc),
                 form=request.form,
                 preview=None,
+                scoring_distances=scoring_distances,
             )
         except Exception:
             logging.exception("Pasted result import failed")
@@ -905,6 +945,7 @@ def paste_results():
                 error="The pasted results could not be saved. Check publication records before retrying.",
                 form=request.form,
                 preview=None,
+                scoring_distances=scoring_distances,
             )
 
     return render_template(
@@ -912,6 +953,7 @@ def paste_results():
         error=None,
         preview=None,
         form={"club": "IRENE ATHLETICS CLUB", "discipline": "run"},
+        scoring_distances=scoring_distances,
     )
 
 

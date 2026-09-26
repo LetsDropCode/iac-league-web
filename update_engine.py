@@ -91,6 +91,13 @@ def _process_league():
     results["Distance"] = results.get("Distance", None)
     results["Distance"] = results["Distance"].apply(clean_distance)
     results["Distance"] = pd.to_numeric(results["Distance"], errors="coerce").round().astype("Int64")
+    if "ScoringDistance" not in results.columns:
+        results["ScoringDistance"] = results["Distance"]
+    else:
+        results["ScoringDistance"] = results["ScoringDistance"].apply(clean_distance)
+        results["ScoringDistance"] = pd.to_numeric(
+            results["ScoringDistance"], errors="coerce"
+        ).round().astype("Int64").fillna(results["Distance"])
 
     # TEXT
     results["Name"] = results.get("Name", "").astype(str).str.strip()
@@ -150,7 +157,7 @@ def build_league(results, rules, max_times):
 
         try:
             applicable = rules[
-                (rules["Distance"] == row["Distance"]) &
+                (rules["Distance"] == row["ScoringDistance"]) &
                 (rules["Gender"] == row["Gender"]) &
                 (rules["Category"] == row["PointsCategory"]) &
                 (row["Time"] >= rules["TimeFrom"]) &
@@ -161,7 +168,7 @@ def build_league(results, rules, max_times):
                 return int(applicable.iloc[0]["Points"])
 
             # FINISHER RULE
-            key = (row["Distance"], row["Gender"], row["PointsCategory"])
+            key = (row["ScoringDistance"], row["Gender"], row["PointsCategory"])
             max_time = max_times.get(key)
 
             if max_time is not None and pd.notnull(row["Time"]) and row["Time"] > max_time:

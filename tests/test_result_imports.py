@@ -92,6 +92,23 @@ HyperLink
         with self.assertRaisesRegex(ValueError, "matched the 48 km distance"):
             parse_pasted_results(raw, 48, "IRENE ATHLETICS CLUB")
 
+    def test_paste_filters_run_and_walk_rows_at_same_distance(self):
+        raw = (
+            "EVENT\tNO\tNAME\tGENDER\tCATEGORY\tSTATUS\tTIME\tNET TIME\n"
+            "21km\t1\tRoad Runner\tMale\tSenior\tFinished\t01:30:00\t01:29:00\n"
+            "21km Walk\t2\tDirk NEETHLING\tMale\t70-79\tFinished\t02:45:47\t02:45:34\n"
+            "21km Walk\t3\tKarin-Marié VAN NIEKERK\tFemale\t60-69\tFinished\t03:10:19\t03:09:50\n"
+        )
+        runners = parse_pasted_results(raw, 21, "IRENE ATHLETICS CLUB", "run")
+        walkers = parse_pasted_results(raw, 21, "IRENE ATHLETICS CLUB", "walk")
+        self.assertEqual(runners["Name"].tolist(), ["Road Runner"])
+        self.assertEqual(
+            walkers["Name"].tolist(),
+            ["Dirk NEETHLING", "Karin-Marié VAN NIEKERK"],
+        )
+        self.assertTrue(runners.attrs["discipline_verified"])
+        self.assertTrue(walkers.attrs["discipline_verified"])
+
     def test_paste_filters_exact_club_and_removes_duplicates(self):
         raw = (
             "Name;Club;Category;Gender;Time\n"
@@ -155,7 +172,7 @@ Female
                 base_url="https://localhost",
                 data={
                     "race_name": "Test Race", "club": "IRENE ATHLETICS CLUB",
-                    "distance": "10", "discipline": "run", "results": raw,
+                    "distance": "10", "scoring_distance": "10", "discipline": "run", "results": raw,
                     "action": "preview",
                 },
             )
@@ -169,7 +186,7 @@ Female
                 base_url="https://localhost",
                 data={
                     "race_name": "Test Race", "club": "IRENE ATHLETICS CLUB",
-                    "distance": "10", "discipline": "run", "results": raw,
+                    "distance": "10", "scoring_distance": "10", "discipline": "run", "results": raw,
                     "action": "import",
                 },
             )
@@ -180,7 +197,7 @@ Female
         raw = "Name\tCategory\tGender\tTime\nAda Runner\tSenior\tFemale\t00:42:28\n"
         data = {
             "race_name": "Filtered Race", "club": "IRENE ATHLETICS CLUB",
-            "distance": "10", "discipline": "run", "results": raw,
+            "distance": "10", "scoring_distance": "10", "discipline": "run", "results": raw,
             "action": "import",
         }
         with patch.object(app_module.csrf, "_csrf_disable", True), patch.object(
