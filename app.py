@@ -485,6 +485,42 @@ def _normalised_club(value):
     return re.sub(r"\s+", " ", str(value)).strip().casefold()
 
 
+def _pasted_tabular_region(raw_results):
+    """Trim browser page chrome around a copied delimited results table."""
+    lines = raw_results.splitlines()
+    delimiters = ("\t", ";", ",", "|")
+    header_index = None
+    delimiter = None
+    for index, line in enumerate(lines):
+        upper = line.upper()
+        if "NAME" not in upper or not any(term in upper for term in ("TIME", "FINISH")):
+            continue
+        candidate = max(delimiters, key=line.count)
+        if line.count(candidate) >= 2:
+            header_index = index
+            delimiter = candidate
+            break
+    if header_index is None:
+        return raw_results
+
+    table_lines = [lines[header_index]]
+    minimum_delimiters = max(2, lines[header_index].count(delimiter) - 1)
+    for line in lines[header_index + 1:]:
+        if line.count(delimiter) >= minimum_delimiters:
+            table_lines.append(line)
+        elif len(table_lines) > 1:
+            break
+    return "\n".join(table_lines)
+
+
+def _pasted_distance(values):
+    """Read provider event labels such as 48km or 21km Walk."""
+    return pd.to_numeric(
+        values.astype(str).str.extract(r"(?i)(\d+(?:\.\d+)?)\s*k?m", expand=False),
+        errors="coerce",
+    )
+
+
 def _parse_finish_time_cards(raw_results, distance, club=None):
     """Parse FinishTime's mobile/card clipboard text, where each cell is a line."""
     lines = [line.strip() for line in raw_results.splitlines() if line.strip()]
@@ -582,7 +618,12 @@ def parse_pasted_results(raw_results, distance, club=None):
                 for term in ("name", "participant", "category", "time", "finish")
             ))
         else:
-            table = pd.read_csv(StringIO(raw_results), sep=None, engine="python", dtype=str)
+            table = pd.read_csv(
+                StringIO(_pasted_tabular_region(raw_results)),
+                sep=None,
+                engine="python",
+                dtype=str,
+            )
     except (ValueError, pd.errors.ParserError) as exc:
         raise ValueError("The pasted data could not be read as a race-result table.") from exc
 
@@ -591,6 +632,13 @@ def parse_pasted_results(raw_results, distance, club=None):
         return _parse_finish_time_cards(raw_results, distance, club)
 
     source_rows = len(table)
+    distance_col = _pasted_column(table.columns, "distance", "event")
+    if distance_col is not None:
+        copied_distances = _pasted_distance(table[distance_col])
+        if copied_distances.notna().any():
+            table = table[copied_distances == int(distance)].copy()
+            if table.empty:
+                raise ValueError(f"No copied result rows matched the {int(distance)} km distance.")
     club_col = _pasted_column(table.columns, "club", "team")
     club_verified = bool(club and club_col is not None)
     if club_verified:

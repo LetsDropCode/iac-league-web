@@ -37,7 +37,7 @@
         <a href="{{ url_for('upload') }}">Back to uploads</a>
 
         <section class="panel">
-            <p class="hint">Copy the results table; the portal will filter an available Club column to the exact club below. FinishTime and Ultimate Live headings are recognised, including sex-prefixed categories such as M20-39 and W40-49.</p>
+            <p class="hint">Copy the results table; the portal will filter an available Club column to the exact club below. FinishTime and Ultimate Live headings are recognised, including sex-prefixed categories such as M20-39 and W40-49. If a copied FinishTime search contains several event distances, only rows matching the distance entered below are previewed.</p>
             {% if error %}<p class="error">{{ error }}</p>{% endif %}
             <form method="post">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">

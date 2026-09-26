@@ -64,6 +64,34 @@ class ResultImportTests(unittest.TestCase):
             "Distance": 10, "Time": "00:48:53",
         })
 
+    def test_finishtime_filtered_page_paste_ignores_chrome_and_other_distances(self):
+        raw = """Irene Running Festival
+04/04/2026
+Your search results are shown below.
+EVENT\tNO\tNAME\tGENDER\tCATEGORY\tSTATUS\tTIME\tNET TIME\t
+48km\t1215\tBernita BORNMANN\tFemale\t50-59\tFinished\t05:54:09\t05:51:03\t
+48km\t2305\tDeena NAIDOO\tMale\t40-49\tStarted\t\t\t
+21km\t7130\tBernice DE WITT\tFemale\tSenior\tFinished\t01:51:51\t01:51:33\t
+HyperLink
+© 2026
+"""
+        frame = parse_pasted_results(raw, 48, "IRENE ATHLETICS CLUB")
+        self.assertEqual(frame.iloc[0].to_dict(), {
+            "Name": "Bernita BORNMANN", "Gender": "Female", "Category": "50-59",
+            "Distance": 48, "Time": "05:54:09",
+        })
+        self.assertEqual(len(frame), 1)
+        self.assertEqual(frame.attrs["source_rows"], 3)
+        self.assertFalse(frame.attrs["club_verified"])
+
+    def test_finishtime_filtered_page_requires_matching_distance(self):
+        raw = (
+            "EVENT\tNO\tNAME\tGENDER\tCATEGORY\tSTATUS\tTIME\tNET TIME\n"
+            "21km\t7130\tBernice DE WITT\tFemale\tSenior\tFinished\t01:51:51\t01:51:33\n"
+        )
+        with self.assertRaisesRegex(ValueError, "matched the 48 km distance"):
+            parse_pasted_results(raw, 48, "IRENE ATHLETICS CLUB")
+
     def test_paste_filters_exact_club_and_removes_duplicates(self):
         raw = (
             "Name;Club;Category;Gender;Time\n"
